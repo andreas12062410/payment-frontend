@@ -9,7 +9,7 @@ export const useFormSubmitHook = () => {
   const submitForm = async (payload: FormPayload) => {
     try {
       const { data, status } = await sendPayload({
-        endpoint: "/milestones/",
+        endpoint: "/milestones",
         payload,
       });
       if (status === 200) {

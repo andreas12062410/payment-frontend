@@ -10,6 +10,7 @@ import rightBg from "./assets/Images/bg-right.svg";
 import { Input } from "./component/input/Input";
 import { Select } from "./component/select/Select";
 import { useGetBudgetHook } from "./hooks/budget";
+import { useCheckoutHook } from "./hooks/milestone";
 
 interface MileStone {
   key: string;
@@ -19,7 +20,9 @@ interface MileStone {
 function App() {
   const formSubmit = useFormSubmitHook();
   const getBudget = useGetBudgetHook();
+  const checkoutStripe = useCheckoutHook();
   const [milestones, setMilestones] = useState();
+  const [budget, setBudget] = useState(0);
   const [selectedMilestone, setSelectedMilestones] = useState<MileStone>();
   const [form, setForm] = useState<FormPayload>({
     apiKey: "",
@@ -43,7 +46,23 @@ function App() {
       ...form,
       milestoneIdentifier: data.value.mileStoneId,
     });
-    console.log(res);
+    setBudget(res.data);
+  };
+
+  const handlePay = async () => {
+    // milestoneTitle, milestoneUnitAmount, milestoneImages;
+    if (selectedMilestone) {
+      const milestoneName = Object.keys(selectedMilestone)[0];
+      const res = await checkoutStripe({
+        milestoneTitle: milestoneName,
+        milestoneImages: [],
+        milestoneUnitAmount: budget.toString(),
+      });
+      if (res.data) {
+        window.location.href = res.data;
+      }
+      console.log(res);
+    }
   };
 
   return (
@@ -56,13 +75,16 @@ function App() {
         <h2>Enter Details</h2>
         <Spacer height={40} />
         {milestones ? (
-          <Select
-            {...{
-              onSelectChange,
-              optionsList: milestones,
-              selectValue: selectedMilestone?.key,
-            }}
-          />
+          <>
+            <Select
+              {...{
+                onSelectChange,
+                optionsList: milestones,
+                selectValue: selectedMilestone?.key,
+              }}
+            />
+            {budget && <button onClick={handlePay}>Pay ₹{budget}</button>}
+          </>
         ) : (
           <>
             <Input
