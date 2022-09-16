@@ -1,5 +1,19 @@
 {
+  "name": "koders-payment-backend",
+  "version": "0.0.1",
+  "description": "This app is responsible for transactions over Koders' stripe account via payments.koders.in",
+  "main": "server.js",
+  "repository": "https://github.com/koders-in/Payments.git",
+  "author": "Kartikey Kushwah <support@koders.in>",
+  "license": "Koders",
+  "scripts": {
+    "nodemon": "nodemon server.js"
+  },
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "node-redmine": "^0.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
