@@ -21,8 +21,6 @@ jobs:
       run: npm ci
     - name: Install react-scripts
       run: npm install react-scripts@3.4.1 -g --silent
-    - name: Test
-      run: npm test
     - name: Build
       run: npm run build
     - name: Cleaning remote build directory
