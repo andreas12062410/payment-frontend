@@ -11,9 +11,18 @@ apiKey = ""
 projectIdentifier = "89"
 
 const getProjectIssues = async (apiKey, projectIdentifier) => {
+    const milestones = new Set();
     try {
       const response = await axios.get(`https://kore.koders.in/projects/${projectIdentifier}/issues.json`, {headers: {'X-Redmine-API-Key': apiKey}})
-      return response.data.issues
+      for (let issue in response.data.issues){
+        try{
+            milestones.add(response.data.issues[issue].fixed_version.id)
+        }
+        catch(err){
+            console.log("Issue not assigned to a version. Passing...")
+        }
+      }
+      return milestones
     } catch (error) {
       console.error(error)
     }
@@ -27,6 +36,7 @@ app.get('/', (_, res) => {
 
 app.post('/milestones/', (req, res) => {
     const { apiKey, projectIdentifier } = req.body;
+    console.log(req.body)
 });
 
 // app.listen(port, () => {
