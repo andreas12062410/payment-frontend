@@ -1,15 +1,14 @@
 import { sendPayload } from "../helper/api";
 
-export interface FormPayload {
+export interface BugetsProps {
   apiKey: string;
-  projectIdentifier: string;
+  milestoneIdentifier: string;
 }
-
-export const useFormSubmitHook = () => {
-  const submitForm = async (payload: FormPayload) => {
+export const useGetBudgetHook = () => {
+  const getBudget = async (payload: BugetsProps) => {
     try {
       const { data, status } = await sendPayload({
-        endpoint: "/milestones/",
+        endpoint: "/get-budget/",
         payload,
       });
       if (status === 200) {
@@ -17,9 +16,9 @@ export const useFormSubmitHook = () => {
       } else return null;
     } catch (error: any) {
       console.log(
-        `Something went wrong while submitting form :->${error.message}`
+        `Something went wrong while fetching budget:->${error.message}`
       );
     }
   };
-  return submitForm;
+  return getBudget;
 };
