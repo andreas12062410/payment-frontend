@@ -88,9 +88,20 @@ app.get('/', (_, res) => {
 app.post('/milestones/', async (req, res) => {
     const { apiKey, projectIdentifier } = req.body;
     const milestones = await getProjectMilestones(apiKey, projectIdentifier);
-    
 });
 
-// app.listen(port, () => {
-//   console.log(`Example app listening at http://localhost:${port}`);
-// });
+app.post('/get-budget/', async (req, res) => {
+    const { apiKey, milestoneIdentifier } = req.body;
+    const issues = await getProjectMilestones(apiKey, milestoneIdentifier);
+    let amount = 0
+    for (let issue in issues){
+        issue_budget = await getBudget(issue, apiKey)
+        if (issue_budget !== null)
+            amount += issue_budget
+    }
+    return amount
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
