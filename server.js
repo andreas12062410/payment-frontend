@@ -42,6 +42,24 @@ const getBudget = async (apiKey, issueIdentifier) => {
     return null
 }
 
+const getIssuesFromMilestone = async(apiKey, milestoneIdentifier) => {
+    const issues = new Set();
+    try {
+      const response = await axios.get(`https://kore.koders.in/projects/${projectIdentifier}/issues.json`, {headers: {'X-Redmine-API-Key': apiKey}})
+      for (let issue in response.data.issues){
+        try{
+            if (response.data.issues[issue].fixed_version.id == milestoneIdentifier)
+                issues.add(response.data.issues[issue].id)
+        }
+        catch(err){
+            console.log("Issue not assigned to a version. Passing...")
+        }
+      }
+      return issues
+    } catch (error) {
+      console.error(error)
+    } 
+}
 
 const getMilestonesData = async (apiKey, milestones) => {
     const milestonesData = {};
