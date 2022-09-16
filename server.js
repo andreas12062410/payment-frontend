@@ -10,6 +10,11 @@ DEBUG = true; // ! Change to false in production
 
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  const { body, method } = req;
+  console.log(body, method);
+  next();
+});
 
 apiKey = "";
 projectIdentifier = "89";
