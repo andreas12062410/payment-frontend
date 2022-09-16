@@ -112,9 +112,15 @@ app.post("/milestones/", async (req, res) => {
     const milestones = await getProjectMilestones(apiKey, projectIdentifier);
     if (milestones) {
       const projectMileStones = await getMilestonesData(apiKey, milestones);
-      res.status(200).json(projectMileStones);
+      res.status(200).json({
+        data: projectMileStones,
+        msg: "Project milestone",
+      });
     }
-  } else res.status(404);
+  } else
+    res
+      .status(401)
+      .json({ msg: "Api ket ot Project ID is missing", data: null });
 });
 
 app.post("/get-budget/", async (req, res) => {
