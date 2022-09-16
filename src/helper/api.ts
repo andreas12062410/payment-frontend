@@ -11,16 +11,15 @@ const client = Axios.create({
   },
 });
 
-
 interface Props {
-    endpoint:Endpoint,
-    payload:any
+  endpoint: Endpoint;
+  payload: any;
 }
 
 export const sendPayload = async ({
   endpoint,
   payload,
-}: Props):Promise<AxiosResponse> => {
+}: Props): Promise<AxiosResponse> => {
   try {
     return await client.post(endpoint, payload);
   } catch (error: any) {
