@@ -8,7 +8,7 @@ export const useGetBudgetHook = () => {
   const getBudget = async (payload: BugetsProps) => {
     try {
       const { data, status } = await sendPayload({
-        endpoint: "/get-budget/",
+        endpoint: "/get-budget",
         payload,
       });
       if (status === 200) {

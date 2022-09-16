@@ -1,7 +1,7 @@
 import Axios, { AxiosResponse } from "axios";
 
 //TODO:-> add another endpoint here
-type Endpoint = "/milestones/" | "/get-budget/"
+type Endpoint = "/milestones" | "/get-budget" | "/checkout"
 
 // TODO:-> change base url in production
 const client = Axios.create({
