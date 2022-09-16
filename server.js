@@ -1,4 +1,6 @@
 const axios = require('axios');
+const cheerio = require("cheerio");
+const pretty = require("pretty");
 const express = require('express');
 const app = express();
 const port = 5000;
@@ -28,12 +30,25 @@ const getProjectMilestones = async (apiKey, projectIdentifier) => {
     }
 }
 
-const getMilestoneData = async (apiKey, milestones) => {
+const getBudget = async (apiKey, issueIdentifier) => {
+    const { data } = await axios.get(`https://kore.koders.in/issues/${issueIdentifier}`, {headers: {'X-Redmine-API-Key': apiKey, 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.102 Safari/537.36 OPR/90.0.4480.78 (Edition std-1)'}})
+    const $ = cheerio.load(data);
+    const tableItems = $(".billing-details tbody tr");
+    tableItems.each((_, el) => {
+        if ($(el).children("th").text() === "Budget"){
+            return $(el).children("td").text().replace("₹", "")
+        }
+      });
+    return null
+}
+
+
+const getMilestonesData = async (apiKey, milestones) => {
     const milestonesData = {};
     try {
       for (let milestone of milestones){
         try{
-            const response = await axios.get(`https://kore.koders.in/versions/${milestone}.json`, {headers: {'X-Redmine-API-Key': apiKey}})
+            const response = await axios.get(`https://kore.koders.in/versions/${milestone}.json`, {headers: {'X-Redmine-API-Key': apiKey }})
             milestonesData[response.data.version.name] = response.data.version.status;
         }
         catch(err){
@@ -46,7 +61,7 @@ const getMilestoneData = async (apiKey, milestones) => {
     }
 }
 
-( async  () => console.log(await getMilestoneData(apiKey, [23, 22])))()
+( async  () => console.log(await getBudget(apiKey, 1933)))()
 
 app.get('/', (_, res) => {
   res.send('Hello World!');

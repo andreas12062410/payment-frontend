@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "express": "^4.18.1"
+    "cheerio": "^1.0.0-rc.12",
+    "express": "^4.18.1",
+    "pretty": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
