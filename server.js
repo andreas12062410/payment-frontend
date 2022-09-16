@@ -1,7 +1,7 @@
 const axios = require('axios');
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 5000;
 
 DEBUG = true // ! Change to false in production
 
@@ -10,7 +10,7 @@ app.use(express.json())
 apiKey = ""
 projectIdentifier = "89"
 
-const getProjectIssues = async (apiKey, projectIdentifier) => {
+const getProjectMilestones = async (apiKey, projectIdentifier) => {
     const milestones = new Set();
     try {
       const response = await axios.get(`https://kore.koders.in/projects/${projectIdentifier}/issues.json`, {headers: {'X-Redmine-API-Key': apiKey}})
@@ -28,15 +28,34 @@ const getProjectIssues = async (apiKey, projectIdentifier) => {
     }
 }
 
-(async() =>console.log(await getProjectIssues(apiKey, projectIdentifier)))()
+const getMilestoneData = async (apiKey, milestones) => {
+    const milestonesData = {};
+    try {
+      for (let milestone of milestones){
+        try{
+            const response = await axios.get(`https://kore.koders.in/versions/${milestone}.json`, {headers: {'X-Redmine-API-Key': apiKey}})
+            milestonesData[response.data.version.name] = response.data.version.status;
+        }
+        catch(err){
+            console.log("Milestone not found. Passing...")
+        }
+      }
+      return milestonesData
+    } catch (error) {
+      console.error(error)
+    }
+}
+
+( async  () => console.log(await getMilestoneData(apiKey, [23, 22])))()
 
 app.get('/', (_, res) => {
   res.send('Hello World!');
 });
 
-app.post('/milestones/', (req, res) => {
+app.post('/milestones/', async (req, res) => {
     const { apiKey, projectIdentifier } = req.body;
-    console.log(req.body)
+    const milestones = await getProjectMilestones(apiKey, projectIdentifier);
+    
 });
 
 // app.listen(port, () => {
