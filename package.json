@@ -7,10 +7,11 @@
   "author": "Kartikey Kushwah <support@koders.in>",
   "license": "Koders",
   "scripts": {
-    "nodemon": "nodemon server.js"
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "cors": "^2.8.5",
     "express": "^4.18.1"
   },
   "devDependencies": {
