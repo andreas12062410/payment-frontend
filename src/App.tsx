@@ -9,6 +9,7 @@ import leftBg from "./assets/Images//bg-left.svg";
 import rightBg from "./assets/Images/bg-right.svg";
 import { Input } from "./component/input/Input";
 import { Select } from "./component/select/Select";
+import { useGetBudgetHook } from "./hooks/budget";
 
 interface MileStone {
   key: string;
@@ -17,6 +18,7 @@ interface MileStone {
 
 function App() {
   const formSubmit = useFormSubmitHook();
+  const getBudget = useGetBudgetHook();
   const [milestones, setMilestones] = useState();
   const [selectedMilestone, setSelectedMilestones] = useState<MileStone>();
   const [form, setForm] = useState<FormPayload>({
@@ -35,8 +37,13 @@ function App() {
     setForm((pre) => ({ ...pre, [name]: value }));
   };
 
-  const onSelectChange = (data: any) => {
+  const onSelectChange = async (data: any) => {
     setSelectedMilestones({ ...data });
+    const res = await getBudget({
+      ...form,
+      milestoneIdentifier: data.value.mileStoneId,
+    });
+    console.log(res);
   };
 
   return (

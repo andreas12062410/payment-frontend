@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import polygon from "../../assets/Images/arrow-down.png";
 import "./style.css";
 

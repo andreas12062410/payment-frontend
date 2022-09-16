@@ -1,11 +1,11 @@
 import Axios, { AxiosResponse } from "axios";
 
 //TODO:-> add another endpoint here
-type Endpoint = "/milestones/";
+type Endpoint = "/milestones/" | "/get-budget/";
 
 // TODO:-> change base url in production
 const client = Axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "http://192.168.29.78:8000/",
   headers: {
     "Content-Type": "application/json",
   },
