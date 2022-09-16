@@ -1,6 +1,5 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const pretty = require("pretty");
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -42,7 +41,7 @@ const getProjectMilestones = async (apiKey, projectIdentifier) => {
 const getBudget = async (apiKey, issueIdentifier) => {
   try {
     const { data } = await axios.get(
-      `https://kore.koders.in/issues/${issueIdentifier}`,
+      `https://kore.koders.in/issues/${issueIdentifier}?token${apiKey}`,
       {
         headers: {
           "X-Redmine-API-Key": apiKey,
@@ -65,7 +64,11 @@ const getBudget = async (apiKey, issueIdentifier) => {
   }
 };
 
-const getIssuesFromMilestone = async (apiKey, milestoneIdentifier) => {
+const getIssuesFromMilestone = async (
+  apiKey,
+  projectIdentifier,
+  milestoneIdentifier
+) => {
   const issues = new Set();
   try {
     const response = await axios.get(
@@ -80,8 +83,9 @@ const getIssuesFromMilestone = async (apiKey, milestoneIdentifier) => {
         console.log("Issue not assigned to a version. Passing...");
       }
     }
+
     return issues;
-  } catch (error) {
+  } catch (err) {
     return err.message;
   }
 };
@@ -124,19 +128,25 @@ app.post("/milestones/", async (req, res) => {
     }
   } else
     res
-      .status(401)
-      .json({ msg: "Api ket ot Project ID is missing", data: null });
+      .status(404)
+      .json({ msg: "Api key or Project Id is missing", data: null });
 });
 
 app.post("/get-budget/", async (req, res) => {
-  const { apiKey, milestoneIdentifier } = req.body;
-  const issues = await getIssuesFromMilestone(apiKey, milestoneIdentifier);
+  const { apiKey, milestoneIdentifier, projectIdentifier } = req.body;
+  const issues = await getIssuesFromMilestone(
+    apiKey,
+    projectIdentifier,
+    milestoneIdentifier
+  );
   let amount = 0;
-  for (let issue in issues) {
-    issue_budget = await getBudget(issue, apiKey);
-    if (issue_budget !== null) amount += issue_budget;
-  }
-  res.send(200).json(amount);
+  if (issues instanceof Set) {
+    for (let issue in issues) {
+      const issue_budget = await getBudget(apiKey, issue);
+      if (issue_budget !== null) amount += Number(issue_budget);
+    }
+    res.send(200).json(amount);
+  } else res.send(404).json({ msg: issues, data: null });
 });
 
 app.listen(port, () => {
