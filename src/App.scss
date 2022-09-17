@@ -22,26 +22,13 @@ body {
   padding: 2rem;
 }
 
-.MuiInputBase-root {
-  background: #000000;
-  color: #ffffff !important;
-  .MuiOutlinedInput-root{
-    .Mui-focused{
-      color:red !important;
-      & > fieldset{
-        border-color: rgba(0, 169, 157, 1) !important;
-    
-      }
-    }
-   
-  
-  }
-}
+
 /* .MuiInputBase-root.Mui-disabled {
   background: rgba(0, 0, 0, 0.3) !important;
 } */
 .MuiSvgIcon-root,
-.MuiFormLabel-root {
+.MuiFormLabel-root,
+.MuiInputBase-root {
   fill: rgba(255, 255, 2555, 0.81) !important;
   color: rgba(255, 255, 2555, 0.81) !important;
 }

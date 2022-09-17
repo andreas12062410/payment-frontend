@@ -7,6 +7,7 @@ import {
   ProjectDetailForm,
   Spacer,
 } from "./component";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <ProjectDetailForm />
       </div>
       <Footer />
+      <ToastContainer limit={3} />
     </Container>
   );
 }

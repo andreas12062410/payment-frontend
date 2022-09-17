@@ -1,19 +1,27 @@
 import {
   Grid,
-  Typography,
-  TextField,
-  InputAdornment,
-  IconButton,
-  MenuItem,
   Button,
+  MenuItem,
+  TextField,
+  Typography,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import Spacer from "../spacer/Spacer";
+import Loader from "../loader/Loader";
 import React, { ChangeEvent, useState } from "react";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { mileStoneDataType, useFormSubmitHook } from "../../hooks/form";
 import { useGetBudgetHook } from "../../hooks/budget";
 import { useCheckoutHook } from "../../hooks/checkout";
-import Loader from "../loader/Loader";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { mileStoneDataType, useFormSubmitHook } from "../../hooks/form";
+
+const inputSX = {
+  "& .MuiOutlinedInput-root.Mui-focused": {
+    "& > fieldset": {
+      borderColor: "#00a99d",
+    },
+  },
+};
 
 interface Project {
   apiKey: string;
@@ -159,6 +167,7 @@ function Form() {
           name="projectIdentifier"
           value={projectIdentifier}
           onChange={handleInputChange}
+          sx={{ ...inputSX }}
         />
         <Spacer isWidth={true} height={15} width="100%" />
         <TextField
@@ -168,6 +177,7 @@ function Form() {
           name="apiKey"
           value={apiKey}
           onChange={handleInputChange}
+          sx={{ ...inputSX }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -190,6 +200,7 @@ function Form() {
               fullWidth
               label="Milestones"
               value={mileStoneId}
+              sx={{ ...inputSX }}
               onChange={handleSelectChange}
             >
               {mileStone.map(({ mileStoneId, status, title }) => (
