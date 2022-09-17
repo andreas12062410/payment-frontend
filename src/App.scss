@@ -1,0 +1,131 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: normal;
+  src: url("./assets/fonts/Inter\ Desktop/Inter-Medium.otf") format("truetype");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter";
+}
+
+body {
+  background: #0f0e0e;
+}
+
+
+.app {
+  background: linear-gradient(#040e27, rgba(4, 14, 39, 0.3));
+  padding: 2rem;
+}
+
+.MuiInputBase-root {
+  background: #000000;
+  color: #ffffff !important;
+  .MuiOutlinedInput-root{
+    .Mui-focused{
+      color:red !important;
+      & > fieldset{
+        border-color: rgba(0, 169, 157, 1) !important;
+    
+      }
+    }
+   
+  
+  }
+}
+/* .MuiInputBase-root.Mui-disabled {
+  background: rgba(0, 0, 0, 0.3) !important;
+} */
+.MuiSvgIcon-root,
+.MuiFormLabel-root {
+  fill: rgba(255, 255, 2555, 0.81) !important;
+  color: rgba(255, 255, 2555, 0.81) !important;
+}
+.MuiSvgIcon-root {
+  margin-right: 10px !important;
+}
+.MuiFormLabel-root {
+  font-size: 16px !important;
+}
+.MuiButton-root {
+  padding: 12px 16px !important;
+  background: #00a99d !important;
+  text-transform: none !important;
+}
+.MuiButton-root.Mui-disabled {
+  background: rgba(0, 169, 157, 0.8) !important;
+  color: rgba(255, 255, 255, 0.81) !important;
+}
+.MuiButtonBase-root.MuiIconButton-root {
+  background: transparent !important;
+  button {
+    padding: 0px !important;
+  }
+}
+// .MuiButtonBase-root.MuiIconButton-root > button {
+//   padding: 0px !important;
+// }
+.MuiPaper-root.MuiPopover-paper {
+  background: #151823 !important;
+  ul > li:hover {
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+}
+// .MuiPaper-root.MuiPopover-paper > ul > li:hover {
+//   background: rgba(0, 0, 0, 0.5) !important;
+// }
+.MuiMenuItem-root.Mui-selected {
+  background: rgb(29, 44, 72) !important;
+}
+.MuiMenuItem-root {
+  background: #151823 !important;
+  color: rgba(255, 255, 255, 0.81) !important;
+}
+/* dd */
+.full-height {
+  height: 100%;
+}
+
+/* loader text dot CSS */
+.loader-text {
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  p{
+    font-weight: 300;
+    margin-right: 10px;
+  }
+  span{
+    width: 8px;
+    height: 8px;
+    background: #ffffff;
+    margin: 0px 4px;
+    border-radius: 4px;
+
+
+
+    animation: loading 1s ease  infinite;
+    @for $i from 1 through 3 {
+      &:nth-child(#{$i+1}) {
+        animation-delay: #{$i*.1}s;
+      }
+    }
+    @keyframes loading {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(10px);
+      }
+    }
+
+  }
+}
+
+
+

@@ -14,7 +14,7 @@ export const useCheckoutHook = () => {
         payload,
       });
       if (status === 200) {
-        return data;
+        return data.data
       } else return null;
     } catch (error: any) {
       console.log(

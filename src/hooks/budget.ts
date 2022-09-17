@@ -13,12 +13,11 @@ export const useGetBudgetHook = () => {
         payload,
       });
       if (status === 200) {
-        console.log(data);
-        return data;
+        return data.data;
       } else return null;
-    } catch (error: any) {
+    } catch (e: any) {
       console.log(
-        `Something went wrong while fetching budget:->${error.message}`
+        `Something went wrong while fetching budget:->${e.message}`
       );
     }
   };

@@ -1,12 +1,13 @@
 interface Props {
-  width?: number;
+  width?: any;
   height?: number;
+  isWidth?: boolean;
 }
-function Spacer({ height = 0, width = 0 }: Props) {
-  return width === 0 ? (
-    <div style={{ height: `${height}px` }} />
+function Spacer({ height = 0, width = 0, isWidth = false }: Props) {
+  return isWidth ? (
+    <div style={{ height: `${height}px`, width }} />
   ) : (
-    <div style={{ width: `${width}px` }} />
+    <div style={{ height: `${height}px` }} />
   );
 }
 

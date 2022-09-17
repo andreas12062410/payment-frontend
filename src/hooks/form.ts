@@ -5,6 +5,22 @@ export interface FormPayload {
   projectIdentifier: string;
 }
 
+export interface mileStoneDataType {
+  title: string;
+  status: string;
+  mileStoneId: number;
+}
+
+const makeMileStoneData = (obj: any) => {
+  const  arr = Array<mileStoneDataType>()
+  const items = Object.keys(obj);
+  if (items.length === 0) return null;
+  items.forEach((title) => {
+    arr.push({ title, ...obj[title] });
+  });
+  return arr;
+};
+
 export const useFormSubmitHook = () => {
   const submitForm = async (payload: FormPayload) => {
     try {
@@ -13,12 +29,12 @@ export const useFormSubmitHook = () => {
         payload,
       });
       if (status === 200) {
-        console.log(data);
-        return data;
-      } else return null;
-    } catch (error: any) {
+        const { data: response } = data;
+        return makeMileStoneData(response)
+      } else return null
+    } catch (err: any) {
       console.log(
-        `Something went wrong while submitting form :->${error.message}`
+        `Something went wrong while submitting form :->${err.message}`
       );
     }
   };
