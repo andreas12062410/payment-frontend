@@ -8,6 +8,7 @@ function Description() {
       paragraph
       textAlign="center"
       margin="0px auto"
+      className="payment-description"
     >
       We at Koders truly appreciate your business, and we're so grateful for the
       trust you've placed in us. We sincerely hope you are satisfied with your

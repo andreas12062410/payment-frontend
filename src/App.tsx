@@ -11,7 +11,7 @@ import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
-    <Container style={{ height: "95vh", padding: "1rem " }}>
+    <Container className="payment-container">
       <div className="full-height">
         <Heading />
         <Description />
