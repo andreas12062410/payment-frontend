@@ -1,7 +1,9 @@
 import { sendPayload } from "../helper/api";
 
 export interface MileStonePayload {
+  apiKey: string;
   milestoneTitle: string;
+  projectIdentifier: string;
   milestoneUnitAmount: string;
   milestoneImages?: Array<string>;
 }

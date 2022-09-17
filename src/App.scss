@@ -31,6 +31,14 @@ body {
 .MuiInputBase-root {
   fill: rgba(255, 255, 2555, 0.81) !important;
   color: rgba(255, 255, 2555, 0.81) !important;
+  .Mui-disabled{
+
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
+}
+.MuiInputBase-input.Mui-disabled {
+  color: rgba(255, 255, 255, 0.81) !important;
 }
 .MuiSvgIcon-root {
   margin-right: 10px !important;
@@ -46,6 +54,7 @@ body {
 .MuiButton-root.Mui-disabled {
   background: rgba(0, 169, 157, 0.8) !important;
   color: rgba(255, 255, 255, 0.81) !important;
+  cursor: not-allowed !important;
 }
 .MuiButtonBase-root.MuiIconButton-root {
   background: transparent !important;

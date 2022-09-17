@@ -40,6 +40,8 @@ interface toggleBtnProps {
   isDisableBtn?: boolean;
   isMilestoneFetch: boolean;
   isBudgetFetch: boolean;
+  isDisabledProject: boolean;
+  isDisabledSecret: boolean;
 }
 
 function Form() {
@@ -55,6 +57,8 @@ function Form() {
       isDisableBtn,
       isBudgetFetch,
       isMilestoneFetch,
+      isDisabledProject,
+      isDisabledSecret,
     },
     setToggle,
   ] = useState<toggleBtnProps>({
@@ -63,6 +67,8 @@ function Form() {
     isDisableBtn: true,
     isBudgetFetch: false,
     isMilestoneFetch: false,
+    isDisabledProject: false,
+    isDisabledSecret: false,
   });
   const [{ apiKey, projectIdentifier, mileStoneId }, setForm] =
     useState<Project>({
@@ -86,6 +92,8 @@ function Form() {
           setToggle((pre) => ({
             ...pre,
             isDisableSelect: !pre.isDisableSelect,
+            isDisabledProject: true,
+            isDisabledSecret: true,
           }));
           setMileStone(data);
         }
@@ -139,6 +147,8 @@ function Form() {
       milestoneUnitAmount: amount,
       milestoneImages: [],
       milestoneTitle: title,
+      apiKey,
+      projectIdentifier,
     });
     setToggle((pre) => ({
       ...pre,
@@ -168,6 +178,7 @@ function Form() {
           value={projectIdentifier}
           onChange={handleInputChange}
           sx={{ ...inputSX }}
+          disabled={isDisabledProject}
         />
         <Spacer isWidth={true} height={15} width="100%" />
         <TextField
@@ -176,6 +187,7 @@ function Form() {
           type={isSecretVisible ? "password" : "text"}
           name="apiKey"
           value={apiKey}
+          disabled={isDisabledSecret}
           onChange={handleInputChange}
           sx={{ ...inputSX }}
           InputProps={{
@@ -222,14 +234,18 @@ function Form() {
             <Loader isLoading={true} type="spinner" />
           </Button>
         ) : (
-          <Button
-            onClick={handlePayNow}
-            disabled={isDisableBtn}
-            fullWidth
-            variant="contained"
+          <div
+            style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}
           >
-            {amount.length > 0 ? `Pay ₹${amount}` : `Pay now`}
-          </Button>
+            <Button
+              onClick={handlePayNow}
+              disabled={isDisableBtn}
+              fullWidth
+              variant="contained"
+            >
+              {amount.length > 0 ? `Pay ₹${amount}` : `Pay now`}
+            </Button>
+          </div>
         )}
       </Grid>
     </Grid>
