@@ -5,7 +5,7 @@ type Endpoint = "/milestones" | "/get-budget" | "/checkout";
 
 // TODO:-> change base url in production
 const client = Axios.create({
-  baseURL: "https://api.koders.in",
+  baseURL: "http://api.koders.in",
   headers: {
     "Content-Type": "application/json",
   },
