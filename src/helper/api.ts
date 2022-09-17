@@ -5,7 +5,7 @@ type Endpoint = "/milestones" | "/get-budget" | "/checkout";
 
 // TODO:-> change base url in production
 const client = Axios.create({
-  baseURL: "http://192.168.29.78:9442/",
+  baseURL: "http://localhost:9442/",
   headers: {
     "Content-Type": "application/json",
   },
