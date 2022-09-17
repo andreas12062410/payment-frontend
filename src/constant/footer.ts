@@ -1,14 +1,14 @@
 export const kFooterLink = [
   {
-    link: "",
+    link: "https://koders.in/#/cancellation",
     title: "Cancellation Policy",
   },
   {
-    link: "",
+    link: "https://koders.in/#/cancellation",
     title: "Refund Policy",
   },
   {
-    link: "",
+    link: "https://koders.in/#/support",
     title: "Customer Support",
   },
 ];
