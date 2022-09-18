@@ -12,22 +12,25 @@ function Footer() {
           direction="row"
         >
           {kFooterLink.map(({ title, link }, i) => (
-            <Link
-              margin="5px 0"
-              href={link}
-              fontWeight="400"
-              fontSize="14px"
-              underline="hover"
-              color="rgba(255,255,255,0.5)"
-              sx={{
-                ":hover": {
-                  color: "#ffffff",
-                },
-              }}
-              key={title}
-            >
-              {title}
-            </Link>
+            <div className="footer-link">
+              <Link
+                margin="5px 0"
+                href={link}
+                fontWeight="400"
+                fontSize="14px"
+                underline="none"
+                color="rgba(255,255,255,0.5)"
+                sx={{
+                  ":hover": {
+                    color: "#ffffff",
+                  },
+                }}
+                key={title}
+              >
+                {title}
+              </Link>
+              <div className="footer-fill" />
+            </div>
           ))}
         </Stack>
       </Grid>

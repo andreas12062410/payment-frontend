@@ -12,13 +12,15 @@ import { ToastContainer } from "react-toastify";
 function App() {
   return (
     <Container className="payment-container">
-      <div className="full-height">
+      <div>
         <Heading />
         <Description />
         <Spacer height={50} />
         <ProjectDetailForm />
       </div>
-      <Footer />
+      <div style={{ marginTop: "auto" }}>
+        <Footer />
+      </div>
       <ToastContainer limit={3} />
     </Container>
   );

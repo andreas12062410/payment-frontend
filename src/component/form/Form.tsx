@@ -220,8 +220,11 @@ function Form() {
                   disabled={status !== "open"}
                   key={mileStoneId}
                   value={mileStoneId}
+                  style={{ fontStyle: status !== "open" ? "italic" : "unset" }}
                 >
                   {title}
+                  {"\t"}
+                  {status !== "open" ? "(Completed)" : ""}
                 </MenuItem>
               ))}
             </TextField>
