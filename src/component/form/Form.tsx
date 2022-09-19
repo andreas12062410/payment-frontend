@@ -210,7 +210,7 @@ function Form() {
             <TextField
               select
               fullWidth
-              label="Milestones"
+              label="Releases"
               value={mileStoneId}
               sx={{ ...inputSX }}
               onChange={handleSelectChange}

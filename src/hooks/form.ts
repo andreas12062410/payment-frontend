@@ -18,7 +18,7 @@ const makeMileStoneData = (obj: any) => {
   items.forEach((title) => {
     arr.push({ title, ...obj[title] });
   });
-  return arr;
+  return arr.reverse()
 };
 
 export const useFormSubmitHook = () => {

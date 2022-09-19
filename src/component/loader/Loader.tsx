@@ -24,7 +24,7 @@ function Loader({ isLoading, type }: Props) {
       <React.Fragment>
         <Spacer isWidth={true} height={15} width="100%" />
         <div className="loader-text">
-          <p>Fetching milestones</p>
+          <p>Fetching releases</p>
           <span></span>
           <span></span> <span></span>
         </div>
