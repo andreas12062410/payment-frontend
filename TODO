@@ -1,8 +1,0 @@
-look into responsivness for all devices if possible
-trying to avoid use inline css 
-look if possible to override css of material UI component
-remove unused font family files from fonts folder  
-Use svg or webp images
-add toaster in form.tsx files handlers if something went wrong
-Use css varible
-Add meta tags for SEO in index.html file
