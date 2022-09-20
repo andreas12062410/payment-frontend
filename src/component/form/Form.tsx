@@ -23,6 +23,10 @@ const inputSX = {
   },
 };
 
+const currencyFormat = (amount: string) => {
+  return currencyFormat.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 interface Project {
   apiKey: string;
   projectIdentifier: string;
@@ -246,7 +250,7 @@ function Form() {
               fullWidth
               variant="contained"
             >
-              {amount.length > 0 ? `Pay ₹${amount}` : `Pay now`}
+              {amount.length > 0 ? `Pay ₹${currencyFormat(amount)}` : `Pay now`}
             </Button>
           </div>
         )}
