@@ -23,8 +23,11 @@ const inputSX = {
   },
 };
 
-const currencyFormat = (amount: string) => {
-  return currencyFormat.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const formatCurrency = (amount: number, locale = 'en-US', currency = 'INR', minimumFractionDigits = 2) => {
+  if (isNaN(amount)) {
+    return amount;
+  }
+  return amount.toLocaleString(locale, {style: 'currency', currency, minimumFractionDigits});
 };
 
 interface Project {
@@ -250,7 +253,7 @@ function Form() {
               fullWidth
               variant="contained"
             >
-              {amount.length > 0 ? `Pay ₹${currencyFormat(amount)}` : `Pay now`}
+              {amount.length > 0 ? `Pay ₹${formatCurrency(Number(amount))}` : `Pay now`}
             </Button>
           </div>
         )}
