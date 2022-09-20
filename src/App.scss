@@ -139,3 +139,19 @@ body {
     transform: translateX(-100%);
   }
 }
+
+.success-card {
+  padding: 1rem;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  background-color: transparent !important;
+  & > h4 {
+    font-size: 30px !important;
+    margin: 1em 0px;
+    color: #ffffff !important;
+  }
+  & > p {
+    color: #ffffff !important;
+  }
+}
