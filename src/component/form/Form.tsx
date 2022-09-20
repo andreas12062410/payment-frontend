@@ -253,7 +253,7 @@ function Form() {
               fullWidth
               variant="contained"
             >
-              {amount.length > 0 ? `Pay ₹${formatCurrency(Number(amount))}` : `Pay now`}
+              {amount.length > 0 ? `Pay ${formatCurrency(Number(amount))}` : `Pay now`}
             </Button>
           </div>
         )}
