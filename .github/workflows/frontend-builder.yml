@@ -52,7 +52,7 @@ jobs:
       uses: fifsky/ssh-action@master
       with:
         command: |
-          docker run -d -p 9441:80 ${{ secrets.DOCKER_HUB_USERNAME }}/payments-frontend
+          docker run -d -p 9441:80 ${{ secrets.DOCKER_HUB_USERNAME }}/payments-frontend --name payments-frontend
         host: ${{ secrets.HOST }}
         user: ${{ secrets.USERNAME }}
         pass: ${{ secrets.PASSWORD}}
