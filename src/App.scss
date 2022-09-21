@@ -155,3 +155,9 @@ body {
     color: #ffffff !important;
   }
 }
+
+.changeProgressbarColor {
+  & > span > span {
+    background-color: green !important;
+  }
+}

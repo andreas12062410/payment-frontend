@@ -1,6 +1,12 @@
 import { LinearProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+// import { makeStyles } from "@mui/styles";
+
+// const useStyle = makeStyles({
+//   paperStyle: {
+//     maxWidth: "33% !important",
+//   },
+// });
 
 interface Props {
   title: string;
@@ -26,7 +32,12 @@ const DropDown = ({
   issues,
   spentHours,
 }: Props) => {
-  console.log(dueDate);
+  const dueIn = () => {
+    let due = new Date(dueDate);
+    let today = new Date();
+    const diff = Math.round((due.getTime() - today.getTime()) / 86400000);
+    return diff > 0 ? diff : 0;
+  };
   return (
     <Box width="90%">
       <Typography>
@@ -34,7 +45,7 @@ const DropDown = ({
       </Typography>
       <Typography fontStyle="italic">
         description:{description ? description : "none"} (
-        {dueDate ? dueDate : "none"})
+        {`Due in ${dueIn()} days`})
       </Typography>
       <ProgressBar value={doneRatio / issues.length} type=" Done percentage" />
       <ProgressBars
@@ -58,6 +69,7 @@ const ProgressBar = ({ value, type }: { value: number; type: string }) => {
             variant="buffer"
             value={value}
             valueBuffer={value + 10}
+            className="changeProgressbarColor"
           />
         </Box>
         <Box sx={{ minWidth: 35 }} width="30%">
@@ -86,6 +98,7 @@ const ProgressBars = ({
             value={(spentTime / estimatedHours) * 100}
             valueBuffer={estimatedHours}
             color={spentTime > estimatedHours ? "error" : "primary"}
+            className="changeProgressbarColor"
           />
         </Box>
         <Box sx={{ minWidth: 35 }} width="30%">
