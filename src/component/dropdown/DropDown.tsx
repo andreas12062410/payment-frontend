@@ -48,12 +48,12 @@ const DropDown = ({
       <Box width="90%">
              {status === "open" ? (
               index === 0 ? (
-                <Typography> Some Title </Typography> 
+                <Typography> {title} </Typography> 
               ) : (
-                <div style={{ display: "flex"}}> <Typography marginRight="5px"> Title </Typography> <RemoveCircle /> </div>
+                <div style={{ display: "flex"}}> <Typography marginRight="5px"> {title} </Typography> <RemoveCircle /> </div>
               )
             ) : (
-                <div style={{ display: "flex"}}> <Typography marginRight="5px"> Title </Typography> <CheckCircle sx={{ fill: "#20B2AA !important"}} /> </div>
+                <div style={{ display: "flex"}}> <Typography marginRight="5px"> {title} </Typography> <CheckCircle sx={{ fill: "#20B2AA !important"}} /> </div>
             )}
 
         <Typography fontSize="12px" >
