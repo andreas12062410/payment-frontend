@@ -41,6 +41,12 @@ const formatCurrency = (
   });
 };
 
+interface ProjectData {
+  description: string;
+  projectIcon: string;
+  projectName: string;
+}
+
 interface Project {
   apiKey: string;
   projectIdentifier: string;
