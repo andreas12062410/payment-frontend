@@ -26,6 +26,7 @@ interface Props {
   estimatedHours: number;
   issues: Array<number>;
   spentHours: number;
+  index: number;
 }
 
 const DropDown = ({
@@ -35,6 +36,7 @@ const DropDown = ({
   doneRatio,
   dueDate,
   issues,
+  index,
 }: Props) => {
   const dueIn = () => {
     const due = new Date(dueDate);
@@ -44,11 +46,15 @@ const DropDown = ({
   };
   return (
       <Box width="90%">
-      {status === "open" ? 
-        <Typography> Some Title </Typography> :
-        <div style={{ display: "flex"}}> <Typography marginRight="5px"> Title </Typography> <CheckCircle sx={{ fill: "#20B2AA !important"}} /> </div>
-      }
-      
+             {status === "open" ? (
+              index === 0 ? (
+                <Typography> Some Title </Typography> 
+              ) : (
+                <div style={{ display: "flex"}}> <Typography marginRight="5px"> Title </Typography> <RemoveCircle /> </div>
+              )
+            ) : (
+                <div style={{ display: "flex"}}> <Typography marginRight="5px"> Title </Typography> <CheckCircle sx={{ fill: "#20B2AA !important"}} /> </div>
+            )}
 
         <Typography fontSize="12px" >
           {description ? description : ""}
@@ -61,6 +67,7 @@ const DropDown = ({
           value={status !== "open" ? 100 : doneRatio / issues.length}
           type="Progress"
           status={status}
+          index={index}
         />
       </Box>
   );
@@ -68,16 +75,35 @@ const DropDown = ({
 
 export default DropDown;
 
-const ProgressBar = ({ value, type, status }: { value: number; type: string, status: string }) => {
-  console.log("first", value);
+const ProgressBar = ({
+  value,
+  type,
+  status,
+  index,
+}: {
+  value: number;
+  type: string;
+  status: string;
+  index: number;
+}) => {
   return (
     <>
       <ThemeProvider theme={theme}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ width: "100%", mr: 1 }}>
-            { status === "open" ? 
-              <LinearProgress variant="buffer" value={value} valueBuffer={value} /> : <LinearProgress variant="determinate" value={value} /> 
-            }
+            {status === "open" ? (
+              index !== 0 ? (
+                <LinearProgress variant="determinate" value={value} />
+              ) : (
+                <LinearProgress
+                  variant="buffer"
+                  value={value}
+                  valueBuffer={value}
+                />
+              )
+            ) : (
+              <LinearProgress variant="determinate" value={value} />
+            )}
           </Box>
           <Box sx={{ minWidth: 35 }} width="11%">
             <Typography variant="body2" color="white" fontSize="12px">
