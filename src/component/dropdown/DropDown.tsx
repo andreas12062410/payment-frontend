@@ -1,12 +1,5 @@
 import { LinearProgress, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-// import { makeStyles } from "@mui/styles";
-
-// const useStyle = makeStyles({
-//   paperStyle: {
-//     maxWidth: "33% !important",
-//   },
-// });
 
 interface Props {
   title: string;
@@ -15,6 +8,7 @@ interface Props {
 
   description: string;
   doneRatio: number;
+
   dueDate: string;
   estimatedHours: number;
   issues: Array<number>;
