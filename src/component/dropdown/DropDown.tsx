@@ -44,21 +44,23 @@ const DropDown = ({
   };
   return (
     <Box width="90%">
-      <Typography>
-        {title} ({status})
-      </Typography>
+      <Typography>{title}</Typography>
       <Typography>
         Description: {description ? description : "N/A"}
         <br />
-        Delivering in {dueDate ? dueIn() + " days" : "N/A"}
+        {dueDate && <> Delivering in {dueDate ? dueIn() + " days" : "N/A"}</>}
       </Typography>
-      <ProgressBar value={doneRatio / issues.length} type="Progress" />
-      <ProgressBars
+      <ProgressBar
+        value={status !== "open" ? 100 : doneRatio / issues.length}
+        type="Progress"
+      />
+      {/* <ProgressBars
         {...{
           estimatedHours: estimatedHours,
           spentTime: spentHours,
+          status: status,
         }}
-      />
+      /> */}
     </Box>
   );
 };
@@ -66,6 +68,7 @@ const DropDown = ({
 export default DropDown;
 
 const ProgressBar = ({ value, type }: { value: number; type: string }) => {
+  console.log("first", value);
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -87,10 +90,13 @@ const ProgressBar = ({ value, type }: { value: number; type: string }) => {
 const ProgressBars = ({
   spentTime,
   estimatedHours,
+  status,
 }: {
   spentTime: number;
   estimatedHours: number;
+  status: string;
 }) => {
+  console.log("first1", estimatedHours);
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -98,7 +104,9 @@ const ProgressBars = ({
           <Box sx={{ width: "70%", mr: 1 }}>
             <LinearProgress
               variant="buffer"
-              value={(spentTime / estimatedHours) * 100}
+              value={
+                status !== "open" ? 100 : (spentTime / estimatedHours) * 100
+              }
               valueBuffer={estimatedHours}
               color={spentTime > estimatedHours ? "error" : "primary"}
             />
