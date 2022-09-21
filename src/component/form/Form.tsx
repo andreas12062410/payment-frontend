@@ -75,7 +75,6 @@ function Form() {
   const [amount, setAmount] = useState<string>("");
   const [projectDetails, setProjectDetails] = useState<ProjectData>();
   const [mileStone, setMileStone] = useState<Array<mileStoneDataType>>([]);
-  console.log(mileStone);
   const [
     {
       isSecretVisible,
@@ -117,7 +116,6 @@ function Form() {
           apiKey: value,
           projectIdentifier,
         });
-        console.log(data);
         if (data !== undefined && data !== null) {
           setToggle((pre) => ({
             ...pre,
@@ -134,7 +132,12 @@ function Form() {
           value.forEach((item: mileStoneDataType, i) => {
             tempArr = [...tempArr, { ...item, mileStoneId: parseInt(key[i]) }];
           });
-          setMileStone([...tempArr]);
+          let closeMilestone: any = [];
+          const openMilestone: any = tempArr.map((item) => {
+            if (item.status !== "closed") return item;
+            else closeMilestone.push(item);
+          });
+          setMileStone([...openMilestone, ...closeMilestone]);
         }
         setToggle((pre) => ({
           ...pre,
@@ -150,7 +153,6 @@ function Form() {
 
   const handleSelectChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    console.log(value);
     setForm((pre) => ({ ...pre, mileStoneId: parseInt(value) }));
     setToggle((pre) => ({
       ...pre,
@@ -158,17 +160,14 @@ function Form() {
     }));
     let issues: Array<number> = [];
     mileStone.forEach((item: any) => {
-      console.log(item);
       if (value === item.mileStoneId) {
         issues = item.issues;
       }
     });
-    console.log("issues", issues);
     const budget = await getBudget({
       apiKey,
       issues: issues,
     });
-    console.log(budget);
 
     if (budget) {
       setAmount(`${budget}`);
@@ -268,16 +267,16 @@ function Form() {
               sx={{ ...inputSX }}
               onChange={handleSelectChange}
             >
-              {mileStone.map((item: mileStoneDataType) => (
+              {mileStone.map((item: mileStoneDataType, i: number) => (
                 <MenuItem
-                  disabled={item.status !== "open"}
+                  disabled={item.status !== "open" || i !== 0}
                   key={item.mileStoneId}
                   value={item.mileStoneId}
                   style={{
                     fontStyle: item.status !== "open" ? "italic" : "unset",
                   }}
                 >
-                  <Dropdown {...item} />
+                  <Dropdown {...item} index={i} />
                 </MenuItem>
               ))}
             </TextField>

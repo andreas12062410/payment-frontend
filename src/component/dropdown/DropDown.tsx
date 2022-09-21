@@ -24,6 +24,7 @@ interface Props {
   estimatedHours: number;
   issues: Array<number>;
   spentHours: number;
+  index: number;
 }
 
 const DropDown = ({
@@ -36,6 +37,7 @@ const DropDown = ({
   estimatedHours,
   issues,
   spentHours,
+  index,
 }: Props) => {
   const dueIn = () => {
     let due = new Date(dueDate);
@@ -46,17 +48,28 @@ const DropDown = ({
   return (
     <Box width="90%">
       <Typography>{title}</Typography>
-      <Typography fontSize="12px" >
-        {description ? description : ""}
-      </Typography>
+      <Typography fontSize="12px">{description ? description : ""}</Typography>
       <Spacer height={5} />
       <Typography fontSize="12px">
-        {status === "closed" ? "Delievered" : dueDate && <> Delivering in {dueDate ? dueIn() === 1 ? dueIn() + " day" : dueIn() + " days" : "" }</>}
+        {status === "closed"
+          ? "Delievered"
+          : dueDate && (
+              <>
+                {" "}
+                Delivering in{" "}
+                {dueDate
+                  ? dueIn() === 1
+                    ? dueIn() + " day"
+                    : dueIn() + " days"
+                  : ""}
+              </>
+            )}
       </Typography>
       <ProgressBar
         value={status !== "open" ? 100 : doneRatio / issues.length}
         type="Progress"
         status={status}
+        index={index}
       />
     </Box>
   );
@@ -64,16 +77,35 @@ const DropDown = ({
 
 export default DropDown;
 
-const ProgressBar = ({ value, type, status }: { value: number; type: string, status: string }) => {
-  console.log("first", value);
+const ProgressBar = ({
+  value,
+  type,
+  status,
+  index,
+}: {
+  value: number;
+  type: string;
+  status: string;
+  index: number;
+}) => {
   return (
     <>
       <ThemeProvider theme={theme}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box sx={{ width: "100%", mr: 1 }}>
-            { status === "open" ? 
-              <LinearProgress variant="buffer" value={value} valueBuffer={value} /> : <LinearProgress variant="determinate" value={value} /> 
-            }
+            {status === "open" ? (
+              index !== 0 ? (
+                <LinearProgress variant="determinate" value={value} />
+              ) : (
+                <LinearProgress
+                  variant="buffer"
+                  value={value}
+                  valueBuffer={value}
+                />
+              )
+            ) : (
+              <LinearProgress variant="determinate" value={value} />
+            )}
           </Box>
           <Box sx={{ minWidth: 35 }} width="11%">
             <Typography variant="body2" color="white" fontSize="12px">
@@ -95,7 +127,6 @@ const ProgressBars = ({
   estimatedHours: number;
   status: string;
 }) => {
-  console.log("first1", estimatedHours);
   return (
     <>
       <ThemeProvider theme={theme}>
