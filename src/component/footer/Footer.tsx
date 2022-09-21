@@ -12,7 +12,7 @@ function Footer() {
           direction="row"
         >
           {kFooterLink.map(({ title, link }, i) => (
-            <div className="footer-link">
+            <div className="footer-link" key={title}>
               <Link
                 margin="5px 0"
                 href={link}
@@ -25,7 +25,6 @@ function Footer() {
                     color: "#ffffff",
                   },
                 }}
-                key={title}
               >
                 {title}
               </Link>

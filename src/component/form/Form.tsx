@@ -14,6 +14,8 @@ import { useGetBudgetHook } from "../../hooks/budget";
 import { useCheckoutHook } from "../../hooks/checkout";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { mileStoneDataType, useFormSubmitHook } from "../../hooks/form";
+import ProjectData from "../progect-data/ProjectData";
+import { Dropdown } from "..";
 
 const inputSX = {
   "& .MuiOutlinedInput-root.Mui-focused": {
@@ -23,12 +25,27 @@ const inputSX = {
   },
 };
 
-const formatCurrency = (amount: number, locale = 'en-US', currency = 'INR', minimumFractionDigits = 2) => {
+const formatCurrency = (
+  amount: number,
+  locale = "en-US",
+  currency = "INR",
+  minimumFractionDigits = 2
+) => {
   if (isNaN(amount)) {
     return amount;
   }
-  return amount.toLocaleString(locale, {style: 'currency', currency, minimumFractionDigits});
+  return amount.toLocaleString(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits,
+  });
 };
+
+interface ProjectData {
+  description: string;
+  projectIcon: string;
+  projectName: string;
+}
 
 interface Project {
   apiKey: string;
@@ -56,7 +73,9 @@ function Form() {
   const getBudget = useGetBudgetHook();
   const checkout = useCheckoutHook();
   const [amount, setAmount] = useState<string>("");
+  const [projectDetails, setProjectDetails] = useState<ProjectData>();
   const [mileStone, setMileStone] = useState<Array<mileStoneDataType>>([]);
+  console.log(mileStone);
   const [
     {
       isSecretVisible,
@@ -94,7 +113,11 @@ function Form() {
           ...pre,
           isMilestoneFetch: true,
         }));
-        const data = await formSubmit({ apiKey: value, projectIdentifier });
+        const data: any = await formSubmit({
+          apiKey: value,
+          projectIdentifier,
+        });
+        console.log(data);
         if (data !== undefined && data !== null) {
           setToggle((pre) => ({
             ...pre,
@@ -102,7 +125,16 @@ function Form() {
             isDisabledProject: true,
             isDisabledSecret: true,
           }));
-          setMileStone(data);
+          setProjectDetails({ ...data[0].projectData });
+          const key: Array<string> = Object.keys(data[0].milestones);
+          const value: Array<mileStoneDataType> = Object.values(
+            data[0].milestones
+          );
+          let tempArr: Array<mileStoneDataType> = [];
+          value.forEach((item: mileStoneDataType, i) => {
+            tempArr = [...tempArr, { ...item, mileStoneId: parseInt(key[i]) }];
+          });
+          setMileStone([...tempArr]);
         }
         setToggle((pre) => ({
           ...pre,
@@ -169,48 +201,53 @@ function Form() {
   return (
     <Grid justifyContent="center" container>
       <Grid sm={6} xs={12} lg={4} item>
-        <Typography
-          fontSize="24px"
-          color="rgba(255,255,255,0.81)"
-          variant="h2"
-          textAlign="center"
-        >
-          Enter your project details
-        </Typography>
-        <Spacer isWidth={true} height={20} width="100%" />
-        <TextField
-          fullWidth
-          label="Project ID"
-          name="projectIdentifier"
-          value={projectIdentifier}
-          onChange={handleInputChange}
-          sx={{ ...inputSX }}
-          disabled={isDisabledProject}
-        />
-        <Spacer isWidth={true} height={15} width="100%" />
-        <TextField
-          fullWidth
-          label="Project Secret"
-          type={isSecretVisible ? "password" : "text"}
-          name="apiKey"
-          value={apiKey}
-          disabled={isDisabledSecret}
-          onChange={handleInputChange}
-          sx={{ ...inputSX }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={handleSecretIcon}>
-                  {isSecretVisible ? (
-                    <AiFillEye {...iconProps} />
-                  ) : (
-                    <AiFillEyeInvisible {...iconProps} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+        {!projectDetails?.projectName && (
+          <>
+            <Typography
+              fontSize="24px"
+              color="rgba(255,255,255,0.81)"
+              variant="h2"
+              textAlign="center"
+            >
+              Enter your project details
+            </Typography>
+            <Spacer isWidth={true} height={20} width="100%" />
+            <TextField
+              fullWidth
+              label="Project ID"
+              name="projectIdentifier"
+              value={projectIdentifier}
+              onChange={handleInputChange}
+              sx={{ ...inputSX }}
+              disabled={isDisabledProject}
+            />
+            <Spacer isWidth={true} height={15} width="100%" />
+            <TextField
+              fullWidth
+              label="Project Secret"
+              type={isSecretVisible ? "password" : "text"}
+              name="apiKey"
+              value={apiKey}
+              disabled={isDisabledSecret}
+              onChange={handleInputChange}
+              sx={{ ...inputSX }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleSecretIcon}>
+                      {isSecretVisible ? (
+                        <AiFillEye {...iconProps} />
+                      ) : (
+                        <AiFillEyeInvisible {...iconProps} />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </>
+        )}
+        {projectDetails?.projectName && <ProjectData {...projectDetails} />}
         {!isDisableSelect && (
           <React.Fragment>
             <Spacer isWidth={true} height={15} width="100%" />
@@ -222,16 +259,19 @@ function Form() {
               sx={{ ...inputSX }}
               onChange={handleSelectChange}
             >
-              {mileStone.map(({ mileStoneId, status, title }) => (
+              {mileStone.map((item: mileStoneDataType) => (
                 <MenuItem
-                  disabled={status !== "open"}
-                  key={mileStoneId}
-                  value={mileStoneId}
-                  style={{ fontStyle: status !== "open" ? "italic" : "unset" }}
+                  disabled={item.status !== "open"}
+                  key={item.mileStoneId}
+                  value={item.mileStoneId}
+                  style={{
+                    fontStyle: item.status !== "open" ? "italic" : "unset",
+                  }}
                 >
-                  {title}
+                  <Dropdown {...item} />
+                  {/* {item.title}
                   {"\t"}
-                  {status !== "open" ? "(Completed)" : ""}
+                  {item.status !== "open" ? "(Completed)" : ""} */}
                 </MenuItem>
               ))}
             </TextField>
@@ -253,7 +293,9 @@ function Form() {
               fullWidth
               variant="contained"
             >
-              {amount.length > 0 ? `Pay ${formatCurrency(Number(amount))}` : `Pay now`}
+              {amount.length > 0
+                ? `Pay ${formatCurrency(Number(amount))}`
+                : `Pay now`}
             </Button>
           </div>
         )}
