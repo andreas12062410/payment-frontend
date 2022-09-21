@@ -14,7 +14,7 @@ import { useGetBudgetHook } from "../../hooks/budget";
 import { useCheckoutHook } from "../../hooks/checkout";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { mileStoneDataType, useFormSubmitHook } from "../../hooks/form";
-import ProjectData from "../progect-data/ProjectData";
+import ProjectDataComp from "../progect-data/ProjectData";
 import { Dropdown } from "..";
 
 const inputSX = {
@@ -150,16 +150,25 @@ function Form() {
 
   const handleSelectChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    console.log(value);
     setForm((pre) => ({ ...pre, mileStoneId: parseInt(value) }));
     setToggle((pre) => ({
       ...pre,
       isBudgetFetch: true,
     }));
+    let issues: Array<number> = [];
+    mileStone.forEach((item: any) => {
+      console.log(item);
+      if (value === item.mileStoneId) {
+        issues = item.issues;
+      }
+    });
+    console.log("issues", issues);
     const budget = await getBudget({
       apiKey,
-      projectIdentifier,
-      milestoneIdentifier: value,
+      issues: issues,
     });
+    console.log(budget);
 
     if (budget) {
       setAmount(`${budget}`);
@@ -200,7 +209,7 @@ function Form() {
 
   return (
     <Grid justifyContent="center" container>
-      <Grid sm={6} xs={12} lg={4} item>
+      <Grid sm={6} xs={12} lg={5} item>
         {!projectDetails?.projectName && (
           <>
             <Typography
@@ -247,7 +256,7 @@ function Form() {
             />
           </>
         )}
-        {projectDetails?.projectName && <ProjectData {...projectDetails} />}
+        {projectDetails?.projectName && <ProjectDataComp {...projectDetails} />}
         {!isDisableSelect && (
           <React.Fragment>
             <Spacer isWidth={true} height={15} width="100%" />
@@ -269,9 +278,6 @@ function Form() {
                   }}
                 >
                   <Dropdown {...item} />
-                  {/* {item.title}
-                  {"\t"}
-                  {item.status !== "open" ? "(Completed)" : ""} */}
                 </MenuItem>
               ))}
             </TextField>

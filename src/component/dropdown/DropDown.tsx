@@ -26,21 +26,21 @@ const DropDown = ({
   issues,
   spentHours,
 }: Props) => {
+  console.log(dueDate);
   return (
     <Box width="90%">
       <Typography>
         {title} ({status})
       </Typography>
       <Typography fontStyle="italic">
-        {description ? description : "none"} ({dueDate ? dueDate : "none"})
+        description:{description ? description : "none"} (
+        {dueDate ? dueDate : "none"})
       </Typography>
       <ProgressBar value={doneRatio / issues.length} type=" Done percentage" />
       <ProgressBars
         {...{
-          value1: estimatedHours,
-          value2: spentHours,
-          type1: "Estimated time",
-          type2: "Spent time",
+          estimatedHours: estimatedHours,
+          spentTime: spentHours,
         }}
       />
     </Box>
@@ -53,10 +53,14 @@ const ProgressBar = ({ value, type }: { value: number; type: string }) => {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Box sx={{ width: "100%", mr: 1 }}>
-          <LinearProgress variant="determinate" value={value} />
+        <Box sx={{ width: "70%", mr: 1 }}>
+          <LinearProgress
+            variant="buffer"
+            value={value}
+            valueBuffer={value + 10}
+          />
         </Box>
-        <Box sx={{ minWidth: 35 }}>
+        <Box sx={{ minWidth: 35 }} width="30%">
           <Typography variant="body2" color="white" fontSize="12px">
             {`${Math.round(value)}% `}( {type})
           </Typography>
@@ -67,35 +71,26 @@ const ProgressBar = ({ value, type }: { value: number; type: string }) => {
 };
 
 const ProgressBars = ({
-  value1,
-  value2,
-  type1,
-  type2,
+  spentTime,
+  estimatedHours,
 }: {
-  value1: number;
-  type1: string;
-  value2: number;
-  type2: string;
+  spentTime: number;
+  estimatedHours: number;
 }) => {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Box sx={{ width: "100%", mr: 1 }}>
-          <LinearProgress variant="determinate" value={value1} />
+        <Box sx={{ width: "70%", mr: 1 }}>
+          <LinearProgress
+            variant="buffer"
+            value={(spentTime / estimatedHours) * 100}
+            valueBuffer={estimatedHours}
+            color={spentTime > estimatedHours ? "error" : "primary"}
+          />
         </Box>
-        <Box sx={{ minWidth: 35 }}>
+        <Box sx={{ minWidth: 35 }} width="30%">
           <Typography variant="body2" color="white" fontSize="12px">
-            {`${Math.round(value1)}h `}({type1})
-          </Typography>
-        </Box>
-      </Box>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Box sx={{ width: "100%", mr: 1 }}>
-          <LinearProgress variant="determinate" value={value2} />
-        </Box>
-        <Box sx={{ minWidth: 35 }}>
-          <Typography variant="body2" color="white" fontSize="12px">
-            {`${Math.round(value2)}h `}({type2})
+            {`${Math.round(spentTime)}h `}(Estimated vs spent time)
           </Typography>
         </Box>
       </Box>

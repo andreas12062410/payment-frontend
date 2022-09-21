@@ -2,8 +2,7 @@ import { sendPayload } from "../helper/api";
 
 export interface BugetsProps {
   apiKey: string;
-  milestoneIdentifier: string;
-  projectIdentifier: string;
+  issues: Array<number>;
 }
 export const useGetBudgetHook = () => {
   const getBudget = async (payload: BugetsProps) => {
@@ -16,9 +15,7 @@ export const useGetBudgetHook = () => {
         return data.data;
       } else return null;
     } catch (e: any) {
-      console.log(
-        `Something went wrong while fetching budget:->${e.message}`
-      );
+      console.log(`Something went wrong while fetching budget:->${e.message}`);
     }
   };
   return getBudget;
