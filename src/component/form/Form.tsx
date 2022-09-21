@@ -133,8 +133,9 @@ function Form() {
             tempArr = [...tempArr, { ...item, mileStoneId: parseInt(key[i]) }];
           });
           let closeMilestone: any = [];
-          const openMilestone: any = tempArr.map((item) => {
-            if (item.status !== "closed") return item;
+          const openMilestone: any = [];
+          tempArr.forEach((item) => {
+            if (item.status !== "closed") openMilestone.push(item);
             else closeMilestone.push(item);
           });
           setMileStone([...openMilestone, ...closeMilestone]);
@@ -205,7 +206,6 @@ function Form() {
       window.open(uri, "_blank");
     }
   };
-
   return (
     <Grid justifyContent="center" container>
       <Grid sm={6} xs={12} lg={5} item>
@@ -269,7 +269,7 @@ function Form() {
             >
               {mileStone.map((item: mileStoneDataType, i: number) => (
                 <MenuItem
-                  disabled={item.status !== "open" || i !== 0}
+                  disabled={item?.status !== "open" || i !== 0}
                   key={item.mileStoneId}
                   value={item.mileStoneId}
                   style={{
