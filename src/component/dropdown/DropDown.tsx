@@ -32,11 +32,12 @@ const DropDown = ({
       <Typography>
         {title} ({status})
       </Typography>
-      <Typography fontStyle="italic">
-        description:{description ? description : "none"} (
-        {dueDate ? dueDate : "none"})
+      <Typography>
+        Description: {description ? description : "N/A"} 
+        <br />
+        Delivering in {dueDate ? dueDate : "N/A"}
       </Typography>
-      <ProgressBar value={doneRatio / issues.length} type=" Done percentage" />
+      <ProgressBar value={doneRatio / issues.length} type="Progress" />
       <ProgressBars
         {...{
           estimatedHours: estimatedHours,
@@ -57,12 +58,12 @@ const ProgressBar = ({ value, type }: { value: number; type: string }) => {
           <LinearProgress
             variant="buffer"
             value={value}
-            valueBuffer={value + 10}
+            valueBuffer={100}
           />
         </Box>
         <Box sx={{ minWidth: 35 }} width="30%">
           <Typography variant="body2" color="white" fontSize="12px">
-            {`${Math.round(value)}% `}( {type})
+            {type}: {`${Math.round(value)}% `} 
           </Typography>
         </Box>
       </Box>
@@ -90,7 +91,7 @@ const ProgressBars = ({
         </Box>
         <Box sx={{ minWidth: 35 }} width="30%">
           <Typography variant="body2" color="white" fontSize="12px">
-            {`${Math.round(spentTime)}h `}(Estimated vs spent time)
+            {`Estimated: ${Math.round(estimatedHours)}h Spent: ${Math.round(spentTime)}h `}
           </Typography>
         </Box>
       </Box>
