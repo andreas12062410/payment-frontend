@@ -4,5 +4,5 @@ export { default as Heading } from "./heading/Heading";
 export { default as Description } from "./description/Description";
 export { default as Footer } from "./footer/Footer";
 export { default as LoaderOrSpinner } from "./loader/Loader";
-export { default as ProjectData } from "./progect-data/ProjectData";
+export { default as ProjectData } from "./project-data/ProjectData";
 export { default as Dropdown } from "./dropdown/DropDown";

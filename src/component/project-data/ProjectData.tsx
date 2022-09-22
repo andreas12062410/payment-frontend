@@ -1,12 +1,6 @@
-import { Avatar, Typography } from "@mui/material";
-import React from "react";
 import Spacer from "../spacer/Spacer";
+import { Avatar, Typography } from "@mui/material";
 
-interface Props {
-  description: string;
-  projectIcon: string;
-  projectName: string;
-}
 const ProjectData = ({ projectIcon, projectName, description }: Props) => {
   return (
     <>
@@ -50,3 +44,9 @@ const ProjectData = ({ projectIcon, projectName, description }: Props) => {
 };
 
 export default ProjectData;
+
+interface Props {
+  description: string;
+  projectIcon: string;
+  projectName: string;
+}

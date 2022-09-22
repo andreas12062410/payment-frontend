@@ -1,9 +1,7 @@
 import Axios, { AxiosResponse } from "axios";
 
-//TODO:-> add another endpoint here
 type Endpoint = "/get-project" | "/get-budget" | "/checkout";
 
-// TODO:-> change base url in production
 const client = Axios.create({
   baseURL: "https://api.koders.in",
   headers: {

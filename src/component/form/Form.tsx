@@ -14,7 +14,7 @@ import { useGetBudgetHook } from "../../hooks/budget";
 import { useCheckoutHook } from "../../hooks/checkout";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { mileStoneDataType, useFormSubmitHook } from "../../hooks/form";
-import ProjectDataComp from "../progect-data/ProjectData";
+import ProjectDataComp from "../project-data/ProjectData";
 import { Dropdown } from "..";
 import { showToaster } from "../../helper/toast";
 import { debounce } from "lodash";

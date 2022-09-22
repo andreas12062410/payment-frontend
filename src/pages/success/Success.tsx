@@ -1,5 +1,6 @@
 import { Grid, Paper, Typography } from "@mui/material";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+
 function Success() {
   return (
     <Grid

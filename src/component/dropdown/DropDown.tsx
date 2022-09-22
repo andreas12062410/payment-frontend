@@ -2,8 +2,47 @@ import { Box } from "@mui/system";
 import Spacer from "../spacer/Spacer";
 import { Typography } from "@mui/material";
 import ProgressBar from "../progress-bar/ProgressBar";
-import CheckCircle from "@mui/icons-material/CheckCircle";
-import RemoveCircle from "@mui/icons-material/RemoveCircle";
+import ProjectStatus from "../project-status/ProjectStatus";
+
+const DropDown = ({
+  title,
+  status,
+  description,
+  doneRatio,
+  dueDate,
+  issues,
+  index,
+}: Props) => {
+  const dueInString = (): string => {
+    if (dueDate == null || dueDate === undefined) return "";
+    const due = new Date(dueDate);
+    const today = new Date();
+    const diff = Math.ceil((due.getTime() - today.getTime()) / 86400000);
+    if (diff === 1) return `${diff} day`;
+    else return `${diff} days`;
+  };
+
+  return (
+    <Box width="90%">
+      <ProjectStatus index={index} status={status} title={title} />
+      <Typography fontSize="12px">{description ? description : ""}</Typography>
+      <Spacer height={5} />
+      <Typography fontSize="12px">
+        {status === "closed"
+          ? "Delievered"
+          : dueDate && <> Delivering in {dueDate && dueInString()}</>}
+      </Typography>
+      <ProgressBar
+        value={status !== "open" ? 100 : doneRatio / issues.length}
+        type="Progress"
+        status={status}
+        index={index}
+      />
+    </Box>
+  );
+};
+
+export default DropDown;
 
 interface Props {
   title: string;
@@ -17,67 +56,3 @@ interface Props {
   spentHours: number;
   index: number;
 }
-
-const DropDown = ({
-  title,
-  status,
-  description,
-  doneRatio,
-  dueDate,
-  issues,
-  index,
-}: Props) => {
-  const dueIn = () => {
-    const due = new Date(dueDate);
-    const today = new Date();
-    const diff = Math.ceil((due.getTime() - today.getTime()) / 86400000);
-    return diff > 0 ? diff : 0;
-  };
-  return (
-    <Box width="90%">
-      {status === "open" ? (
-        index === 0 ? (
-          <Typography> {title} </Typography>
-        ) : (
-          <div style={{ display: "flex" }}>
-            {" "}
-            <Typography marginRight="5px"> {title} </Typography>{" "}
-            <RemoveCircle />{" "}
-          </div>
-        )
-      ) : (
-        <div style={{ display: "flex" }}>
-          {" "}
-          <Typography marginRight="5px"> {title} </Typography>{" "}
-          <CheckCircle sx={{ fill: "#20B2AA !important" }} />{" "}
-        </div>
-      )}
-
-      <Typography fontSize="12px">{description ? description : ""}</Typography>
-      <Spacer height={5} />
-      <Typography fontSize="12px">
-        {status === "closed"
-          ? "Delievered"
-          : dueDate && (
-              <>
-                {" "}
-                Delivering in{" "}
-                {dueDate
-                  ? dueIn() === 1
-                    ? dueIn() + " day"
-                    : dueIn() + " days"
-                  : ""}
-              </>
-            )}
-      </Typography>
-      <ProgressBar
-        value={status !== "open" ? 100 : doneRatio / issues.length}
-        type="Progress"
-        status={status}
-        index={index}
-      />
-    </Box>
-  );
-};
-
-export default DropDown;

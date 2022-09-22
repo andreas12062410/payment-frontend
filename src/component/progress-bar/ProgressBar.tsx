@@ -1,17 +1,7 @@
-import { Box, LinearProgress, ThemeProvider, Typography } from "@mui/material";
 import { paymentTheme } from "../../constant/theme";
+import { Box, LinearProgress, ThemeProvider, Typography } from "@mui/material";
 
-function ProgressBar({
-  value,
-  type,
-  status,
-  index,
-}: {
-  value: number;
-  type: string;
-  status: string;
-  index: number;
-}) {
+function ProgressBar({ value, type, status, index }: Props) {
   return (
     <>
       <ThemeProvider theme={paymentTheme}>
@@ -43,3 +33,10 @@ function ProgressBar({
 }
 
 export default ProgressBar;
+
+interface Props {
+  value: number;
+  type: string;
+  status: string;
+  index: number;
+}

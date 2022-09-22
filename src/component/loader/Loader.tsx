@@ -2,13 +2,6 @@ import React from "react";
 import Spacer from "../spacer/Spacer";
 import { CircularProgress, Stack } from "@mui/material";
 
-type loaderType = "spinner" | "loader";
-
-interface Props {
-  isLoading: boolean;
-  type: loaderType;
-}
-
 function Loader({ isLoading, type }: Props) {
   return isLoading ? (
     type === "spinner" ? (
@@ -34,3 +27,10 @@ function Loader({ isLoading, type }: Props) {
 }
 
 export default Loader;
+
+type loaderType = "spinner" | "loader";
+
+interface Props {
+  isLoading: boolean;
+  type: loaderType;
+}
