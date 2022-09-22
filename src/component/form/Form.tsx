@@ -16,6 +16,8 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { mileStoneDataType, useFormSubmitHook } from "../../hooks/form";
 import ProjectDataComp from "../progect-data/ProjectData";
 import { Dropdown } from "..";
+import { showToaster } from "../../helper/toast";
+import { debounce } from "lodash";
 
 const inputSX = {
   "& .MuiOutlinedInput-root.Mui-focused": {
@@ -101,12 +103,8 @@ function Form() {
       projectIdentifier: "",
       mileStoneId: "",
     });
-
-  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const { value, name } = e.target;
-    setForm((pre) => ({ ...pre, [name]: value }));
-    if (name === "apiKey") {
+  const delayedQuery = React.useRef(
+    debounce(async (value: any, projectIdentifier: any) => {
       if (projectIdentifier.length > 0) {
         setToggle((pre) => ({
           ...pre,
@@ -116,7 +114,11 @@ function Form() {
           apiKey: value,
           projectIdentifier,
         });
-        if (data !== undefined && data !== null) {
+        if (
+          data !== undefined &&
+          data !== null &&
+          data[0]?.milestones?.length
+        ) {
           setToggle((pre) => ({
             ...pre,
             isDisableSelect: !pre.isDisableSelect,
@@ -139,12 +141,21 @@ function Form() {
             else closeMilestone.push(item);
           });
           setMileStone([...openMilestone, ...closeMilestone]);
-        }
+        } else showToaster("Something is wrong", "error");
         setToggle((pre) => ({
           ...pre,
           isMilestoneFetch: false,
         }));
-      }
+      } else showToaster("Please enter project ID", "error");
+    }, 1500)
+  ).current;
+
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const { value, name } = e.target;
+    setForm((pre) => ({ ...pre, [name]: value }));
+    if (name === "apiKey") {
+      delayedQuery(value, projectIdentifier);
     }
   };
 
