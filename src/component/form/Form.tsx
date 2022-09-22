@@ -103,6 +103,10 @@ function Form() {
       projectIdentifier: "",
       mileStoneId: "",
     });
+  // DISABLE BUTON FOR UNTILE API RESPONSE
+  const [isClickable, setIsClickable] = useState(false);
+
+  // FETCH MILESTOMES DATA
   const delayedQuery = React.useRef(
     debounce(async (value: any, projectIdentifier: any) => {
       if (projectIdentifier.length > 0) {
@@ -147,7 +151,8 @@ function Form() {
           isMilestoneFetch: false,
         }));
       } else showToaster("Please enter project ID", "error");
-    }, 1500)
+      setIsClickable(false);
+    }, 600)
   ).current;
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -187,7 +192,7 @@ function Form() {
         ...pre,
         isDisableBtn: false,
       }));
-    }
+    } else showToaster("Error in fetching budget", "error");
     setToggle((pre) => ({
       ...pre,
       isBudgetFetch: false,
@@ -299,7 +304,7 @@ function Form() {
           <Button disabled={isDisableBtn} fullWidth variant="contained">
             <Loader isLoading={true} type="spinner" />
           </Button>
-        ) : (
+        ) : amount.length > 0 ? (
           <div
             style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}
           >
@@ -309,11 +314,22 @@ function Form() {
               fullWidth
               variant="contained"
             >
-              {amount.length > 0
-                ? `Pay ${formatCurrency(Number(amount))}`
-                : `Pay now`}
+              {`Pay ${formatCurrency(Number(amount))}`}
             </Button>
           </div>
+        ) : (
+          <Button
+            disabled={isClickable}
+            style={isClickable ? { filter: "brightness(0.3)" } : {}}
+            onClick={() => {
+              setIsClickable(true);
+              delayedQuery(apiKey, projectIdentifier);
+            }}
+            fullWidth
+            variant="contained"
+          >
+            Proceed
+          </Button>
         )}
       </Grid>
     </Grid>
