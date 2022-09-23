@@ -162,3 +162,8 @@ body {
     background-color: green !important;
   }
 }
+
+.Toastify__toast-theme--light {
+    background: var(--toastify-color-dark) !important;
+    color: var(--toastify-text-color-dark) !important;
+}
