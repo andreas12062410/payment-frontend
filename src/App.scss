@@ -79,6 +79,31 @@ body {
   max-height: calc(36px * 3) !important;
 }
 
+.payment-badge {
+  position: absolute !important;
+  right: 1em !important;
+  top: 10%;
+  border-radius: 4px;
+  padding: 0px 0.5em;
+  display: flex;
+  align-self: center;
+  span {
+    font-size: 12px;
+  }
+  &.success {
+    border: 1px solid #00a99d;
+    span {
+      color: #00a99d;
+    }
+  }
+  &.due {
+    border: 1px solid red;
+    span {
+      color: red;
+    }
+  }
+}
+
 /* loader text dot CSS */
 .loader-text {
   color: #ffffff;

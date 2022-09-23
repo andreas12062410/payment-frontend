@@ -9,7 +9,7 @@ export interface mileStoneDataType {
   title: string;
   status: string;
   mileStoneId: number;
-
+  paymentStatus: string;
   description: string;
   doneRatio: number;
   dueDate: string;

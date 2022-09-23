@@ -1,8 +1,8 @@
-import { Box } from "@mui/system";
 import Spacer from "../spacer/Spacer";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import ProgressBar from "../progress-bar/ProgressBar";
 import ProjectStatus from "../project-status/ProjectStatus";
+import Badge from "../badge/Badge";
 
 const DropDown = ({
   title,
@@ -12,6 +12,7 @@ const DropDown = ({
   dueDate,
   issues,
   index,
+  paymentStatus,
 }: Props) => {
   const dueInString = (): string => {
     if (dueDate == null || dueDate === undefined) return "";
@@ -25,6 +26,7 @@ const DropDown = ({
   return (
     <Box width="90%">
       <ProjectStatus index={index} status={status} title={title} />
+      {paymentStatus !== null && <Badge title={paymentStatus} />}
       <Typography fontSize="12px">{description ? description : ""}</Typography>
       <Spacer height={5} />
       <Typography fontSize="12px">
@@ -55,4 +57,5 @@ interface Props {
   issues: Array<number>;
   spentHours: number;
   index: number;
+  paymentStatus: string;
 }
