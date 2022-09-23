@@ -85,7 +85,7 @@ function Form() {
             else closeMilestone.push(item);
           });
           setMileStone([...openMilestone, ...closeMilestone]);
-        } else showToaster("Something is wrong", "error");
+        } else showToaster("Something went wrong", "error");
         setToggle((pre) => ({
           ...pre,
           isMilestoneFetch: false,

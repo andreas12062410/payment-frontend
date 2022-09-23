@@ -20,7 +20,7 @@ const kToastConfig: Props = {
   progress: undefined,
 };
 
-type msgType = "error" | "success" | "info" | "warn";
+type msgType = "error";
 
 export const showToaster = (title: string, type: msgType) => {
   toast[type](title, kToastConfig);

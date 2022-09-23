@@ -41,7 +41,7 @@ export const useFormSubmitHook = () => {
       } else return null;
     } catch (err: any) {
       console.log(
-        `Something went wrong while submitting form :->${err.message}`
+        `Something went wrong while submitting form. Reason-${err.message}`
       );
     }
   };
