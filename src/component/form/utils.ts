@@ -73,7 +73,7 @@ export const initialFormState = {
 };
 
 export const isValidResponse = (data: any) => {
-  return Object.keys(data[0].milestones).length > 0;
+  return Object.keys(data[0]?.milestones).length > 0;
 };
 
 export const initialProjectState: ProjectData = {
