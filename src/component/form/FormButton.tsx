@@ -7,7 +7,6 @@ function FormButton({
   isBudgetFetch,
   isDisableBtn,
   amount,
-  isClickable,
   onProceedClick,
 }: Props) {
   return isBudgetFetch ? (
@@ -32,7 +31,6 @@ function FormButton({
       <Button
         fullWidth
         disabled={isDisableBtn}
-        // style={isClickable ? { filter: "brightness(0.3)" } : {}}
         onClick={onProceedClick}
         variant="contained"
       >
