@@ -11,7 +11,7 @@ function Footer() {
           flexWrap="wrap"
           direction="row"
         >
-          {kFooterLink.map(({ title, link }, i) => (
+          {kFooterLink.map(({ title, link }) => (
             <div className="footer-link" key={title}>
               <Link
                 margin="5px 0"

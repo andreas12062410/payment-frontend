@@ -7,12 +7,12 @@ import {
 
 function Home() {
   return (
-    <div>
+    <>
       <Heading />
       <Description />
       <Spacer height={50} />
       <ProjectDetailForm />
-    </div>
+    </>
   );
 }
 

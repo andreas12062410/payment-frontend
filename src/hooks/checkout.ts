@@ -20,7 +20,7 @@ export const useCheckoutHook = () => {
       } else return null;
     } catch (error: any) {
       console.log(
-        `Something went wrong while trying to stripe checkout:->${error.message}`
+        `Something went wrong while trying to stripe checkout.Reason-${error.message}`
       );
     }
   };

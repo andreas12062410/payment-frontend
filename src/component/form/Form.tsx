@@ -1,79 +1,34 @@
-import {
-  Grid,
-  Button,
-  MenuItem,
-  TextField,
-  Typography,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
+import { Grid } from "@mui/material";
+import { debounce } from "lodash";
 import Spacer from "../spacer/Spacer";
 import Loader from "../loader/Loader";
+import { showToaster } from "../../helper/toast";
 import React, { ChangeEvent, useState } from "react";
 import { useGetBudgetHook } from "../../hooks/budget";
 import { useCheckoutHook } from "../../hooks/checkout";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import ProjectDataComp from "../project-data/ProjectData";
 import { mileStoneDataType, useFormSubmitHook } from "../../hooks/form";
-import ProjectDataComp from "../progect-data/ProjectData";
-import { Dropdown } from "..";
-
-const inputSX = {
-  "& .MuiOutlinedInput-root.Mui-focused": {
-    "& > fieldset": {
-      borderColor: "#00a99d",
-    },
-  },
-};
-
-const formatCurrency = (
-  amount: number,
-  locale = "en-US",
-  currency = "INR",
-  minimumFractionDigits = 2
-) => {
-  if (isNaN(amount)) {
-    return amount;
-  }
-  return amount.toLocaleString(locale, {
-    style: "currency",
-    currency,
-    minimumFractionDigits,
-  });
-};
-
-interface ProjectData {
-  description: string;
-  projectIcon: string;
-  projectName: string;
-}
-
-interface Project {
-  apiKey: string;
-  projectIdentifier: string;
-  mileStoneId: any;
-}
-
-const iconProps = {
-  color: "rgba(255,255,255,0.81)",
-  size: 20,
-};
-
-interface toggleBtnProps {
-  isSecretVisible?: boolean;
-  isDisableSelect?: boolean;
-  isDisableBtn?: boolean;
-  isMilestoneFetch: boolean;
-  isBudgetFetch: boolean;
-  isDisabledProject: boolean;
-  isDisabledSecret: boolean;
-}
+import {
+  initialFormState,
+  initialProjectState,
+  initialToggleState,
+  isValidResponse,
+  Project,
+  ProjectData,
+  toggleBtnProps,
+} from "./utils";
+import CustomMenuItem from "./MenuItem";
+import FormButton from "./FormButton";
+import ProjectTitle from "./Title";
+import FormInitialField from "./FormInitialField";
 
 function Form() {
-  const formSubmit = useFormSubmitHook();
-  const getBudget = useGetBudgetHook();
   const checkout = useCheckoutHook();
+  const getBudget = useGetBudgetHook();
+  const formSubmit = useFormSubmitHook();
   const [amount, setAmount] = useState<string>("");
-  const [projectDetails, setProjectDetails] = useState<ProjectData>();
+  const [projectDetails, setProjectDetails] =
+    useState<ProjectData>(initialProjectState);
   const [mileStone, setMileStone] = useState<Array<mileStoneDataType>>([]);
   const [
     {
@@ -84,29 +39,16 @@ function Form() {
       isMilestoneFetch,
       isDisabledProject,
       isDisabledSecret,
+      isValidRelease,
     },
     setToggle,
-  ] = useState<toggleBtnProps>({
-    isSecretVisible: true,
-    isDisableSelect: true,
-    isDisableBtn: true,
-    isBudgetFetch: false,
-    isMilestoneFetch: false,
-    isDisabledProject: false,
-    isDisabledSecret: false,
-  });
+  ] = useState<toggleBtnProps>(initialToggleState);
   const [{ apiKey, projectIdentifier, mileStoneId }, setForm] =
-    useState<Project>({
-      apiKey: "",
-      projectIdentifier: "",
-      mileStoneId: "",
-    });
+    useState<Project>(initialFormState);
+  const [isClickable, setIsClickable] = useState(false);
 
-  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const { value, name } = e.target;
-    setForm((pre) => ({ ...pre, [name]: value }));
-    if (name === "apiKey") {
+  const delayedQuery = React.useRef(
+    debounce(async (value: any, projectIdentifier: string) => {
       if (projectIdentifier.length > 0) {
         setToggle((pre) => ({
           ...pre,
@@ -116,13 +58,16 @@ function Form() {
           apiKey: value,
           projectIdentifier,
         });
-        if (data !== undefined && data !== null) {
+
+        if (isValidResponse(data)) {
           setToggle((pre) => ({
             ...pre,
             isDisableSelect: !pre.isDisableSelect,
             isDisabledProject: true,
             isDisabledSecret: true,
+            isValidRelease: true,
           }));
+
           setProjectDetails({ ...data[0].projectData });
           const key: Array<string> = Object.keys(data[0].milestones);
           const value: Array<mileStoneDataType> = Object.values(
@@ -132,19 +77,29 @@ function Form() {
           value.forEach((item: mileStoneDataType, i) => {
             tempArr = [...tempArr, { ...item, mileStoneId: parseInt(key[i]) }];
           });
-          let closeMilestone: any = [];
+
+          const closeMilestone: any = [];
           const openMilestone: any = [];
           tempArr.forEach((item) => {
             if (item.status !== "closed") openMilestone.push(item);
             else closeMilestone.push(item);
           });
           setMileStone([...openMilestone, ...closeMilestone]);
-        }
+        } else showToaster("Something went wrong", "error");
         setToggle((pre) => ({
           ...pre,
           isMilestoneFetch: false,
         }));
-      }
+      } else showToaster("Please enter project ID", "error");
+      setIsClickable(false);
+    }, 600)
+  ).current;
+
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setForm((pre) => ({ ...pre, [name]: value }));
+    if (name === "apiKey") {
+      await delayedQuery(value, projectIdentifier);
     }
   };
 
@@ -153,6 +108,7 @@ function Form() {
   };
 
   const handleSelectChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
     const { value } = e.target;
     setForm((pre) => ({ ...pre, mileStoneId: parseInt(value) }));
     setToggle((pre) => ({
@@ -165,18 +121,18 @@ function Form() {
         issues = item.issues;
       }
     });
+
     const budget = await getBudget({
       apiKey,
-      issues: issues,
+      issues,
     });
-
     if (budget) {
       setAmount(`${budget}`);
       setToggle((pre) => ({
         ...pre,
         isDisableBtn: false,
       }));
-    }
+    } else showToaster("Error in fetching budget", "error");
     setToggle((pre) => ({
       ...pre,
       isBudgetFetch: false,
@@ -206,104 +162,48 @@ function Form() {
       window.open(uri, "_blank");
     }
   };
+
+  const handleProccessClick = () => {
+    setIsClickable(true);
+    delayedQuery(apiKey, projectIdentifier);
+  };
+
   return (
     <Grid justifyContent="center" container>
       <Grid sm={6} xs={12} lg={5} item>
-        {!projectDetails?.projectName && (
+        {!isValidRelease ? (
           <>
-            <Typography
-              fontSize="24px"
-              color="rgba(255,255,255,0.81)"
-              variant="h2"
-              textAlign="center"
-            >
-              Enter your project details
-            </Typography>
+            <ProjectTitle />
             <Spacer isWidth={true} height={20} width="100%" />
-            <TextField
-              fullWidth
-              label="Project ID"
-              name="projectIdentifier"
-              value={projectIdentifier}
-              onChange={handleInputChange}
-              sx={{ ...inputSX }}
-              disabled={isDisabledProject}
-            />
-            <Spacer isWidth={true} height={15} width="100%" />
-            <TextField
-              fullWidth
-              label="Project Secret"
-              type={isSecretVisible ? "password" : "text"}
-              name="apiKey"
-              value={apiKey}
-              disabled={isDisabledSecret}
-              onChange={handleInputChange}
-              sx={{ ...inputSX }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={handleSecretIcon}>
-                      {isSecretVisible ? (
-                        <AiFillEye {...iconProps} />
-                      ) : (
-                        <AiFillEyeInvisible {...iconProps} />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
+            <FormInitialField
+              apiKey={apiKey}
+              handleInputChange={handleInputChange}
+              handleSecretIcon={handleSecretIcon}
+              isDisabledProject={isDisabledProject}
+              isDisabledSecret={isDisabledSecret}
+              isSecretVisible={isSecretVisible}
+              projectIdentifier={projectIdentifier}
             />
           </>
+        ) : (
+          <ProjectDataComp {...projectDetails} />
         )}
-        {projectDetails?.projectName && <ProjectDataComp {...projectDetails} />}
-        {!isDisableSelect && (
-          <React.Fragment>
-            <Spacer isWidth={true} height={15} width="100%" />
-            <TextField
-              select
-              fullWidth
-              label="Releases"
-              value={mileStoneId}
-              sx={{ ...inputSX }}
-              onChange={handleSelectChange}
-            >
-              {mileStone.map((item: mileStoneDataType, i: number) => (
-                <MenuItem
-                  disabled={item?.status !== "open" || i !== 0}
-                  key={item.mileStoneId}
-                  value={item.mileStoneId}
-                  style={{
-                    fontStyle: item.status !== "open" ? "italic" : "unset",
-                  }}
-                >
-                  <Dropdown {...item} index={i} />
-                </MenuItem>
-              ))}
-            </TextField>
-          </React.Fragment>
-        )}
+        <CustomMenuItem
+          handleSelectChange={handleSelectChange}
+          isDisableSelect={isDisableSelect}
+          mileStone={mileStone}
+          mileStoneId={mileStoneId}
+        />
         <Loader isLoading={isMilestoneFetch} type="loader" />
         <Spacer isWidth={true} height={15} width="100%" />
-        {isBudgetFetch ? (
-          <Button disabled={isDisableBtn} fullWidth variant="contained">
-            <Loader isLoading={true} type="spinner" />
-          </Button>
-        ) : (
-          <div
-            style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}
-          >
-            <Button
-              onClick={handlePayNow}
-              disabled={isDisableBtn}
-              fullWidth
-              variant="contained"
-            >
-              {amount.length > 0
-                ? `Pay ${formatCurrency(Number(amount))}`
-                : `Pay now`}
-            </Button>
-          </div>
-        )}
+        <FormButton
+          amount={amount}
+          handlePayNow={handlePayNow}
+          isBudgetFetch={isBudgetFetch}
+          isClickable={isClickable}
+          isDisableBtn={isDisableBtn}
+          onProceedClick={handleProccessClick}
+        />
       </Grid>
     </Grid>
   );
