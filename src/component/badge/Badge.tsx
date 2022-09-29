@@ -1,15 +1,22 @@
 interface Props {
   title?: string;
+  isDelivered: boolean;
 }
 
-function Badge({ title }: Props) {
+function Badge({ title, isDelivered }: Props) {
   return (
     <div
       className={`payment-badge ${
-        title?.toLowerCase() === "paid" ? "success" : "due"
+        title?.toLowerCase() === "paid" || isDelivered ? "success" : "due"
       }`}
     >
-      <span>{title}</span>
+      <span>
+        {isDelivered
+          ? "Delivered"
+          : title?.toLowerCase() === "paid"
+          ? "Paid"
+          : "Due"}
+      </span>
     </div>
   );
 }

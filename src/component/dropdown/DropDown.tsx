@@ -26,7 +26,7 @@ const DropDown = ({
   return (
     <Box width="90%">
       <ProjectStatus index={index} status={status} title={title} />
-      {paymentStatus !== null && <Badge title={paymentStatus} />}
+      <Badge title={paymentStatus} isDelivered={status === "closed"} />
       <Typography fontSize="12px">{description ? description : ""}</Typography>
       <Spacer height={5} />
       <Typography fontSize="12px">
