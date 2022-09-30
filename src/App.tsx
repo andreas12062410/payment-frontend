@@ -12,6 +12,7 @@ function App() {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
+
       <div style={{ marginTop: "auto" }}>
         <Footer />
       </div>
