@@ -43,6 +43,7 @@ export const useFormSubmitHook = () => {
       console.log(
         `Something went wrong while submitting form. Reason-${err.message}`
       );
+      return null;
     }
   };
   return submitForm;
