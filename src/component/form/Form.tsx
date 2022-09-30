@@ -141,11 +141,11 @@ function Form() {
         issues = item.issues;
         if (item?.paymentStatus === "Due") {
           setSelectedOption({
-            isPaid: true,
+            isPaid: false,
             demoLink: item.demoLink,
           });
           tempObj = {
-            isPaid: true,
+            isPaid: false,
             demoLink: item.demoLink,
             filesLink: "",
           };
