@@ -75,6 +75,7 @@ export const initialFormState = {
 };
 
 export const isValidResponse = (data: any) => {
+  if (data === null) return false;
   return Object.keys(data[0]?.milestones).length > 0;
 };
 

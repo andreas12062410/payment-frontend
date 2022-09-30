@@ -14,7 +14,10 @@ function FormButton({
   handleDownloadVideo,
 }: Props) {
   return isDownloadFiles ? (
-    <div style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}>
+    <div
+      className="download-btn-wrapper"
+      style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}
+    >
       <Button
         fullWidth
         disabled={!isDownloadFiles}
