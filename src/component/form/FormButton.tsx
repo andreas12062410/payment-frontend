@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
 import Loader from "../loader/Loader";
 import Spacer from "../spacer/Spacer";
-import { formatCurrency } from "./utils";
+import { formatCurrency, SelectedOption } from "./utils";
 
 function FormButton({
+  selectedOption,
   handlePayNow,
   isBudgetFetch,
   isDisableBtn,
@@ -15,23 +16,29 @@ function FormButton({
 }: Props) {
   return isDownloadFiles ? (
     <div style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}>
-      <Button
-        fullWidth
-        disabled={!isDownloadFiles}
-        onClick={handleDownloadFiles}
-        variant="contained"
-      >
-        Download Files
-      </Button>
-      <Spacer height={10} />
-      <Button
-        fullWidth
-        disabled={!isDownloadFiles}
-        onClick={handleDownloadVideo}
-        variant="contained"
-      >
-        Download Video
-      </Button>
+      {selectedOption.filesLink && (
+        <Button
+          fullWidth
+          disabled={!isDownloadFiles}
+          onClick={handleDownloadFiles}
+          variant="contained"
+        >
+          Download Files
+        </Button>
+      )}
+      {selectedOption.demoLink && (
+        <>
+          <Spacer height={10} />
+          <Button
+            fullWidth
+            disabled={!isDownloadFiles}
+            onClick={handleDownloadVideo}
+            variant="contained"
+          >
+            Download Demo
+          </Button>
+        </>
+      )}
     </div>
   ) : isBudgetFetch ? (
     <div style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}>
@@ -80,4 +87,5 @@ interface Props {
   onProceedClick: () => void;
   handleDownloadFiles: () => void;
   handleDownloadVideo: () => void;
+  selectedOption: SelectedOption;
 }

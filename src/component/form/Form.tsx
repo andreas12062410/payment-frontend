@@ -207,7 +207,7 @@ function Form() {
     setIsClickable(true);
     delayedQuery(apiKey, projectIdentifier);
   };
-  
+
   type ValueType = "files" | "videos";
 
   const handleDownloadBtn = (value: ValueType) => {
@@ -219,9 +219,9 @@ function Form() {
       return;
     }
     if (value === "files") {
-      window.open(selectedOption.filesLink);
+      window.open(`${selectedOption.filesLink}?key=${apiKey}`);
     } else {
-      window.open(selectedOption.demoLink);
+      window.open(`${selectedOption.demoLink}?key=${apiKey}`);
     }
   };
   return (
@@ -253,6 +253,7 @@ function Form() {
         <Loader isLoading={isMilestoneFetch} type="loader" />
         <Spacer isWidth={true} height={15} width="100%" />
         <FormButton
+          selectedOption={selectedOption}
           amount={amount}
           handlePayNow={handlePayNow}
           isBudgetFetch={isBudgetFetch}
