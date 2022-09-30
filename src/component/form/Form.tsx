@@ -15,6 +15,7 @@ import {
   isValidResponse,
   Project,
   ProjectData,
+  SelectedOption,
   toggleBtnProps,
 } from "./utils";
 import CustomMenuItem from "./MenuItem";
@@ -40,12 +41,18 @@ function Form() {
       isDisabledProject,
       isDisabledSecret,
       isValidRelease,
+      isDownloadFiles,
     },
     setToggle,
   ] = useState<toggleBtnProps>(initialToggleState);
   const [{ apiKey, projectIdentifier, mileStoneId }, setForm] =
     useState<Project>(initialFormState);
   const [isClickable, setIsClickable] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<SelectedOption>({
+    isPaid: false,
+    filesLink: "",
+    demoLink: "",
+  });
 
   const delayedQuery = React.useRef(
     debounce(async (value: any, projectIdentifier: string) => {
@@ -58,7 +65,6 @@ function Form() {
           apiKey: value,
           projectIdentifier,
         });
-
         if (isValidResponse(data)) {
           setToggle((pre) => ({
             ...pre,
@@ -109,34 +115,63 @@ function Form() {
 
   const handleSelectChange = async (e: ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
+    setToggle((prev) => {
+      return {
+        ...prev,
+        isDownloadFiles: false,
+      };
+    });
+    setSelectedOption({ isPaid: false, filesLink: "", demoLink: "" });
     const { value } = e.target;
     setForm((pre) => ({ ...pre, mileStoneId: parseInt(value) }));
     setToggle((pre) => ({
       ...pre,
       isBudgetFetch: true,
     }));
+
     let issues: Array<number> = [];
+    let tempObj = { isPaid: false, filesLink: "", demoLink: "" };
     mileStone.forEach((item: any) => {
       if (value === item.mileStoneId) {
         issues = item.issues;
+        if (item?.paymentStatus === "Paid" || item.status === "closed") {
+          setSelectedOption({
+            isPaid: true,
+            demoLink: item.demoLink,
+            filesLink: item.filesLink,
+          });
+          tempObj = {
+            isPaid: true,
+            demoLink: item.demoLink,
+            filesLink: item.filesLink,
+          };
+        }
       }
     });
-
-    const budget = await getBudget({
-      apiKey,
-      issues,
-    });
-    if (budget) {
-      setAmount(`${budget}`);
+    if (tempObj.isPaid) {
+      setToggle((prev) => {
+        return {
+          ...prev,
+          isDownloadFiles: true,
+        };
+      });
+    } else {
+      const budget = await getBudget({
+        apiKey,
+        issues,
+      });
+      if (budget) {
+        setAmount(`${budget}`);
+        setToggle((pre) => ({
+          ...pre,
+          isDisableBtn: false,
+        }));
+      } else showToaster("Error in fetching budget", "error");
       setToggle((pre) => ({
         ...pre,
-        isDisableBtn: false,
+        isBudgetFetch: false,
       }));
-    } else showToaster("Error in fetching budget", "error");
-    setToggle((pre) => ({
-      ...pre,
-      isBudgetFetch: false,
-    }));
+    }
   };
 
   const handlePayNow = async () => {
@@ -166,6 +201,27 @@ function Form() {
   const handleProccessClick = () => {
     setIsClickable(true);
     delayedQuery(apiKey, projectIdentifier);
+  };
+
+  const handleDownloadFiles = () => {
+    if (
+      selectedOption.filesLink === null ||
+      selectedOption.filesLink === undefined
+    ) {
+      showToaster("Something is worng", "error");
+      return;
+    }
+    window.open(selectedOption.filesLink);
+  };
+  const handleDownloadVideo = () => {
+    if (
+      selectedOption.filesLink === null ||
+      selectedOption.filesLink === undefined
+    ) {
+      showToaster("Something is worng", "error");
+      return;
+    }
+    window.open(selectedOption.demoLink);
   };
 
   return (
@@ -202,7 +258,10 @@ function Form() {
           isBudgetFetch={isBudgetFetch}
           isClickable={isClickable}
           isDisableBtn={isDisableBtn}
+          isDownloadFiles={isDownloadFiles}
           onProceedClick={handleProccessClick}
+          handleDownloadFiles={handleDownloadFiles}
+          handleDownloadVideo={handleDownloadVideo}
         />
       </Grid>
     </Grid>

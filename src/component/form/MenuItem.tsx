@@ -31,7 +31,6 @@ function CustomMenuItem({
       >
         {mileStone.map((item: mileStoneDataType, i: number) => (
           <MenuItem
-            disabled={item?.status !== "open" || i !== 0}
             key={item.mileStoneId}
             value={item.mileStoneId}
             style={{

@@ -53,6 +53,7 @@ export interface toggleBtnProps {
   isDisabledProject: boolean;
   isDisabledSecret: boolean;
   isValidRelease: boolean;
+  isDownloadFiles: boolean;
 }
 
 export const initialToggleState: toggleBtnProps = {
@@ -64,6 +65,7 @@ export const initialToggleState: toggleBtnProps = {
   isDisabledProject: false,
   isDisabledSecret: false,
   isValidRelease: false,
+  isDownloadFiles: false,
 };
 
 export const initialFormState = {
@@ -81,3 +83,9 @@ export const initialProjectState: ProjectData = {
   projectIcon: "",
   projectName: "",
 };
+
+export interface SelectedOption {
+  isPaid: boolean;
+  demoLink?: string;
+  filesLink?: string;
+}

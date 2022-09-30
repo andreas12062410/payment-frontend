@@ -1,15 +1,39 @@
 import { Button } from "@mui/material";
 import Loader from "../loader/Loader";
+import Spacer from "../spacer/Spacer";
 import { formatCurrency } from "./utils";
 
 function FormButton({
   handlePayNow,
   isBudgetFetch,
   isDisableBtn,
+  isDownloadFiles,
   amount,
   onProceedClick,
+  handleDownloadFiles,
+  handleDownloadVideo,
 }: Props) {
-  return isBudgetFetch ? (
+  return isDownloadFiles ? (
+    <div style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}>
+      <Button
+        fullWidth
+        disabled={!isDownloadFiles}
+        onClick={handleDownloadFiles}
+        variant="contained"
+      >
+        Download Files
+      </Button>
+      <Spacer height={10} />
+      <Button
+        fullWidth
+        disabled={!isDownloadFiles}
+        onClick={handleDownloadVideo}
+        variant="contained"
+      >
+        Download Video
+      </Button>
+    </div>
+  ) : isBudgetFetch ? (
     <div style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}>
       <Button disabled={isDisableBtn} fullWidth variant="contained">
         <Loader isLoading={true} type="spinner" />
@@ -24,6 +48,10 @@ function FormButton({
         variant="contained"
       >
         Pay {formatCurrency({ amount: Number(amount) })}
+      </Button>
+      <Spacer height={10} />
+      <Button fullWidth onClick={handleDownloadVideo} variant="contained">
+        Download Video
       </Button>
     </div>
   ) : (
@@ -48,5 +76,8 @@ interface Props {
   handlePayNow: () => Promise<void>;
   amount: string;
   isClickable: boolean;
+  isDownloadFiles: boolean;
   onProceedClick: () => void;
+  handleDownloadFiles: () => void;
+  handleDownloadVideo: () => void;
 }
