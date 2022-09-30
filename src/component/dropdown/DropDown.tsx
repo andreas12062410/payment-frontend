@@ -19,7 +19,7 @@ const DropDown = ({
     const due = new Date(dueDate);
     const today = new Date();
     const diff = Math.ceil((due.getTime() - today.getTime()) / 86400000);
-    if (diff === 1) return `${diff} day`;
+    if (diff < 0) return "0 day";
     else return `${diff} days`;
   };
 

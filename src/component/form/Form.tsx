@@ -139,7 +139,17 @@ function Form() {
     mileStone.forEach((item: any) => {
       if (value === item.mileStoneId) {
         issues = item.issues;
-        if (item?.paymentStatus === "Paid" || item.status === "closed") {
+        if (item?.paymentStatus === "Due") {
+          setSelectedOption({
+            isPaid: true,
+            demoLink: item.demoLink,
+          });
+          tempObj = {
+            isPaid: true,
+            demoLink: item.demoLink,
+            filesLink: "",
+          };
+        } else {
           setSelectedOption({
             isPaid: true,
             demoLink: item.demoLink,
@@ -209,12 +219,8 @@ function Form() {
   };
 
   type ValueType = "files" | "videos";
-
   const handleDownloadBtn = (value: ValueType) => {
-    if (
-      selectedOption.filesLink === null ||
-      selectedOption.filesLink === undefined
-    ) {
+    if (selectedOption.filesLink === null || selectedOption.demoLink === null) {
       showToaster("Something is worng", "error");
       return;
     }

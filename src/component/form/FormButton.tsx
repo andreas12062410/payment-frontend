@@ -32,12 +32,7 @@ function FormButton({
       {selectedOption.demoLink && (
         <>
           <Spacer height={10} />
-          <Button
-            fullWidth
-            disabled={!isDownloadFiles}
-            onClick={handleDownloadVideo}
-            variant="contained"
-          >
+          <Button fullWidth onClick={handleDownloadVideo} variant="contained">
             Download Demo
           </Button>
         </>
@@ -59,10 +54,14 @@ function FormButton({
       >
         Pay {formatCurrency({ amount: Number(amount) })}
       </Button>
-      <Spacer height={10} />
-      <Button fullWidth onClick={handleDownloadVideo} variant="contained">
-        Download Video
-      </Button>
+      {selectedOption.demoLink && (
+        <>
+          <Spacer height={10} />
+          <Button fullWidth onClick={handleDownloadVideo} variant="contained">
+            Download Demo
+          </Button>
+        </>
+      )}
     </div>
   ) : (
     <div style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}>
