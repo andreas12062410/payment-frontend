@@ -56,6 +56,7 @@ function Form() {
 
   const delayedQuery = React.useRef(
     debounce(async (value: any, projectIdentifier: string) => {
+      if (!projectIdentifier) return;
       if (projectIdentifier.length > 0) {
         setToggle((pre) => ({
           ...pre,
@@ -106,6 +107,10 @@ function Form() {
     setForm((pre) => ({ ...pre, [name]: value }));
     if (name === "apiKey") {
       await delayedQuery(value, projectIdentifier);
+    } else {
+      if (apiKey?.length) {
+        await delayedQuery(apiKey, value);
+      }
     }
   };
 
