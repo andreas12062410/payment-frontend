@@ -207,8 +207,10 @@ function Form() {
     setIsClickable(true);
     delayedQuery(apiKey, projectIdentifier);
   };
+  
+  type ValueType = "files" | "videos";
 
-  const handleDownloadFiles = () => {
+  const handleDownloadBtn = (value: ValueType) => {
     if (
       selectedOption.filesLink === null ||
       selectedOption.filesLink === undefined
@@ -216,19 +218,12 @@ function Form() {
       showToaster("Something is worng", "error");
       return;
     }
-    window.open(selectedOption.filesLink);
-  };
-  const handleDownloadVideo = () => {
-    if (
-      selectedOption.filesLink === null ||
-      selectedOption.filesLink === undefined
-    ) {
-      showToaster("Something is worng", "error");
-      return;
+    if (value === "files") {
+      window.open(selectedOption.filesLink);
+    } else {
+      window.open(selectedOption.demoLink);
     }
-    window.open(selectedOption.demoLink);
   };
-
   return (
     <Grid justifyContent="center" container>
       <Grid sm={6} xs={12} lg={5} item>
@@ -265,8 +260,8 @@ function Form() {
           isDisableBtn={isDisableBtn}
           isDownloadFiles={isDownloadFiles}
           onProceedClick={handleProccessClick}
-          handleDownloadFiles={handleDownloadFiles}
-          handleDownloadVideo={handleDownloadVideo}
+          handleDownloadFiles={() => handleDownloadBtn("files")}
+          handleDownloadVideo={() => handleDownloadBtn("videos")}
         />
       </Grid>
     </Grid>
