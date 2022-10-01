@@ -27,9 +27,6 @@ body {
   justify-content: space-between;
   padding: 1rem !important;
 }
-.payment-footer {
-  margin-top: auto;
-}
 
 .MuiSvgIcon-root,
 .MuiFormLabel-root,
@@ -142,6 +139,10 @@ body {
   }
 }
 // For inline css
+.payment-footer {
+  margin-top: auto;
+}
+
 .project-data {
   border: "2px solid rgba(0, 169, 157, 0.8)";
   width: "100px";
