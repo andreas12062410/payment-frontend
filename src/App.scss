@@ -27,6 +27,9 @@ body {
   justify-content: space-between;
   padding: 1rem !important;
 }
+.payment-footer {
+  margin-top: auto;
+}
 
 .MuiSvgIcon-root,
 .MuiFormLabel-root,
@@ -138,9 +141,32 @@ body {
     }
   }
 }
+// For inline css
+.project-data {
+  border: "2px solid rgba(0, 169, 157, 0.8)";
+  width: "100px";
+  height: "100px";
+  border-radius: "50%";
+  margin: "0 auto";
+}
+
+.project-status {
+  display: flex;
+}
+
+.success {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  min-width: 100%;
+}
 
 // responsiveness css
 .payment-description {
+  margin: 0px auto;
+  // width: 70%; // Not needed
+  color: rgba(255, 255, 255, 0.81);
+  text-align: center;
   @media screen and (max-width: 768px) {
     width: 100% !important;
   }
@@ -193,7 +219,7 @@ body {
   color: var(--toastify-text-color-dark) !important;
 }
 
-// Doenload Btn css
+// Download Btn css
 @media screen and (max-width: 768px) {
   .download-btn-wrapper {
     display: flex !important;

@@ -3,15 +3,12 @@ import { Typography } from "@mui/material";
 function Description() {
   return (
     <Typography
-      width="70%"
-      color="rgba(255,255,255,0.81)"
+    // Removing from here and adding in app.scss
       paragraph
-      textAlign="center"
-      margin="0px auto"
       className="payment-description"
     >
       We at Koders truly appreciate your business, and we're so grateful for the
-      trust you've placed in us. We sincerely hope you are satisfied with your
+      trust you've placed in us.<br/> We sincerely hope you are satisfied with your
       purchase.
     </Typography>
   );

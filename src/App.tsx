@@ -13,7 +13,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
       </Routes>
 
-      <div style={{ marginTop: "auto" }}>
+      <div className="payment-footer">
         <Footer />
       </div>
       <ToastContainer limit={3} />

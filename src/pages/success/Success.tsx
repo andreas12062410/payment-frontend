@@ -4,10 +4,8 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 function Success() {
   return (
     <Grid
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-      minWidth="100%"
+      // Removing from here and adding in app.scss
+      className="success"
       container
     >
       <Grid lg={6} item>
