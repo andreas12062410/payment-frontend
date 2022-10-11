@@ -13,7 +13,7 @@ function ProjectStatus({ status, title, index }: Props) {
     index === 0 ? (
       <Typography> {title} </Typography>
     ) : (
-      <div style={{ display: "flex" }}>
+      <div className="project-status">
         {" "}
         <Typography marginRight="5px">
           {" "}
@@ -22,7 +22,7 @@ function ProjectStatus({ status, title, index }: Props) {
       </div>
     )
   ) : (
-    <div style={{ display: "flex" }}>
+    <div className="project-status">
       {" "}
       <Typography marginRight="5px"> {title} </Typography>{" "}
       <CheckCircle sx={{ fill: "#20B2AA !important" }} />{" "}

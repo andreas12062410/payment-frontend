@@ -1,20 +1,13 @@
-import Spacer from "../spacer/Spacer";
-import { Avatar, Typography } from "@mui/material";
+import Spacer from '../spacer/Spacer';
+import { Avatar, Typography } from '@mui/material';
 
 const ProjectData = ({ projectIcon, projectName, description }: Props) => {
   return (
     <>
-      <div
-        style={{
-          border: "2px solid rgba(0, 169, 157, 0.8)",
-          width: "100px",
-          height: "100px",
-          borderRadius: "50%",
-          margin: "0 auto",
-        }}
-      >
+      <div className="project-data">
         <Avatar
-          style={{ height: "100%", width: "100%" }}
+          style={{ height: '100%', width: '100%' }}
+
           alt="pIcon"
           src={projectIcon}
         />
