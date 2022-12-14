@@ -6,7 +6,7 @@ const ProjectData = ({ projectIcon, projectName, description }: Props) => {
     <>
       <div className="project-data">
         <Avatar
-          style={{ margin: "0px auto", height: "100%", width: "50%" }}
+          style={{ margin: "0px auto", height: "50%", width: "50%" }}
           alt="pIcon"
           src={projectIcon}
         />

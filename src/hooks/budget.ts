@@ -13,9 +13,12 @@ export const useGetBudgetHook = () => {
       });
       if (status === 200) {
         return data.data;
-      } else return null;
+      }
+      return null;
     } catch (e: any) {
-      console.log(`Something went wrong while fetching budget. Reason-${e.message}`);
+      console.log(
+        `Something went wrong while fetching budget. Reason-${e.message}`
+      );
     }
   };
   return getBudget;

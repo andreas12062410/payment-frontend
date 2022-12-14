@@ -1,3 +1,5 @@
+import { ProjectData } from "../../hooks/form";
+
 interface CurrencyProps {
   amount: number;
   locale?: string;
@@ -27,18 +29,6 @@ export const formatCurrency = ({
   });
 };
 
-export interface ProjectData {
-  description: string;
-  projectIcon: string;
-  projectName: string;
-}
-
-export interface Project {
-  apiKey: string;
-  projectIdentifier: string;
-  mileStoneId: any;
-}
-
 export const iconProps = {
   color: "rgba(255,255,255,0.81)",
   size: 20,
@@ -54,6 +44,7 @@ export interface toggleBtnProps {
   isDisabledSecret: boolean;
   isValidRelease: boolean;
   isDownloadFiles: boolean;
+  isCouponApplied: boolean;
 }
 
 export const initialToggleState: toggleBtnProps = {
@@ -66,6 +57,7 @@ export const initialToggleState: toggleBtnProps = {
   isDisabledSecret: false,
   isValidRelease: false,
   isDownloadFiles: false,
+  isCouponApplied: false,
 };
 
 export const initialFormState = {

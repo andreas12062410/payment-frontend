@@ -219,6 +219,15 @@ body {
   background: var(--toastify-color-dark) !important;
   color: var(--toastify-text-color-dark) !important;
 }
+@media screen and (max-width: 1308px) {
+  .payment-container {
+    // height: unset !important;
+    overflow-y: scroll !important;
+  }
+  // .payment-footer {
+  //   margin-top: 20%;
+  // }
+}
 
 // Download Btn css
 @media screen and (max-width: 768px) {
@@ -229,4 +238,9 @@ body {
       width: 48% !important;
     }
   }
+}
+
+// coupon container
+.coupon-container {
+  display: flex;
 }

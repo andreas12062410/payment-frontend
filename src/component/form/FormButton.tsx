@@ -1,7 +1,9 @@
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import { ChangeEvent } from "react";
 import Loader from "../loader/Loader";
 import Spacer from "../spacer/Spacer";
-import { formatCurrency, SelectedOption } from "./utils";
+import CouponField from "./CouponField";
+import { formatCurrency, inputSX, SelectedOption } from "./utils";
 
 function FormButton({
   selectedOption,
@@ -13,6 +15,9 @@ function FormButton({
   onProceedClick,
   handleDownloadFiles,
   handleDownloadVideo,
+  onCodeChange,
+  onCodeApply,
+  isCouponApplied,
 }: Props) {
   return isDownloadFiles ? (
     <div
@@ -46,6 +51,12 @@ function FormButton({
     </div>
   ) : amount.length > 0 ? (
     <div style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}>
+      <CouponField
+        isCouponApplied={isCouponApplied}
+        onApplyCode={onCodeApply}
+        onCodeChange={onCodeChange}
+      />
+      <Spacer height={10} />
       <Button
         fullWidth
         onClick={handlePayNow}
@@ -82,6 +93,7 @@ export default FormButton;
 interface Props {
   isBudgetFetch: boolean;
   isDisableBtn?: boolean;
+  isCouponApplied: boolean;
   handlePayNow: () => Promise<void>;
   amount: string;
   isClickable: boolean;
@@ -89,5 +101,7 @@ interface Props {
   onProceedClick: () => void;
   handleDownloadFiles: () => void;
   handleDownloadVideo: () => void;
+  onCodeApply: () => void;
   selectedOption: SelectedOption;
+  onCodeChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }

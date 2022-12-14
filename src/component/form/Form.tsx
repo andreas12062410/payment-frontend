@@ -1,20 +1,14 @@
 import { Grid } from "@mui/material";
-import { debounce } from "lodash";
 import Spacer from "../spacer/Spacer";
 import Loader from "../loader/Loader";
 import { showToaster } from "../../helper/toast";
-import React, { ChangeEvent, useState } from "react";
-import { useGetBudgetHook } from "../../hooks/budget";
-import { useCheckoutHook } from "../../hooks/checkout";
+import { ChangeEvent, useState } from "react";
 import ProjectDataComp from "../project-data/ProjectData";
-import { mileStoneDataType, useFormSubmitHook } from "../../hooks/form";
+import { mileStoneDataType, Project, ProjectData } from "../../hooks/form";
 import {
   initialFormState,
   initialProjectState,
   initialToggleState,
-  isValidResponse,
-  Project,
-  ProjectData,
   SelectedOption,
   toggleBtnProps,
 } from "./utils";
@@ -22,15 +16,19 @@ import CustomMenuItem from "./MenuItem";
 import FormButton from "./FormButton";
 import ProjectTitle from "./Title";
 import FormInitialField from "./FormInitialField";
+import { useDelayedQueryHook } from "../../hooks/delayed_query";
+import { useGetBudgetFromIssues } from "../../hooks/issues_budget";
+import { useApplyCouponHook } from "../../hooks/coupon";
 
 function Form() {
-  const checkout = useCheckoutHook();
-  const getBudget = useGetBudgetHook();
-  const formSubmit = useFormSubmitHook();
-  const [amount, setAmount] = useState<string>("");
   const [projectDetails, setProjectDetails] =
     useState<ProjectData>(initialProjectState);
+  const applyCouponCode = useApplyCouponHook();
+  const { debounceCallback } = useDelayedQueryHook();
+  const [menuItemId, setMenuItemId] = useState<string>("");
+  const [amount, setAmount] = useState<string>("");
   const [mileStone, setMileStone] = useState<Array<mileStoneDataType>>([]);
+  const { getBudgetFromMilestones, payNow } = useGetBudgetFromIssues();
   const [
     {
       isSecretVisible,
@@ -42,82 +40,58 @@ function Form() {
       isDisabledSecret,
       isValidRelease,
       isDownloadFiles,
+      isCouponApplied,
     },
     setToggle,
   ] = useState<toggleBtnProps>(initialToggleState);
-  const [{ apiKey, projectIdentifier, mileStoneId }, setForm] =
-    useState<Project>(initialFormState);
   const [isClickable, setIsClickable] = useState(false);
+  const [{ apiKey, projectIdentifier, mileStoneId, couponCode }, setForm] =
+    useState<Project>(initialFormState);
   const [selectedOption, setSelectedOption] = useState<SelectedOption>({
     isPaid: false,
     filesLink: "",
     demoLink: "",
   });
 
-  const delayedQuery = React.useRef(
-    debounce(async (value: any, projectIdentifier: string) => {
-      if (!projectIdentifier) return;
-      if (projectIdentifier.length > 0) {
-        setToggle((pre) => ({
-          ...pre,
-          isMilestoneFetch: true,
-        }));
-        const data: any = await formSubmit({
-          apiKey: value,
-          projectIdentifier,
-        });
-        if (isValidResponse(data)) {
-          setToggle((pre) => ({
-            ...pre,
-            isDisableSelect: !pre.isDisableSelect,
-            isDisabledProject: true,
-            isDisabledSecret: true,
-            isValidRelease: true,
-          }));
-
-          setProjectDetails({ ...data[0].projectData });
-          const key: Array<string> = Object.keys(data[0].milestones);
-          const value: Array<mileStoneDataType> = Object.values(
-            data[0].milestones
-          );
-          let tempArr: Array<mileStoneDataType> = [];
-          value.forEach((item: mileStoneDataType, i) => {
-            tempArr = [...tempArr, { ...item, mileStoneId: parseInt(key[i]) }];
-          });
-
-          const closeMilestone: any = [];
-          const openMilestone: any = [];
-          tempArr.forEach((item) => {
-            if (item.status !== "closed") openMilestone.push(item);
-            else closeMilestone.push(item);
-          });
-          setMileStone([...openMilestone, ...closeMilestone]);
-        } else showToaster("Something went wrong", "error");
-        setToggle((pre) => ({
-          ...pre,
-          isMilestoneFetch: false,
-        }));
-      } else showToaster("Please enter project ID", "error");
-      setIsClickable(false);
-    }, 600)
-  ).current;
-
+  /**
+   * input field handlre for API key, project Id
+   */
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setForm((pre) => ({ ...pre, [name]: value }));
     if (name === "apiKey") {
-      await delayedQuery(value, projectIdentifier);
+      await debounceCallback(
+        value,
+        projectIdentifier,
+        setToggle,
+        setProjectDetails,
+        setMileStone,
+        setIsClickable
+      );
     } else {
       if (apiKey?.length) {
-        await delayedQuery(apiKey, value);
+        await debounceCallback(
+          apiKey,
+          projectIdentifier,
+          setToggle,
+          setProjectDetails,
+          setMileStone,
+          setIsClickable
+        );
       }
     }
   };
 
+  /**
+   * toggle API key input field visibility
+   */
   const handleSecretIcon = () => {
     setToggle((pre) => ({ ...pre, isSecretVisible: !pre.isSecretVisible }));
   };
 
+  /**
+   * handler to select milestone from milestoned array
+   */
   const handleSelectChange = async (e: ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     setToggle((prev) => {
@@ -128,97 +102,60 @@ function Form() {
     });
     setSelectedOption({ isPaid: false, filesLink: "", demoLink: "" });
     const { value } = e.target;
+    setMenuItemId(value);
     setForm((pre) => ({ ...pre, mileStoneId: parseInt(value) }));
     setToggle((pre) => ({
       ...pre,
       isBudgetFetch: true,
     }));
+    // fetching budget and save locally for future use
+    const budget = await getBudgetFromMilestones(
+      mileStone,
+      value,
+      apiKey,
+      setSelectedOption,
+      setToggle
+    );
 
-    let issues: Array<number> = [];
-    let tempObj = { isPaid: false, filesLink: "", demoLink: "" };
-    mileStone.forEach((item: any) => {
-      if (value === item.mileStoneId) {
-        issues = item.issues;
-        if (item?.paymentStatus === "Due") {
-          setSelectedOption({
-            isPaid: false,
-            demoLink: item.demoLink,
-          });
-          tempObj = {
-            isPaid: false,
-            demoLink: item.demoLink,
-            filesLink: "",
-          };
-        } else {
-          setSelectedOption({
-            isPaid: true,
-            demoLink: item.demoLink,
-            filesLink: item.filesLink,
-          });
-          tempObj = {
-            isPaid: true,
-            demoLink: item.demoLink,
-            filesLink: item.filesLink,
-          };
-        }
-      }
-    });
-    if (tempObj.isPaid) {
-      setToggle((prev) => {
-        return {
-          ...prev,
-          isDownloadFiles: true,
-        };
-      });
-    } else {
-      const budget = await getBudget({
-        apiKey,
-        issues,
-      });
-      if (budget) {
-        setAmount(`${budget}`);
-        setToggle((pre) => ({
-          ...pre,
-          isDisableBtn: false,
-        }));
-      } else showToaster("Error in fetching budget", "error");
-      setToggle((pre) => ({
-        ...pre,
-        isBudgetFetch: false,
-      }));
+    if (typeof budget === "string") {
+      setAmount(budget);
     }
   };
 
-  const handlePayNow = async () => {
-    const data = mileStone.filter(({ mileStoneId: id }) => id === mileStoneId);
-    if (data.length === 0) return;
-    setToggle((pre) => ({
-      ...pre,
-      isDisableBtn: true,
-    }));
-    const [{ title }] = data;
-    const uri = await checkout({
-      milestoneUnitAmount: amount,
-      milestoneImages: [],
-      milestoneTitle: title,
+  /**
+   * button handler to pay now functionality
+   * without any coupon code
+   */
+  const handlePayNowHandler = async () => {
+    await payNow(
+      mileStone,
+      mileStoneId,
+      setToggle,
       apiKey,
       projectIdentifier,
-    });
-    setToggle((pre) => ({
-      ...pre,
-      isDisableBtn: false,
-    }));
-    if (uri) {
-      window.open(uri, "_blank");
-    }
+      amount
+    );
   };
 
-  const handleProccessClick = () => {
+  const handleProccessClick = async () => {
     setIsClickable(true);
-    delayedQuery(apiKey, projectIdentifier);
+
+    await debounceCallback(
+      apiKey,
+      projectIdentifier,
+      setToggle,
+      setProjectDetails,
+      setMileStone,
+      setIsClickable
+    );
   };
 
   type ValueType = "files" | "videos";
+
+  /**
+   *  file download functionality
+   * or demo video download
+   */
   const handleDownloadBtn = (value: ValueType) => {
     if (selectedOption.filesLink === null || selectedOption.demoLink === null) {
       showToaster("Something is worng", "error");
@@ -230,6 +167,48 @@ function Form() {
       window.open(`${selectedOption.demoLink}?key=${apiKey}`);
     }
   };
+
+  // coupon onChange handler
+  const handleCouponChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm((pre) => ({ ...pre, couponCode: e.target.value }));
+  };
+
+  // apply code btn handler
+  const handleApplyCoupon = async () => {
+    if (couponCode !== undefined && couponCode.length > 0) {
+      setToggle((pre) => {
+        return { ...pre, isDisableBtn: true };
+      });
+      let amount: string | undefined | void | null = "";
+      if (isCouponApplied) {
+        amount = await getBudgetFromMilestones(
+          mileStone,
+          menuItemId,
+          apiKey,
+          setSelectedOption,
+          setToggle
+        );
+      } else {
+        amount = await applyCouponCode(
+          mileStone,
+          menuItemId,
+          setSelectedOption,
+          apiKey,
+          couponCode
+        );
+      }
+      if (amount) {
+        setToggle((pre) => {
+          return { ...pre, isCouponApplied: true };
+        });
+        setAmount(amount);
+      }
+      setToggle((pre) => {
+        return { ...pre, isDisableBtn: false };
+      });
+    } else showToaster("Enter valid coupon code", "error");
+  };
+
   return (
     <Grid justifyContent="center" container>
       <Grid sm={6} xs={12} lg={5} item>
@@ -261,7 +240,10 @@ function Form() {
         <FormButton
           selectedOption={selectedOption}
           amount={amount}
-          handlePayNow={handlePayNow}
+          isCouponApplied={isCouponApplied}
+          onCodeApply={handleApplyCoupon}
+          handlePayNow={handlePayNowHandler}
+          onCodeChange={handleCouponChange}
           isBudgetFetch={isBudgetFetch}
           isClickable={isClickable}
           isDisableBtn={isDisableBtn}
