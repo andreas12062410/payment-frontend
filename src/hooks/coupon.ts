@@ -10,7 +10,8 @@ export const useApplyCouponHook = () => {
     menuItemId: string,
     setSelectedOption: React.Dispatch<React.SetStateAction<SelectedOption>>,
     apiKey: string,
-    couponCode: string
+    couponCode: string,
+    pid: string
   ) => {
     if (milestones.length === 0) return; // no milestone
     if (apiKey.length === 0) return;
@@ -19,7 +20,12 @@ export const useApplyCouponHook = () => {
       menuItemId,
       setSelectedOption
     );
-    const response = await applyCoupon({ apiKey, coupon: couponCode, issues });
+    const response = await applyCoupon({
+      apiKey,
+      coupon: couponCode,
+      issues,
+      pid,
+    });
     if (response === null && response === undefined) return null;
     return response?.toString();
   };

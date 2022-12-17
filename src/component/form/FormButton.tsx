@@ -1,9 +1,9 @@
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { ChangeEvent } from "react";
 import Loader from "../loader/Loader";
 import Spacer from "../spacer/Spacer";
 import CouponField from "./CouponField";
-import { formatCurrency, inputSX, SelectedOption } from "./utils";
+import { formatCurrency, SelectedOption } from "./utils";
 
 function FormButton({
   selectedOption,

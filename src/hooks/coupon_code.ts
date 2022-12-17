@@ -5,6 +5,7 @@ interface ICouponCode {
   apiKey: string;
   issues: any;
   coupon: string;
+  pid: string;
 }
 
 export const useCouponCodeHook = () => {
@@ -17,7 +18,8 @@ export const useCouponCodeHook = () => {
         payload,
       });
       if (status === 200) {
-        if (data.msg === "Budget amount") return data.data;
+        return data.data;
+      } else if (status === 201) {
         showToaster(data.msg, "error");
       }
       return null;

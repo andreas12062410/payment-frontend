@@ -20,14 +20,16 @@ body {
   background: linear-gradient(#040e27, rgba(4, 14, 39, 0.3));
   padding: 2rem;
 }
+
 .payment-container {
-  height: 100vh !important;
-  display: flex !important;
-  flex-direction: column;
-  justify-content: space-between;
+  // display: flex !important;
+  // flex-direction: column;
+  // justify-content: space-between;
   padding: 1rem !important;
+  border: 1px solid red;
 }
 
+// Material UI CSS
 .MuiSvgIcon-root,
 .MuiFormLabel-root,
 .MuiInputBase-root {
@@ -79,6 +81,7 @@ body {
   max-height: calc(36px * 3) !important;
 }
 
+// Due and Paid badges CSS
 .payment-badge {
   position: absolute !important;
   right: 1em !important;
@@ -138,11 +141,8 @@ body {
     }
   }
 }
-// For inline css
-.payment-footer {
-  margin-top: auto;
-}
 
+// Project Data Section CSS
 .project-data {
   border: "2px solid rgba(0, 169, 157, 0.8)";
   width: "100px";
@@ -150,32 +150,44 @@ body {
   border-radius: "50%";
   margin: "0 auto";
 }
+.project-poster {
+  width: 20% !important;
+  height: 20% !important;
+  border: 1px solid red;
+  margin: 0px auto !important;
+}
 
 .project-status {
   display: flex;
 }
 
-.success {
-  justify-content: center;
-  align-items: center;
-  // height: 100vh;
-  // min-width: 100%;
-}
-
 // responsiveness css
 .payment-description {
   margin: 0px auto;
-  // width: 70%; // Not needed
   color: rgba(255, 255, 255, 0.81);
   text-align: center;
   @media screen and (max-width: 768px) {
     width: 100% !important;
   }
 }
+
+// Footer CSS
+
 .footer-wrapper {
-  @media screen and (max-width: 768px) {
-    flex-direction: column !important;
-    align-items: center !important;
+  margin-top: 30%;
+  position: absolute;
+  bottom: 10px;
+  .MuiGrid-root {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    @media screen and (max-width: 468px) {
+      flex-direction: column !important;
+      align-items: center !important;
+    }
+  }
+  @media screen and (max-width: 468px) {
+    position: unset;
   }
 }
 
@@ -186,13 +198,27 @@ body {
   }
   .footer-fill {
     height: 2px;
-    background: #00a99d;
+    background: white;
     transition: transform 0.2s ease-in-out;
     transform: translateX(-100%);
   }
 }
 
-// success page css
+// Success page CSS
+
+.success {
+  justify-content: center;
+  align-items: center;
+  // height: 100vh;
+  // min-width: 100%;
+}
+.success-container {
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  min-width: 100%;
+}
+
 .success-card {
   padding: 1rem;
   display: flex !important;
@@ -218,15 +244,6 @@ body {
 .Toastify__toast-theme--light {
   background: var(--toastify-color-dark) !important;
   color: var(--toastify-text-color-dark) !important;
-}
-@media screen and (max-width: 1308px) {
-  .payment-container {
-    // height: unset !important;
-    overflow-y: scroll !important;
-  }
-  // .payment-footer {
-  //   margin-top: 20%;
-  // }
 }
 
 // Download Btn css
