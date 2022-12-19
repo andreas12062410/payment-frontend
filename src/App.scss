@@ -14,6 +14,7 @@
 
 body {
   background: #0f0e0e;
+  overflow-x: hidden;
 }
 
 .app {
@@ -22,11 +23,7 @@ body {
 }
 
 .payment-container {
-  // display: flex !important;
-  // flex-direction: column;
-  // justify-content: space-between;
   padding: 1rem !important;
-  border: 1px solid red;
 }
 
 // Material UI CSS
@@ -153,7 +150,6 @@ body {
 .project-poster {
   width: 20% !important;
   height: 20% !important;
-  border: 1px solid red;
   margin: 0px auto !important;
 }
 
@@ -185,6 +181,9 @@ body {
       flex-direction: column !important;
       align-items: center !important;
     }
+  }
+  @media screen and (max-width: 1224px) {
+    position: unset;
   }
   @media screen and (max-width: 468px) {
     position: unset;
@@ -260,4 +259,54 @@ body {
 // coupon container
 .coupon-container {
   display: flex;
+}
+
+// success page
+
+.checkmark {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 2;
+  stroke: #00a99d;
+  stroke-miterlimit: 10;
+  // margin: 10% auto;
+  box-shadow: inset 0px 0px 0px #00a99d;
+  animation: fill 0.4s ease-in-out 0.4s forwards,
+    scale 0.3s ease-in-out 0.9s both;
+  @keyframes scale {
+    0%,
+    100% {
+      transform: none;
+    }
+    50% {
+      transform: scale3d(1.1, 1.1, 1);
+    }
+  }
+  @keyframes fill {
+    100% {
+      box-shadow: inset 0px 0px 0px 5px #00a99d;
+    }
+  }
+  .checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+  }
+  .checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #00a99d;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    @keyframes stroke {
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+  }
 }

@@ -11,10 +11,8 @@ function App() {
       <Container className="payment-container">
         <Routes>
           <Route path="/success" element={<SuccessPage />} />
-
           <Route path="/" element={<HomePage />} />
         </Routes>
-
         <ToastContainer limit={3} />
       </Container>
       <Footer />

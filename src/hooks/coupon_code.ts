@@ -1,3 +1,4 @@
+import { ICouponDetails } from "../component/form/utils";
 import { sendPayload } from "../helper/api";
 import { showToaster } from "../helper/toast";
 
@@ -11,13 +12,14 @@ interface ICouponCode {
 export const useCouponCodeHook = () => {
   const code = async (
     payload: ICouponCode
-  ): Promise<string | undefined | null> => {
+  ): Promise<ICouponDetails | undefined | null> => {
     try {
       const { data, status } = await sendPayload({
         endpoint: "/coupon",
         payload,
       });
       if (status === 200) {
+        showToaster(data.msg, "info");
         return data.data;
       } else if (status === 201) {
         showToaster(data.msg, "error");

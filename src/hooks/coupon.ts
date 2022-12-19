@@ -26,8 +26,7 @@ export const useApplyCouponHook = () => {
       issues,
       pid,
     });
-    if (response === null && response === undefined) return null;
-    return response?.toString();
+    return response;
   };
   return applyCode;
 };

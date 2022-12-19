@@ -82,3 +82,8 @@ export interface SelectedOption {
   demoLink?: string;
   filesLink?: string;
 }
+
+export interface ICouponDetails {
+  originalBudget: string;
+  budgetAfterAppliedCoupon: string;
+}

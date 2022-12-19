@@ -1,9 +1,9 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { ChangeEvent } from "react";
 import Loader from "../loader/Loader";
 import Spacer from "../spacer/Spacer";
 import CouponField from "./CouponField";
-import { formatCurrency, SelectedOption } from "./utils";
+import { formatCurrency, ICouponDetails, SelectedOption } from "./utils";
 
 function FormButton({
   selectedOption,
@@ -18,6 +18,7 @@ function FormButton({
   onCodeChange,
   onCodeApply,
   isCouponApplied,
+  couponDetails,
 }: Props) {
   return isDownloadFiles ? (
     <div
@@ -57,14 +58,40 @@ function FormButton({
         onCodeChange={onCodeChange}
       />
       <Spacer height={10} />
-      <Button
-        fullWidth
-        onClick={handlePayNow}
-        disabled={isDisableBtn}
-        variant="contained"
-      >
-        Pay {formatCurrency({ amount: Number(amount) })}
-      </Button>
+      {isCouponApplied ? (
+        <Button
+          fullWidth
+          onClick={handlePayNow}
+          disabled={isDisableBtn}
+          variant="contained"
+        >
+          <Typography marginRight="10px">
+            Pay{" "}
+            {formatCurrency({
+              amount: Number(couponDetails.budgetAfterAppliedCoupon),
+            })}
+          </Typography>
+          <Typography
+            style={{
+              textDecoration: "line-through",
+              color: "red",
+            }}
+          >
+            ({formatCurrency({ amount: Number(couponDetails.originalBudget) })})
+          </Typography>
+        </Button>
+      ) : (
+        <Button
+          fullWidth
+          onClick={handlePayNow}
+          disabled={isDisableBtn}
+          variant="contained"
+        >
+          {isCouponApplied}
+          Pay {formatCurrency({ amount: Number(amount) })}
+        </Button>
+      )}
+
       {selectedOption.demoLink && (
         <>
           <Spacer height={10} />
@@ -104,4 +131,5 @@ interface Props {
   onCodeApply: () => void;
   selectedOption: SelectedOption;
   onCodeChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  couponDetails: ICouponDetails;
 }

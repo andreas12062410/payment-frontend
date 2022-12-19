@@ -6,6 +6,7 @@ import { ChangeEvent, useState } from "react";
 import ProjectDataComp from "../project-data/ProjectData";
 import { mileStoneDataType, Project, ProjectData } from "../../hooks/form";
 import {
+  ICouponDetails,
   initialFormState,
   initialProjectState,
   initialToggleState,
@@ -27,6 +28,10 @@ function Form() {
   const { debounceCallback } = useDelayedQueryHook();
   const [menuItemId, setMenuItemId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
+  const [couponDetails, setCouponDetails] = useState<ICouponDetails>({
+    budgetAfterAppliedCoupon: "",
+    originalBudget: "",
+  });
   const [mileStone, setMileStone] = useState<Array<mileStoneDataType>>([]);
   const { getBudgetFromMilestones, payNow } = useGetBudgetFromIssues();
   const [
@@ -133,7 +138,7 @@ function Form() {
       setToggle,
       apiKey,
       projectIdentifier,
-      amount
+      isCouponApplied ? couponDetails.budgetAfterAppliedCoupon : amount
     );
   };
 
@@ -179,17 +184,28 @@ function Form() {
       setToggle((pre) => {
         return { ...pre, isDisableBtn: true };
       });
-      let amount: string | undefined | void | null = "";
+
       if (isCouponApplied) {
-        amount = await getBudgetFromMilestones(
+        const amount = await getBudgetFromMilestones(
           mileStone,
           menuItemId,
           apiKey,
           setSelectedOption,
           setToggle
         );
+        if (amount) {
+          // reset value on code remove clicked
+          setToggle((pre) => {
+            return { ...pre, isCouponApplied: false };
+          });
+          setCouponDetails({
+            budgetAfterAppliedCoupon: "",
+            originalBudget: "",
+          });
+          setAmount(amount);
+        }
       } else {
-        amount = await applyCouponCode(
+        const amount = await applyCouponCode(
           mileStone,
           menuItemId,
           setSelectedOption,
@@ -197,12 +213,12 @@ function Form() {
           couponCode,
           projectIdentifier
         );
-      }
-      if (amount) {
-        setToggle((pre) => {
-          return { ...pre, isCouponApplied: true };
-        });
-        setAmount(amount);
+        if (amount) {
+          setToggle((pre) => {
+            return { ...pre, isCouponApplied: true };
+          });
+          setCouponDetails(amount);
+        }
       }
       setToggle((pre) => {
         return { ...pre, isDisableBtn: false };
@@ -246,6 +262,7 @@ function Form() {
           handlePayNow={handlePayNowHandler}
           onCodeChange={handleCouponChange}
           isBudgetFetch={isBudgetFetch}
+          couponDetails={couponDetails}
           isClickable={isClickable}
           isDisableBtn={isDisableBtn}
           isDownloadFiles={isDownloadFiles}
