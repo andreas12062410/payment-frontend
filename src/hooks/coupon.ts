@@ -13,7 +13,7 @@ export const useApplyCouponHook = () => {
     couponCode: string,
     pid: string
   ) => {
-    if (milestones.length === 0) return; // no milestone
+    if (milestones.length === 0) return; 
     if (apiKey.length === 0) return;
     const { issues } = getPaymentStatusFromMilestone(
       milestones,
