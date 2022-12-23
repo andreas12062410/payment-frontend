@@ -12,15 +12,18 @@ const client = Axios.create({
 interface Props {
   endpoint: Endpoint;
   payload: any;
+  readError?: boolean;
 }
 
 export const sendPayload = async ({
   endpoint,
   payload,
+  readError = false,
 }: Props): Promise<AxiosResponse> => {
   try {
     return await client.post(endpoint, payload);
   } catch (error: any) {
-    throw new Error(error.message);
+    if (readError) throw error;
+    else throw new Error(error.message);
   }
 };

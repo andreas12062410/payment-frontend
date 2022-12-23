@@ -17,15 +17,17 @@ export const useCouponCodeHook = () => {
       const { data, status } = await sendPayload({
         endpoint: "/coupon",
         payload,
+        readError: true,
       });
       if (status === 200) {
         showToaster(data.msg, "info");
         return data.data;
-      } else if (status === 201) {
-        showToaster(data.msg, "error");
       }
       return null;
     } catch (e: any) {
+      if (e.response.status === 400) {
+        showToaster(e.response.data.msg, "error");
+      }
       console.log(
         `Something went wrong while  applying coupon. Reason-${e.message}`
       );
