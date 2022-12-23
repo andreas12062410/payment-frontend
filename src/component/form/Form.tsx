@@ -97,6 +97,7 @@ function Form() {
               if (data === null || data.length === 0) {
                 handleFetchState(false);
                 showToaster("Network Error", "error");
+                setFullScreenLoader(false);
                 return;
               }
 
@@ -128,7 +129,8 @@ function Form() {
       fetchMileStones();
       isRead.current = true;
     }
-  }, [window.location.search]);
+    // eslint-disable-next-line  react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * input field handlre for API key, project Id
