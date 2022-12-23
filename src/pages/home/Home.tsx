@@ -4,7 +4,6 @@ import {
   ProjectDetailForm,
   Spacer,
 } from "../../component";
-
 function Home() {
   return (
     <>

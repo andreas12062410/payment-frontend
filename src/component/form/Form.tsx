@@ -2,14 +2,20 @@ import { Grid } from "@mui/material";
 import Spacer from "../spacer/Spacer";
 import Loader from "../loader/Loader";
 import { showToaster } from "../../helper/toast";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import ProjectDataComp from "../project-data/ProjectData";
-import { mileStoneDataType, Project, ProjectData } from "../../hooks/form";
+import {
+  mileStoneDataType,
+  Project,
+  ProjectData,
+  useFormSubmitHook,
+} from "../../hooks/form";
 import {
   ICouponDetails,
   initialFormState,
   initialProjectState,
   initialToggleState,
+  isValidResponse,
   SelectedOption,
   toggleBtnProps,
 } from "./utils";
@@ -20,12 +26,16 @@ import FormInitialField from "./FormInitialField";
 import { useDelayedQueryHook } from "../../hooks/delayed_query";
 import { useGetBudgetFromIssues } from "../../hooks/issues_budget";
 import { useApplyCouponHook } from "../../hooks/coupon";
+import { FullScreenSpinner } from "..";
 
 function Form() {
   const [projectDetails, setProjectDetails] =
     useState<ProjectData>(initialProjectState);
   const applyCouponCode = useApplyCouponHook();
+  const isRead = useRef<boolean>(false);
+  const getProject = useFormSubmitHook();
   const { debounceCallback } = useDelayedQueryHook();
+  const [fullScreenLoader, setFullScreenLoader] = useState<boolean>(false);
   const [menuItemId, setMenuItemId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [couponDetails, setCouponDetails] = useState<ICouponDetails>({
@@ -57,6 +67,68 @@ function Form() {
     filesLink: "",
     demoLink: "",
   });
+
+  // listener for reading URL and fetch project detaiuls and mapped to the UI
+  // TODO:-> in future we can refactor this
+  useEffect(() => {
+    if (!isRead.current) {
+      const fetchMileStones = async () => {
+        const search = window.location.search;
+        const splitedList = search.replace("?", "").split("&");
+        if (splitedList.length === 2) {
+          const isAPI = splitedList[0].toLowerCase().includes("api");
+          const isPID = splitedList[1].toLowerCase().includes("pid");
+          if (isAPI && isPID) {
+            const api = splitedList[0].match(/\w+/g);
+            const pid = splitedList[1].match(/\d+/g);
+            if (api && pid) {
+              setFullScreenLoader(true);
+              const data = await getProject({
+                apiKey: api[1],
+                projectIdentifier: pid[0],
+              });
+              const handleFetchState = (value: boolean) => {
+                setToggle((pre) => ({
+                  ...pre,
+                  isMilestoneFetch: value,
+                }));
+              };
+
+              if (data === null || data.length === 0) {
+                handleFetchState(false);
+                showToaster("Network Error", "error");
+                return;
+              }
+
+              if (isValidResponse(data)) {
+                setToggle((pre) => ({
+                  ...pre,
+                  isDisableSelect: !pre.isDisableSelect,
+                  isDisabledProject: true,
+                  isDisabledSecret: true,
+                  isValidRelease: true,
+                }));
+                setProjectDetails({ ...data[0].projectData });
+                const value: Array<mileStoneDataType> = Object.values(
+                  data[0].milestones
+                );
+                let tempArr: Array<mileStoneDataType> = [];
+                value.forEach((item: mileStoneDataType, i) => {
+                  tempArr.push({ ...item, mileStoneId: i });
+                });
+                setMileStone([...tempArr]);
+              } else {
+                console.warn("📍No milestones found in the response📍");
+              }
+              setFullScreenLoader(false);
+            }
+          }
+        }
+      };
+      fetchMileStones();
+      isRead.current = true;
+    }
+  }, [window.location.search]);
 
   /**
    * input field handlre for API key, project Id
@@ -271,6 +343,7 @@ function Form() {
           handleDownloadVideo={() => handleDownloadBtn("videos")}
         />
       </Grid>
+      {fullScreenLoader ? <FullScreenSpinner /> : null}
     </Grid>
   );
 }
