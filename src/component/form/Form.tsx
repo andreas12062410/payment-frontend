@@ -74,56 +74,48 @@ function Form() {
     if (!isRead.current) {
       const fetchMileStones = async () => {
         const search = window.location.search;
-        const splitedList = search.replace("?", "").split("&");
-        if (splitedList.length === 2) {
-          const isAPI = splitedList[0].toLowerCase().includes("api");
-          const isPID = splitedList[1].toLowerCase().includes("pid");
-          if (isAPI && isPID) {
-            const api = splitedList[0].match(/\w+/g);
-            const pid = splitedList[1].match(/\d+/g);
-            if (api && pid) {
-              setFullScreenLoader(true);
-              const data = await getProject({
-                apiKey: api[1],
-                projectIdentifier: pid[0],
-              });
-              const handleFetchState = (value: boolean) => {
-                setToggle((pre) => ({
-                  ...pre,
-                  isMilestoneFetch: value,
-                }));
-              };
-
-              if (data === null || data.length === 0) {
-                handleFetchState(false);
-                showToaster("Network Error", "error");
-                setFullScreenLoader(false);
-                return;
-              }
-
-              if (isValidResponse(data)) {
-                setToggle((pre) => ({
-                  ...pre,
-                  isDisableSelect: !pre.isDisableSelect,
-                  isDisabledProject: true,
-                  isDisabledSecret: true,
-                  isValidRelease: true,
-                }));
-                setProjectDetails({ ...data[0].projectData });
-                const value: Array<mileStoneDataType> = Object.values(
-                  data[0].milestones
-                );
-                let tempArr: Array<mileStoneDataType> = [];
-                value.forEach((item: mileStoneDataType, i) => {
-                  tempArr.push({ ...item, mileStoneId: i });
-                });
-                setMileStone([...tempArr]);
-              } else {
-                console.warn("📍No milestones found in the response📍");
-              }
-              setFullScreenLoader(false);
-            }
+        let params = new URLSearchParams(search);
+        const api = params.get("api");
+        const pid = params.get("pid");
+        if (api && pid) {
+          setFullScreenLoader(true);
+          const data = await getProject({
+            apiKey: api,
+            projectIdentifier: pid,
+          });
+          const handleFetchState = (value: boolean) => {
+            setToggle((pre) => ({
+              ...pre,
+              isMilestoneFetch: value,
+            }));
+          };
+          if (data === null || data.length === 0) {
+            handleFetchState(false);
+            showToaster("Network Error", "error");
+            setFullScreenLoader(false);
+            return;
           }
+          if (isValidResponse(data)) {
+            setToggle((pre) => ({
+              ...pre,
+              isDisableSelect: !pre.isDisableSelect,
+              isDisabledProject: true,
+              isDisabledSecret: true,
+              isValidRelease: true,
+            }));
+            setProjectDetails({ ...data[0].projectData });
+            const value: Array<mileStoneDataType> = Object.values(
+              data[0].milestones
+            );
+            let tempArr: Array<mileStoneDataType> = [];
+            value.forEach((item: mileStoneDataType, i) => {
+              tempArr.push({ ...item, mileStoneId: i });
+            });
+            setMileStone([...tempArr]);
+          } else {
+            console.warn("📍No milestones found in the response📍");
+          }
+          setFullScreenLoader(false);
         }
       };
       fetchMileStones();
