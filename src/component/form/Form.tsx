@@ -79,10 +79,12 @@ function Form() {
         const pid = params.get("pid");
         if (api && pid) {
           setFullScreenLoader(true);
+          setForm((pre) => ({ ...pre, apiKey: api, projectIdentifier: pid }));
           const data = await getProject({
             apiKey: api,
             projectIdentifier: pid,
           });
+
           const handleFetchState = (value: boolean) => {
             setToggle((pre) => ({
               ...pre,
@@ -187,7 +189,8 @@ function Form() {
       setSelectedOption,
       setToggle
     );
-
+    console.log(mileStone, value, apiKey);
+    console.log(budget);
     if (typeof budget === "string") {
       setAmount(budget);
     }
