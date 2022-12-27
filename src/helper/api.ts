@@ -4,7 +4,6 @@ type Endpoint = "/get-project" | "/get-budget" | "/checkout" | "/coupon";
 
 const client = Axios.create({
   baseURL: "https://api.koders.in",
-
   headers: {
     "Content-Type": "application/json",
   },
