@@ -17,6 +17,12 @@ body {
   overflow-x: hidden;
 }
 
+.payment-root {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
+
 .app {
   background: linear-gradient(#040e27, rgba(4, 14, 39, 0.3));
   padding: 2rem;
@@ -24,6 +30,7 @@ body {
 
 .payment-container {
   padding: 1rem !important;
+  flex-grow: 10 !important;
 }
 
 // Material UI CSS
@@ -170,9 +177,9 @@ body {
 // Footer CSS
 
 .footer-wrapper {
-  margin-top: 30%;
-  position: absolute;
-  bottom: 10px;
+  // margin-top: 30%;
+  padding-bottom: 10px;
+
   .MuiGrid-root {
     display: flex !important;
     flex-direction: row !important;
@@ -182,11 +189,8 @@ body {
       align-items: center !important;
     }
   }
-  @media screen and (max-width: 1224px) {
-    position: unset;
-  }
   @media screen and (max-width: 468px) {
-    position: unset;
+    padding-bottom: 0px;
   }
 }
 
