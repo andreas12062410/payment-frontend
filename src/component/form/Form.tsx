@@ -189,8 +189,7 @@ function Form() {
       setSelectedOption,
       setToggle
     );
-    console.log(mileStone, value, apiKey);
-    console.log(budget);
+
     if (typeof budget === "string") {
       setAmount(budget);
     }
@@ -267,6 +266,7 @@ function Form() {
           setToggle((pre) => {
             return { ...pre, isCouponApplied: false };
           });
+          setForm((pre) => ({ ...pre, couponCode: "" }));
           setCouponDetails({
             budgetAfterAppliedCoupon: "",
             originalBudget: "",
