@@ -3,8 +3,8 @@ import Axios, { AxiosResponse } from "axios";
 type Endpoint = "/get-project" | "/get-budget" | "/checkout" | "/coupon";
 
 const client = Axios.create({
-  // baseURL: "https://api.koders.in",
-  baseURL: "http://192.168.29.62:9442",
+  baseURL: "https://api.koders.in",
+
   headers: {
     "Content-Type": "application/json",
   },
