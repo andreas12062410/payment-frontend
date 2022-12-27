@@ -99,14 +99,16 @@ body {
   }
   &.success {
     border: 1px solid #00a99d;
+    background: #00a99d;
     span {
-      color: #00a99d;
+      color: white;
     }
   }
   &.due {
     border: 1px solid red;
+    background: red;
     span {
-      color: red;
+      color: white;
     }
   }
 }
