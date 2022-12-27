@@ -1,9 +1,10 @@
 import Axios, { AxiosResponse } from "axios";
 
-type Endpoint = "/get-project" | "/get-budget" | "/checkout";
+type Endpoint = "/get-project" | "/get-budget" | "/checkout" | "/coupon";
 
 const client = Axios.create({
   baseURL: "https://api.koders.in",
+
   headers: {
     "Content-Type": "application/json",
   },
@@ -12,15 +13,18 @@ const client = Axios.create({
 interface Props {
   endpoint: Endpoint;
   payload: any;
+  readError?: boolean;
 }
 
 export const sendPayload = async ({
   endpoint,
   payload,
+  readError = false,
 }: Props): Promise<AxiosResponse> => {
   try {
     return await client.post(endpoint, payload);
   } catch (error: any) {
-    throw new Error(error.message);
+    if (readError) throw error;
+    else throw new Error(error.message);
   }
 };

@@ -7,17 +7,16 @@ import { HomePage, SuccessPage } from "./pages";
 
 function App() {
   return (
-    <Container className="payment-container">
-      <Routes>
-        <Route path="/success" element={<SuccessPage />} />
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-
-      <div className="payment-footer">
-        <Footer />
-      </div>
-      <ToastContainer limit={3} />
-    </Container>
+    <div className="payment-root">
+      <Container className="payment-container">
+        <Routes>
+          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+        <ToastContainer limit={3} />
+      </Container>
+      <Footer />
+    </div>
   );
 }
 

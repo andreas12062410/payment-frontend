@@ -6,6 +6,7 @@ export interface MileStonePayload {
   projectIdentifier: string;
   milestoneUnitAmount: string;
   milestoneImages?: Array<string>;
+  couponCode?: string;
 }
 
 export const useCheckoutHook = () => {
@@ -16,7 +17,7 @@ export const useCheckoutHook = () => {
         payload,
       });
       if (status === 200) {
-        return data.data
+        return data.data;
       } else return null;
     } catch (error: any) {
       console.log(

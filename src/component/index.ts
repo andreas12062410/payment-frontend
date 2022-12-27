@@ -6,3 +6,5 @@ export { default as Footer } from "./footer/Footer";
 export { default as LoaderOrSpinner } from "./loader/Loader";
 export { default as ProjectData } from "./project-data/ProjectData";
 export { default as Dropdown } from "./dropdown/DropDown";
+export { default as AnimatedTicker } from "./animated-tick/AnimatedTick";
+export { default as FullScreenSpinner } from "./spinner/Spinner";

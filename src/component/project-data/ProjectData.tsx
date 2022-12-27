@@ -5,11 +5,7 @@ const ProjectData = ({ projectIcon, projectName, description }: Props) => {
   return (
     <>
       <div className="project-data">
-        <Avatar
-          style={{ margin: "0px auto", height: "100%", width: "50%" }}
-          alt="pIcon"
-          src={projectIcon}
-        />
+        <Avatar alt="pIcon" src={projectIcon} className="project-poster" />
       </div>
       <Spacer height={25} />
       <Typography

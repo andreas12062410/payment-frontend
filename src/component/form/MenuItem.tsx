@@ -33,8 +33,10 @@ function CustomMenuItem({
           <MenuItem
             key={item.mileStoneId}
             value={item.mileStoneId}
+            focusRipple
             style={{
               fontStyle: item.status !== "open" ? "italic" : "unset",
+              width: "100%",
             }}
           >
             <Dropdown {...item} index={i} />

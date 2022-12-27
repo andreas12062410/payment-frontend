@@ -5,6 +5,19 @@ export interface FormPayload {
   projectIdentifier: string;
 }
 
+export interface ProjectData {
+  description: string;
+  projectIcon: string;
+  projectName: string;
+}
+
+export interface Project {
+  apiKey: string;
+  projectIdentifier: string;
+  mileStoneId: any;
+  couponCode?: string;
+}
+
 export interface mileStoneDataType {
   title: string;
   status: string;
@@ -16,6 +29,10 @@ export interface mileStoneDataType {
   estimatedHours: number;
   issues: Array<number>;
   spentHours: number;
+  demoLink?: string;
+  filesLink?: string;
+  projectData: ProjectData;
+  milestones: any;
 }
 
 const makeMileStoneData = (obj: any) => {
@@ -29,7 +46,9 @@ const makeMileStoneData = (obj: any) => {
 };
 
 export const useFormSubmitHook = () => {
-  const submitForm = async (payload: FormPayload) => {
+  const submitForm = async (
+    payload: FormPayload
+  ): Promise<mileStoneDataType[] | null> => {
     try {
       const { data, status } = await sendPayload({
         endpoint: "/get-project",
@@ -38,10 +57,11 @@ export const useFormSubmitHook = () => {
       if (status === 200) {
         const { data: response } = data;
         return makeMileStoneData(response);
-      } else return null;
-    } catch (err: any) {
+      }
+      return null;
+    } catch (e: any) {
       console.log(
-        `Something went wrong while submitting form. Reason-${err.message}`
+        `Something went wrong while submitting form. Reason-${e.message}`
       );
       return null;
     }

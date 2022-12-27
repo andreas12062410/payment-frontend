@@ -1,7 +1,9 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import { ChangeEvent } from "react";
 import Loader from "../loader/Loader";
 import Spacer from "../spacer/Spacer";
-import { formatCurrency, SelectedOption } from "./utils";
+import CouponField from "./CouponField";
+import { formatCurrency, ICouponDetails, SelectedOption } from "./utils";
 
 function FormButton({
   selectedOption,
@@ -13,6 +15,10 @@ function FormButton({
   onProceedClick,
   handleDownloadFiles,
   handleDownloadVideo,
+  onCodeChange,
+  onCodeApply,
+  isCouponApplied,
+  couponDetails,
 }: Props) {
   return isDownloadFiles ? (
     <div
@@ -46,14 +52,46 @@ function FormButton({
     </div>
   ) : amount.length > 0 ? (
     <div style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}>
-      <Button
-        fullWidth
-        onClick={handlePayNow}
-        disabled={isDisableBtn}
-        variant="contained"
-      >
-        Pay {formatCurrency({ amount: Number(amount) })}
-      </Button>
+      <CouponField
+        isCouponApplied={isCouponApplied}
+        onApplyCode={onCodeApply}
+        onCodeChange={onCodeChange}
+      />
+      <Spacer height={10} />
+      {isCouponApplied ? (
+        <Button
+          fullWidth
+          onClick={handlePayNow}
+          disabled={isDisableBtn}
+          variant="contained"
+        >
+          <Typography marginRight="10px">
+            Pay{" "}
+            {formatCurrency({
+              amount: Number(couponDetails.budgetAfterAppliedCoupon),
+            })}
+          </Typography>
+          <Typography
+            style={{
+              textDecoration: "line-through",
+              color: "red",
+            }}
+          >
+            ({formatCurrency({ amount: Number(couponDetails.originalBudget) })})
+          </Typography>
+        </Button>
+      ) : (
+        <Button
+          fullWidth
+          onClick={handlePayNow}
+          disabled={isDisableBtn}
+          variant="contained"
+        >
+          {isCouponApplied}
+          Pay {formatCurrency({ amount: Number(amount) })}
+        </Button>
+      )}
+
       {selectedOption.demoLink && (
         <>
           <Spacer height={10} />
@@ -82,6 +120,7 @@ export default FormButton;
 interface Props {
   isBudgetFetch: boolean;
   isDisableBtn?: boolean;
+  isCouponApplied: boolean;
   handlePayNow: () => Promise<void>;
   amount: string;
   isClickable: boolean;
@@ -89,5 +128,8 @@ interface Props {
   onProceedClick: () => void;
   handleDownloadFiles: () => void;
   handleDownloadVideo: () => void;
+  onCodeApply: () => void;
   selectedOption: SelectedOption;
+  onCodeChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  couponDetails: ICouponDetails;
 }

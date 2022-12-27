@@ -15,10 +15,8 @@ function ProjectStatus({ status, title, index }: Props) {
     ) : (
       <div className="project-status">
         {" "}
-        <Typography marginRight="5px">
-          {" "}
-          {title}{" "}
-        </Typography> <RemoveCircle />{" "}
+        <Typography marginRight="5px"> {title} </Typography>{" "}
+        <RemoveCircle fontSize="small" titleAccess="Remove" />{" "}
       </div>
     )
   ) : (
