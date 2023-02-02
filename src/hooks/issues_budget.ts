@@ -31,7 +31,6 @@ export const useGetBudgetFromIssues = () => {
       });
     } else {
       if (issues.length === 0) {
-        console.log(issues);
         setToggle((pre) => ({
           ...pre,
           isBudgetFetch: false,
@@ -69,7 +68,8 @@ export const useGetBudgetFromIssues = () => {
     setToggle: React.Dispatch<React.SetStateAction<toggleBtnProps>>,
     apiKey: string,
     projectIdentifier: string,
-    amount: string
+    amount: string,
+    type: "INR" | "USD" | "CAD" | "EUR" | "GBP" | "SBD"
   ) => {
     if (amount.length === 0) {
       setToggle((pre) => ({
@@ -84,7 +84,8 @@ export const useGetBudgetFromIssues = () => {
       setToggle,
       amount,
       apiKey,
-      projectIdentifier
+      projectIdentifier,
+      type
     );
   };
 

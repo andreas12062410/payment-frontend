@@ -5,6 +5,7 @@ export interface MileStonePayload {
   milestoneTitle: string;
   projectIdentifier: string;
   milestoneUnitAmount: string;
+  type: "INR" | "USD" | "CAD" | "EUR" | "GBP" | "SBD";
   milestoneImages?: Array<string>;
   couponCode?: string;
 }

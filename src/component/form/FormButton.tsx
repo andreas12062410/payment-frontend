@@ -1,9 +1,20 @@
-import { Button, Typography } from "@mui/material";
+import {
+  Button,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from "@mui/material";
 import { ChangeEvent } from "react";
 import Loader from "../loader/Loader";
 import Spacer from "../spacer/Spacer";
 import CouponField from "./CouponField";
-import { formatCurrency, ICouponDetails, SelectedOption } from "./utils";
+import {
+  budgetInAllCurrency,
+  formatCurrency,
+  ICouponDetails,
+  SelectedOption,
+} from "./utils";
 
 function FormButton({
   selectedOption,
@@ -19,6 +30,10 @@ function FormButton({
   onCodeApply,
   isCouponApplied,
   couponDetails,
+  handleSelectCurrencyType,
+  currencyType,
+  budgetInAllCurrencyType,
+  couponBudgetInAllCurrencyType,
 }: Props) {
   return isDownloadFiles ? (
     <div
@@ -58,40 +73,65 @@ function FormButton({
         onCodeChange={onCodeChange}
       />
       <Spacer height={10} />
-      {isCouponApplied ? (
-        <Button
-          fullWidth
-          onClick={handlePayNow}
-          disabled={isDisableBtn}
-          variant="contained"
-        >
-          <Typography marginRight="10px">
+      <div className="currency-box">
+        {isCouponApplied ? (
+          <Button
+            fullWidth
+            onClick={handlePayNow}
+            disabled={isDisableBtn}
+            variant="contained"
+          >
+            <Typography marginRight="10px">
+              Pay{" "}
+              {formatCurrency({
+                currency: currencyType,
+                amount: Number(couponBudgetInAllCurrencyType[currencyType]),
+              })}
+            </Typography>
+            <Typography
+              style={{
+                textDecoration: "line-through",
+                color: "red",
+              }}
+            >
+              (
+              {formatCurrency({
+                currency: currencyType,
+                amount: Number(budgetInAllCurrencyType[currencyType]),
+              })}
+              )
+            </Typography>
+          </Button>
+        ) : (
+          <Button
+            fullWidth
+            onClick={handlePayNow}
+            disabled={isDisableBtn}
+            variant="contained"
+          >
+            {isCouponApplied}
             Pay{" "}
             {formatCurrency({
-              amount: Number(couponDetails.budgetAfterAppliedCoupon),
+              currency: currencyType,
+              amount: Number(budgetInAllCurrencyType[currencyType]),
             })}
-          </Typography>
-          <Typography
-            style={{
-              textDecoration: "line-through",
-              color: "red",
-            }}
-          >
-            ({formatCurrency({ amount: Number(couponDetails.originalBudget) })})
-          </Typography>
-        </Button>
-      ) : (
-        <Button
-          fullWidth
-          onClick={handlePayNow}
-          disabled={isDisableBtn}
-          variant="contained"
+          </Button>
+        )}
+        <Select
+          sx={{
+            outline: "none",
+          }}
+          onChange={handleSelectCurrencyType}
+          value={currencyType}
+          placeholder="Pay In"
         >
-          {isCouponApplied}
-          Pay {formatCurrency({ amount: Number(amount) })}
-        </Button>
-      )}
-
+          {["INR", "USD", "CAD", "EUR", "GBP", "SBD"].map((item, i) => (
+            <MenuItem key={i} value={item}>
+              {item}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
       {selectedOption.demoLink && (
         <>
           <Spacer height={10} />
@@ -132,4 +172,8 @@ interface Props {
   selectedOption: SelectedOption;
   onCodeChange: (e: ChangeEvent<HTMLInputElement>) => void;
   couponDetails: ICouponDetails;
+  handleSelectCurrencyType: (data: SelectChangeEvent) => void;
+  currencyType: "INR" | "USD" | "CAD" | "EUR" | "GBP" | "SBD";
+  budgetInAllCurrencyType: budgetInAllCurrency;
+  couponBudgetInAllCurrencyType: budgetInAllCurrency;
 }

@@ -316,3 +316,19 @@ body {
     }
   }
 }
+
+.currency-box{
+  display: flex;
+  gap: 10px;
+  &>button{
+    width: 80%;
+  }
+  &>div{
+    width: 20%;
+    background-color: #00a99d;
+    color: white;
+  }
+  &> .Mui-focused .MuiOutlinedInput-notchedOutline{
+    border: none !important;
+  }
+}

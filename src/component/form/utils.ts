@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ProjectData } from "../../hooks/form";
 
 interface CurrencyProps {
@@ -86,4 +87,53 @@ export interface SelectedOption {
 export interface ICouponDetails {
   originalBudget: string;
   budgetAfterAppliedCoupon: string;
+}
+
+export const currencyConverter = async () =>
+  // amount: number,
+  // from: "INR" | "USD" | "CAD" | "EUR" | "GBP" | "SBD",
+  // convertTo: "INR" | "USD" | "CAD" | "EUR" | "GBP" | "SBD"
+  {
+    try {
+      const {
+        data: { rates },
+      }: any = await axios.get(
+        `https://api.exchangerate-api.com/v4/latest/INR`
+      );
+
+      if (rates) {
+        return {
+          error: false,
+          message: "Invalid currency type.",
+          data: rates,
+        };
+      } else {
+        return {
+          error: true,
+          message: "Invalid currency type.",
+          data: null,
+        };
+      }
+    } catch (error: any) {
+      return {
+        error: true,
+        message: error?.message,
+        data: null,
+      };
+    }
+  };
+
+export interface currencyConverterType {
+  error: boolean;
+  message: any;
+  data: any;
+}
+
+export interface budgetInAllCurrency {
+  INR: string;
+  USD: string;
+  CAD: string;
+  EUR: string;
+  GBP: string;
+  SBD: string;
 }

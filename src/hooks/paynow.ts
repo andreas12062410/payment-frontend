@@ -11,6 +11,7 @@ export const usePayNowHook = () => {
     amount: string,
     apiKey: string,
     projectIdentifier: string,
+    type: "INR" | "USD" | "CAD" | "EUR" | "GBP" | "SBD",
     couponCode?: string
   ) => {
     const data = milestone.filter(({ mileStoneId: id }) => id === milestoneId);
@@ -25,6 +26,7 @@ export const usePayNowHook = () => {
       milestoneImages: [],
       milestoneTitle: title,
       apiKey,
+      type,
       projectIdentifier,
       couponCode: couponCode,
     });

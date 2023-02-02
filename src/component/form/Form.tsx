@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, SelectChangeEvent } from "@mui/material";
 import Spacer from "../spacer/Spacer";
 import Loader from "../loader/Loader";
 import { showToaster } from "../../helper/toast";
@@ -11,6 +11,8 @@ import {
   useFormSubmitHook,
 } from "../../hooks/form";
 import {
+  budgetInAllCurrency,
+  currencyConverter,
   ICouponDetails,
   initialFormState,
   initialProjectState,
@@ -29,6 +31,14 @@ import { useApplyCouponHook } from "../../hooks/coupon";
 import { FullScreenSpinner } from "..";
 
 function Form() {
+  const currencyTypes: Array<"INR" | "USD" | "CAD" | "EUR" | "GBP" | "SBD"> = [
+    "INR",
+    "USD",
+    "CAD",
+    "EUR",
+    "GBP",
+    "SBD",
+  ];
   const [projectDetails, setProjectDetails] =
     useState<ProjectData>(initialProjectState);
   const applyCouponCode = useApplyCouponHook();
@@ -38,6 +48,27 @@ function Form() {
   const [fullScreenLoader, setFullScreenLoader] = useState<boolean>(false);
   const [menuItemId, setMenuItemId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
+  const [currencyType, setCurrencyType] = useState<
+    "INR" | "USD" | "CAD" | "EUR" | "GBP" | "SBD"
+  >("USD");
+  const [budgetInAllCurrencyType, setBudgetInAllCurrencyType] =
+    useState<budgetInAllCurrency>({
+      INR: "",
+      USD: "",
+      CAD: "",
+      EUR: "",
+      GBP: "",
+      SBD: "",
+    });
+  const [couponBudgetInAllCurrencyType, setCouponBudgetInAllCurrencyType] =
+    useState<budgetInAllCurrency>({
+      INR: "",
+      USD: "",
+      CAD: "",
+      EUR: "",
+      GBP: "",
+      SBD: "",
+    });
   const [couponDetails, setCouponDetails] = useState<ICouponDetails>({
     budgetAfterAppliedCoupon: "",
     originalBudget: "",
@@ -191,7 +222,21 @@ function Form() {
     );
 
     if (typeof budget === "string") {
-      setAmount(budget);
+      const { data, error }: any = await currencyConverter();
+      if (!error) {
+        for (let i = 0; i < currencyTypes.length; i++) {
+          setBudgetInAllCurrencyType((prev: budgetInAllCurrency) => {
+            return {
+              ...prev,
+              [currencyTypes[i]]:
+                Number(budget) * Number(data[currencyTypes[i]]),
+            };
+          });
+        }
+        setAmount(budget);
+      } else {
+        showToaster("Unable to convert budget. Network Error", "error");
+      }
     }
   };
 
@@ -206,7 +251,10 @@ function Form() {
       setToggle,
       apiKey,
       projectIdentifier,
-      isCouponApplied ? couponDetails.budgetAfterAppliedCoupon : amount
+      isCouponApplied
+        ? couponBudgetInAllCurrencyType[currencyType]
+        : budgetInAllCurrencyType[currencyType],
+      currencyType
     );
   };
 
@@ -283,16 +331,36 @@ function Form() {
           projectIdentifier
         );
         if (amount) {
-          setToggle((pre) => {
-            return { ...pre, isCouponApplied: true };
-          });
-          setCouponDetails(amount);
+          const { data, error }: any = await currencyConverter();
+          if (!error) {
+            for (let i = 0; i < currencyTypes.length; i++) {
+              setCouponBudgetInAllCurrencyType((prev: budgetInAllCurrency) => {
+                return {
+                  ...prev,
+                  [currencyTypes[i]]:
+                    Number(amount.budgetAfterAppliedCoupon) *
+                    Number(data[currencyTypes[i]]),
+                };
+              });
+            }
+            setToggle((pre) => {
+              return { ...pre, isCouponApplied: true };
+            });
+            setCouponDetails(amount);
+          } else {
+            showToaster("Unable to convert budget. Network Error", "error");
+          }
         }
       }
       setToggle((pre) => {
         return { ...pre, isDisableBtn: false };
       });
     } else showToaster("Enter valid coupon code", "error");
+  };
+
+  const handleSelectCurrencyType = async (event: SelectChangeEvent) => {
+    const type: any = event.target.value;
+    setCurrencyType(type);
   };
 
   return (
@@ -338,6 +406,10 @@ function Form() {
           onProceedClick={handleProccessClick}
           handleDownloadFiles={() => handleDownloadBtn("files")}
           handleDownloadVideo={() => handleDownloadBtn("videos")}
+          handleSelectCurrencyType={handleSelectCurrencyType}
+          currencyType={currencyType}
+          budgetInAllCurrencyType={budgetInAllCurrencyType}
+          couponBudgetInAllCurrencyType={couponBudgetInAllCurrencyType}
         />
       </Grid>
       {fullScreenLoader ? <FullScreenSpinner /> : null}
