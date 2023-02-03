@@ -18,7 +18,7 @@ export default function CouponField({
         onChange={onCodeChange}
         placeholder="Enter coupon code (optional)"
       />
-      <Spacer width={20} isWidth />
+      <Spacer width={13} isWidth />
       <Button onClick={onApplyCode} variant="contained">
         {isCouponApplied ? "Remove" : "Apply"}
       </Button>

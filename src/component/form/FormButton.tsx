@@ -118,6 +118,7 @@ function FormButton({
           </Button>
         )}
         <Select
+          disabled={isDisableBtn}
           sx={{
             outline: "none",
           }}

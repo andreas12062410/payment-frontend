@@ -258,6 +258,9 @@ body {
     justify-content: space-between;
     & > button {
       width: 48% !important;
+      @media screen and (max-width: 480px) {
+        width: 100% !important;
+      }
     }
   }
 }
@@ -265,6 +268,12 @@ body {
 // coupon container
 .coupon-container {
   display: flex;
+  &>button{
+    width: 23% !important;
+    @media screen and (max-width: 480px) {
+      width: 38% !important;
+    }
+  }
 }
 
 // success page
@@ -322,11 +331,17 @@ body {
   gap: 10px;
   &>button{
     width: 80%;
+    @media screen and (max-width: 480px) {
+      width: 70%;
+    }
   }
   &>div{
     width: 20%;
     background-color: #00a99d;
     color: white;
+    @media screen and (max-width: 480px) {
+      width: 30%;
+    }
   }
   &> .Mui-focused .MuiOutlinedInput-notchedOutline{
     border: none !important;
