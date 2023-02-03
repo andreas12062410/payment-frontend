@@ -42,7 +42,7 @@ export const useGetBudgetFromIssues = () => {
         apiKey,
         issues,
       });
-      if (budget) {
+      if (budget !== null && budget !== undefined) {
         setToggle((pre) => ({
           ...pre,
           isDisableBtn: false,
