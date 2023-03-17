@@ -15,7 +15,8 @@ export const useDelayedQueryHook = () => {
         setToggle: React.Dispatch<React.SetStateAction<toggleBtnProps>>,
         setProjectDetails: React.Dispatch<React.SetStateAction<ProjectData>>,
         setMileStone: React.Dispatch<React.SetStateAction<mileStoneDataType[]>>,
-        setIsClickable: React.Dispatch<React.SetStateAction<boolean>>
+        setIsClickable: React.Dispatch<React.SetStateAction<boolean>>,
+        setShowInvoice: React.Dispatch<React.SetStateAction<any>>
       ) => {
         if (apiKey.length <= 10)
           return showToaster("Enter valid API key", "error");
@@ -40,6 +41,10 @@ export const useDelayedQueryHook = () => {
         }
 
         if (isValidResponse(data)) {
+          setShowInvoice({
+            projectIdentifier: projectIdentifier,
+            isLoggedIn: true,
+          });
           setToggle((pre) => ({
             ...pre,
             isDisableSelect: !pre.isDisableSelect,
