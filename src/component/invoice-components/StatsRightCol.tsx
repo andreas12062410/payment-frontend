@@ -26,14 +26,6 @@ const StatsRightCol = ({ pdfData }: Props) => {
       <div className="amount-container">
         <div className="f-left">Total</div>
         <div className="f-right">
-          {/* {currency_symbols[pdfData?.invoiceData?.currency] +
-            (parseInt(pdfData?.invoiceData?.amount) +
-              (Math.round(
-                (pdfData?.invoiceData?.amount / 100) *
-                  pdfData?.invoiceData?.discount
-              ) *
-                10) /
-                10)} */}
           {currency_symbols[pdfData?.invoiceData?.currency] +
             getTotal(pdfData?.invoiceData?.lines)}
         </div>
