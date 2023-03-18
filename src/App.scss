@@ -723,3 +723,10 @@ h3 {
 .early-pay>.stat-row-black>:nth-child(2) {
     text-align: right;
 }
+
+.loader-container{
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

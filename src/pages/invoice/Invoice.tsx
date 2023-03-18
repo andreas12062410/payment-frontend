@@ -1,6 +1,9 @@
 import html2pdf from "html2pdf.js";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import { Button, CircularProgress } from "@mui/material";
 
+import { Spacer } from "../../component";
 import { fetchData } from "../../helper";
 import Cards from "../../component/invoice-components/Cards";
 import Table from "../../component/invoice-components/Table";
@@ -9,9 +12,6 @@ import StatsLeftCol from "../../component/invoice-components/StatsLeftCol";
 import StatsRightCol from "../../component/invoice-components/StatsRightCol";
 
 import "../../App.scss";
-import { Spacer } from "../../component";
-import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 interface Props {
   showInvoice: { projectIdentifier: string; isLoggedIn: boolean };
@@ -46,7 +46,12 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
         if (res) setPdfData(res);
       })();
   }, [pdfData]);
-  if (pdfData === null) return <button>Loading...</button>;
+  if (pdfData === null)
+    return (
+      <div className="loader-container">
+        <CircularProgress />
+      </div>
+    );
   else
     return (
       <div className="invoice">
