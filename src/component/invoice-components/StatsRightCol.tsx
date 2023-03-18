@@ -1,3 +1,4 @@
+import React from "react";
 import { currency_symbols, Props } from "../../helper";
 
 const StatsRightCol = ({ pdfData }: Props) => {
@@ -59,9 +60,9 @@ const StatsRightCol = ({ pdfData }: Props) => {
         <div style={{ marginTop: "12px" }}>Payments</div>
       )}
       {pdfData?.invoiceData?.payments?.length !== 0 &&
-        pdfData?.invoiceData?.payments.map((item: any) => {
+        pdfData?.invoiceData?.payments.map((item: any, i: number) => {
           return (
-            <>
+            <React.Fragment key={i}>
               <div className="amount-container">
                 <div className="f-left">
                   <span style={{ fontSize: "12px", fontStyle: "italic" }}>
@@ -81,7 +82,7 @@ const StatsRightCol = ({ pdfData }: Props) => {
               <div style={{ fontSize: "12px", width: "75%" }}>
                 {item?.description}
               </div>
-            </>
+            </React.Fragment>
           );
         })}
 

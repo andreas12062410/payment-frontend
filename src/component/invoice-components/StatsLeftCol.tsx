@@ -58,12 +58,14 @@ const StatsLeftCol = ({ pdfData }: Props) => {
               (item: any) => item.name === "Terms & Condition"
             );
             if (tandc)
-              return tandc[0]?.value
-                ?.split(",")
-                .map(
-                  (item: string) =>
-                    item && <li className="list-items">{item}</li>
-                );
+              return tandc[0]?.value?.split(",").map(
+                (item: string, i: number) =>
+                  item && (
+                    <li className="list-items" key={i}>
+                      {item}
+                    </li>
+                  )
+              );
           })()}
         </ul>
       </div>

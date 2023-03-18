@@ -27,7 +27,6 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
   const navigator = useNavigate();
 
   const generatePDF = async () => {
-    console.log("first");
     setIsClicked(true);
     const pdfRe = pdfRef.current;
     const options = {
@@ -41,9 +40,9 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
     setIsClicked(false);
   };
   useEffect(() => {
-    if (pdfData === null)
+    if (pdfData === null && showInvoice.projectIdentifier)
       (async () => {
-        const res = await fetchData("89");
+        const res = await fetchData(showInvoice.projectIdentifier);
         if (res) setPdfData(res);
       })();
   }, [pdfData]);
