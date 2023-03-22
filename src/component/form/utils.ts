@@ -46,6 +46,7 @@ export interface toggleBtnProps {
   isValidRelease: boolean;
   isDownloadFiles: boolean;
   isCouponApplied: boolean;
+  isShowFormButton: boolean;
 }
 
 export const initialToggleState: toggleBtnProps = {
@@ -59,6 +60,7 @@ export const initialToggleState: toggleBtnProps = {
   isValidRelease: false,
   isDownloadFiles: false,
   isCouponApplied: false,
+  isShowFormButton: false,
 };
 
 export const initialFormState = {

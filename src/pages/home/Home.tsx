@@ -1,16 +1,25 @@
+import { useState } from "react";
 import {
   Description,
   Heading,
   ProjectDetailForm,
   Spacer,
 } from "../../component";
-function Home() {
+
+interface Props {
+  showInvoice: { projectIdentifier: string; isLoggedIn: boolean };
+  setShowInvoice: (data: {
+    projectIdentifier: string;
+    isLoggedIn: boolean;
+  }) => void;
+}
+function Home({ showInvoice, setShowInvoice }: Props) {
   return (
     <>
       <Heading />
       <Description />
       <Spacer height={50} />
-      <ProjectDetailForm />
+      <ProjectDetailForm {...{ showInvoice, setShowInvoice }} />
     </>
   );
 }

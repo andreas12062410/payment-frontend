@@ -1,4 +1,4 @@
-import { Grid, SelectChangeEvent } from "@mui/material";
+import { Button, Grid, SelectChangeEvent } from "@mui/material";
 import Spacer from "../spacer/Spacer";
 import Loader from "../loader/Loader";
 import { showToaster } from "../../helper/toast";
@@ -29,8 +29,16 @@ import { useDelayedQueryHook } from "../../hooks/delayed_query";
 import { useGetBudgetFromIssues } from "../../hooks/issues_budget";
 import { useApplyCouponHook } from "../../hooks/coupon";
 import { FullScreenSpinner } from "..";
+import { useNavigate } from "react-router-dom";
 
-function Form() {
+interface Props {
+  showInvoice: { projectIdentifier: string; isLoggedIn: boolean };
+  setShowInvoice: (data: {
+    projectIdentifier: string;
+    isLoggedIn: boolean;
+  }) => void;
+}
+function Form({ setShowInvoice, showInvoice }: Props) {
   const currencyTypes: Array<"INR" | "USD" | "CAD" | "EUR" | "GBP" | "SBD"> = [
     "INR",
     "USD",
@@ -87,6 +95,7 @@ function Form() {
       isValidRelease,
       isDownloadFiles,
       isCouponApplied,
+      isShowFormButton,
     },
     setToggle,
   ] = useState<toggleBtnProps>(initialToggleState);
@@ -170,7 +179,8 @@ function Form() {
         setToggle,
         setProjectDetails,
         setMileStone,
-        setIsClickable
+        setIsClickable,
+        setShowInvoice
       );
     } else {
       if (apiKey?.length) {
@@ -180,7 +190,8 @@ function Form() {
           setToggle,
           setProjectDetails,
           setMileStone,
-          setIsClickable
+          setIsClickable,
+          setShowInvoice
         );
       }
     }
@@ -202,6 +213,7 @@ function Form() {
       return {
         ...prev,
         isDownloadFiles: false,
+        isShowFormButton: true,
       };
     });
     setSelectedOption({ isPaid: false, filesLink: "", demoLink: "" });
@@ -267,7 +279,8 @@ function Form() {
       setToggle,
       setProjectDetails,
       setMileStone,
-      setIsClickable
+      setIsClickable,
+      setShowInvoice
     );
   };
 
@@ -363,6 +376,8 @@ function Form() {
     setCurrencyType(type);
   };
 
+  const navigator = useNavigate();
+
   return (
     <Grid justifyContent="center" container>
       <Grid sm={6} xs={12} lg={5} item>
@@ -390,27 +405,46 @@ function Form() {
           mileStoneId={mileStoneId}
         />
         <Loader isLoading={isMilestoneFetch} type="loader" />
+        {isValidRelease && (
+          <>
+            <Spacer isWidth={true} height={15} width="100%" />
+            <div
+              style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}
+            >
+              <Button
+                fullWidth
+                // disabled={isDisableBtn}
+                onClick={() => navigator("/invoice")}
+                variant="contained"
+              >
+                Download & Preview Invoice
+              </Button>
+            </div>
+          </>
+        )}
         <Spacer isWidth={true} height={15} width="100%" />
-        <FormButton
-          selectedOption={selectedOption}
-          amount={amount}
-          isCouponApplied={isCouponApplied}
-          onCodeApply={handleApplyCoupon}
-          handlePayNow={handlePayNowHandler}
-          onCodeChange={handleCouponChange}
-          isBudgetFetch={isBudgetFetch}
-          couponDetails={couponDetails}
-          isClickable={isClickable}
-          isDisableBtn={isDisableBtn}
-          isDownloadFiles={isDownloadFiles}
-          onProceedClick={handleProccessClick}
-          handleDownloadFiles={() => handleDownloadBtn("files")}
-          handleDownloadVideo={() => handleDownloadBtn("videos")}
-          handleSelectCurrencyType={handleSelectCurrencyType}
-          currencyType={currencyType}
-          budgetInAllCurrencyType={budgetInAllCurrencyType}
-          couponBudgetInAllCurrencyType={couponBudgetInAllCurrencyType}
-        />
+        {isShowFormButton && (
+          <FormButton
+            selectedOption={selectedOption}
+            amount={amount}
+            isCouponApplied={isCouponApplied}
+            onCodeApply={handleApplyCoupon}
+            handlePayNow={handlePayNowHandler}
+            onCodeChange={handleCouponChange}
+            isBudgetFetch={isBudgetFetch}
+            couponDetails={couponDetails}
+            isClickable={isClickable}
+            isDisableBtn={isDisableBtn}
+            isDownloadFiles={isDownloadFiles}
+            onProceedClick={handleProccessClick}
+            handleDownloadFiles={() => handleDownloadBtn("files")}
+            handleDownloadVideo={() => handleDownloadBtn("videos")}
+            handleSelectCurrencyType={handleSelectCurrencyType}
+            currencyType={currencyType}
+            budgetInAllCurrencyType={budgetInAllCurrencyType}
+            couponBudgetInAllCurrencyType={couponBudgetInAllCurrencyType}
+          />
+        )}
       </Grid>
       {fullScreenLoader ? <FullScreenSpinner /> : null}
     </Grid>

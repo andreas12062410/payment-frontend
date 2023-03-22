@@ -5,7 +5,7 @@
   src: url("./assets/fonts/Inter\ Desktop/Inter-Medium.otf") format("truetype");
 }
 
-* {
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -346,4 +346,387 @@ body {
   &> .Mui-focused .MuiOutlinedInput-notchedOutline{
     border: none !important;
   }
+}
+
+
+
+// ##########################-------For the invoice--------##################################### 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400&family=Zilla+Slab&display=swap');
+
+.invoice{
+  width: 75%;
+  margin: 0 auto;
+}
+.invoice>div{
+  font-family: 'Nunito', sans-serif !important;
+font-family: 'Zilla Slab', serif !important;
+font-weight:300 !important;
+}
+
+.main {
+    margin: "10px auto";
+    padding: 2rem;
+    font-family: 'Nunito', sans-serif;
+    /* page-break-after: always; */
+}
+
+.header {
+    display: -webkit-box;
+}
+
+.info-header {
+    width: 33%;
+}
+
+.info-header>h1 {
+    margin-bottom: 20px;
+}
+.text-header{
+    width: 33%;
+    text-align: center;
+    color: #00a99d;
+    font-size: 40px;
+    font-weight: 600;
+    height: fit-content;
+    margin-top: auto;
+    line-height: 0;
+}
+.logo-header {
+    width: 33%;
+    text-align: right;
+}
+
+.logo-header>img {
+    width: 8rem;
+}
+
+/* ----utilities----- */
+.color-gray {
+    color: gray;
+}
+
+.color-purple {
+    color: #00a99d;
+}
+
+.bg-purple {
+    background: #f8f8f8;
+}
+.main{
+  background-color: white;
+}
+.main>h1,
+h2,
+h4,
+h3 {
+    margin: 0;
+}
+
+.flex {
+    display: -webkit-box;
+}
+
+/* -------cards------------ */
+.card-container {
+    display: flex;
+    width: 100%;
+    gap: 1.5%;
+    margin-top: 3rem;
+    font-size: 15px;
+}
+.card-container div{
+  width: 50%;
+}
+// .card-container>:nth-child(1) {
+//      margin-right: 4%;
+// }
+
+.card {
+    border-radius: 12px;
+    padding: 1rem 1rem;
+    width: 39.5%;
+}
+
+.card-container>.card.bg-purple>h4 {
+    margin: 6px 0;
+}
+
+/* -----------table------- */
+.table-container {
+    margin-top: 1rem;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+/* ********header******** */
+.table-header {
+    display: -webkit-box;
+    background: #00a99d;
+    color: white;
+    padding: 10px 0px;
+    width: 100%;
+}
+
+
+.table-header>:nth-child(1) {
+    padding: 0 9px;
+    width: 8%;
+}
+
+.table-header>:nth-child(2) {
+    padding: 0 9px;
+    width: 40%;
+}
+
+.table-header>:nth-child(3) {
+    text-align: center;
+    padding: 0 9px;
+    width: 14%;
+}
+
+.table-header>:nth-child(4) {
+    text-align: center;
+    padding: 0 9px;
+    width: 12%;
+}
+
+.table-header>:nth-child(5) {
+    text-align: center;
+    padding: 0 9px;
+    width: 12%;
+}
+
+/* ********row******** */
+.table-row {
+    display: -webkit-box;
+    background: #f3f2f2;
+    color: black;
+    width: 100%;
+}
+
+.table-row>div>span {
+    padding: 8px 0px;
+    display: block;
+}
+
+.table-row>:nth-child(1) {
+    /* text-align: center; */
+    padding: 0 9px;
+    width: 8%;
+    // border-right: 0.3px solid black;
+}
+
+.table-row>:nth-child(2) {
+    padding: 0 9px;
+    width: 40%;
+}
+
+.table-row>:nth-child(3) {
+    text-align: center;
+    padding: 0 9px;
+    width: 14%;
+}
+
+.table-row>:nth-child(4) {
+    text-align: center;
+    padding: 0 9px;
+    width: 12%;
+}
+
+.table-row>:nth-child(5) {
+    text-align: center;
+    padding: 0 9px;
+    width: 12%;
+}
+
+/* ------stats section------- */
+.stats-sec {
+    display: -webkit-box;
+    margin-top: 2.5rem;
+    width: 100%;
+}
+
+/* ********* Left col **********  */
+.stats-sec>.stats-sec-col1 {
+    width: 52%;
+    padding-right: 3%;
+}
+
+/* ---------main-card---------- */
+.main-card-container {
+    display: -webkit-box;
+}
+
+.main-card {
+    width: 60%;
+    border-radius: 12px;
+    padding: 1rem 1rem;
+    height: fit-content;
+    font-size: 13px;
+}
+
+.main-card.bg-purple>.color-purple {
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.main-card.bg-purple>div {
+    width: 100%;
+    display: -webkit-box;
+}
+
+.main-card.bg-purple>div>span {
+    display: inline-block;
+    width: 50%;
+}
+
+.main-card.bg-purple>div>:nth-child(1) {
+    font-weight: 600;
+}
+.main-card.bg-purple>div>:nth-child(2) {
+  font-weight: 300;
+}
+
+.main-card.bg-purple>div>:nth-child(1) {
+    color: #211743;
+}
+
+.bank-detail {
+    display: -webkit-box;
+}
+
+.bank-detail>div {
+    width: 50%;
+}
+
+/* --------qr container------- */
+.qr-cont {
+    overflow: hidden;
+    width: 7rem;
+    margin-left: 10px;
+}
+
+.qr-cont>div {
+    margin-bottom: 4px;
+    color: gray;
+    font-size: 10px;
+}
+
+.qr-cont>img {
+    width: 100%;
+    height: auto;
+}
+
+/* -----------terms&conditions-------- */
+.terms{
+  font-size: 17px;
+}
+.terms-conditions {
+    margin-top: 4rem;
+    padding: 0 10px;
+
+}
+
+/* ********* Right col **********  */
+.stats-sec>.stats-sec-col2 {
+    width: 45%;
+}
+
+.amount-container {
+    display: -webkit-box;
+    margin-top: 5px;
+    -webkit-box-pack: center;
+    align-items: center;
+}
+
+.amount-container>.f-left {
+    width: 60%;
+}
+
+.amount-container>.f-right {
+    width: 40%;
+    text-align: right;
+}
+
+.amount-total {
+    /* border-top: 0.5px sold black; */
+    border-top: 1px solid black;
+    padding: 10px 0;
+}
+
+.amount-total>.f-right {
+    font-weight: 700;
+}
+
+.invoice-in-words {
+    margin-top: 0.5rem;
+}
+
+.invoice-in-words>span {
+    color: gray;
+    font-size: small;
+}
+
+.invoice-in-words>div {
+    color: black;
+    font-size: large;
+}
+
+.early-pay {
+    border-top: 1px solid black;
+}
+
+.early-pay>.stat-row-red {
+    display: -webkit-box;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.early-pay>.stat-row-red>.col-1 {
+    width: 50%;
+}
+
+.early-pay>.stat-row-red>.col-2 {
+    width: 50%;
+    text-align: right;
+    color: rgba(245, 13, 5, 0.9);
+}
+
+.early-pay>.stat-row-red>.col-1>:nth-child(1) {
+    color: rgba(245, 13, 5, 0.9);
+    font-size: large;
+
+}
+
+.flat-discount{
+  color: #00a99d;
+  font-weight: 500;;
+}
+
+.early-pay>.stat-row-red>.col-1>:nth-child(2) {
+    color: gray;
+    font-size: 10px;
+
+}
+
+.early-pay>.stat-row-black {
+    margin-top: 10px;
+    display: -webkit-box;
+}
+
+.early-pay>.stat-row-black>div {
+    width: 50%;
+}
+
+.early-pay>.stat-row-black>:nth-child(2) {
+    text-align: right;
+}
+
+.loader-container{
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
