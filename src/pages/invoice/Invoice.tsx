@@ -54,7 +54,6 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
           showInvoice.projectIdentifier,
           showInvoice.apiKey
         );
-        console.log(res);
         if (res) setPdfData(res);
         else {
           showToaster("Unable to fetch invoice data", "error");
@@ -62,7 +61,6 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
         }
       })();
   }, [pdfData, showInvoice.projectIdentifier, showInvoice.apiKey]);
-  console.log(pdfData);
   if (pdfData === null)
     return (
       <div className="loader-container">

@@ -5,7 +5,6 @@ export const fetchData = async (project: string, apiKey: string) => {
     const res = await client.post("invoice", {
       data: { project, apiKey },
     });
-    console.log(res);
     if (res.status === 200) return res.data;
     else return null;
   } catch (error) {
