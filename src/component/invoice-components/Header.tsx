@@ -15,7 +15,6 @@ const Header = ({ pdfData }: Props) => {
         </h1>
         <div>
           <span className="color-gray">
-            {" "}
             {pdfData?.invoiceData?.status?.name === "Sent"
               ? "Invoice"
               : "Quotation"}{" "}
@@ -25,7 +24,6 @@ const Header = ({ pdfData }: Props) => {
         </div>
         <div>
           <span className="color-gray">
-            {" "}
             {pdfData?.invoiceData?.status?.name === "Sent"
               ? "Invoice"
               : "Quotation"}{" "}

@@ -142,6 +142,11 @@ function Form({ setShowInvoice, showInvoice }: Props) {
             setFullScreenLoader(false);
             return;
           }
+          setShowInvoice({
+            projectIdentifier: pid,
+            isLoggedIn: true,
+            apiKey: api,
+          });
           if (isValidResponse(data)) {
             setToggle((pre) => ({
               ...pre,
@@ -419,7 +424,7 @@ function Form({ setShowInvoice, showInvoice }: Props) {
               <Button
                 fullWidth
                 // disabled={isDisableBtn}
-                onClick={() => navigator("/invoice")}
+                onClick={() => navigator("invoice")}
                 variant="contained"
               >
                 Download & Preview Invoice
