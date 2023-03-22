@@ -43,6 +43,7 @@ export const useDelayedQueryHook = () => {
         if (isValidResponse(data)) {
           setShowInvoice({
             projectIdentifier: projectIdentifier,
+            apiKey: apiKey,
             isLoggedIn: true,
           });
           setToggle((pre) => ({

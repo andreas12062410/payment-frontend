@@ -1,5 +1,4 @@
 import html2pdf from "html2pdf.js";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { Button, CircularProgress } from "@mui/material";
 
@@ -14,17 +13,21 @@ import StatsRightCol from "../../component/invoice-components/StatsRightCol";
 import "../../App.scss";
 
 interface Props {
-  showInvoice: { projectIdentifier: string; isLoggedIn: boolean };
+  showInvoice: {
+    projectIdentifier: string;
+    isLoggedIn: boolean;
+    apiKey: string;
+  };
   setShowInvoice: (data: {
     projectIdentifier: string;
     isLoggedIn: boolean;
+    apiKey: string;
   }) => void;
 }
 const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
   const [pdfData, setPdfData] = useState<any>(null);
   const [isClicked, setIsClicked] = useState<any>(false);
   const pdfRef: any = useRef();
-  const navigator = useNavigate();
 
   const generatePDF = async () => {
     setIsClicked(true);
@@ -40,12 +43,16 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
     setIsClicked(false);
   };
   useEffect(() => {
-    if (pdfData === null && showInvoice.projectIdentifier)
+    if (pdfData === null && showInvoice.projectIdentifier && showInvoice.apiKey)
       (async () => {
-        const res = await fetchData(showInvoice.projectIdentifier);
+        const res = await fetchData(
+          showInvoice.projectIdentifier,
+          showInvoice.apiKey
+        );
         if (res) setPdfData(res);
       })();
-  }, [pdfData]);
+  }, [pdfData, showInvoice.projectIdentifier, showInvoice.apiKey]);
+
   if (pdfData === null)
     return (
       <div className="loader-container">

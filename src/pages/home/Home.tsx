@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 import {
   Description,
   Heading,
@@ -7,9 +7,14 @@ import {
 } from "../../component";
 
 interface Props {
-  showInvoice: { projectIdentifier: string; isLoggedIn: boolean };
+  showInvoice: {
+    projectIdentifier: string;
+    isLoggedIn: boolean;
+    apiKey: string;
+  };
   setShowInvoice: (data: {
     projectIdentifier: string;
+    apiKey: string;
     isLoggedIn: boolean;
   }) => void;
 }

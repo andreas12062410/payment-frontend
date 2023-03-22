@@ -10,6 +10,7 @@ function App() {
   const [showInvoice, setShowInvoice] = useState({
     projectIdentifier: "",
     isLoggedIn: false,
+    apiKey: "",
   });
   return (
     <div className="payment-root">

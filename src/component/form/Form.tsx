@@ -32,9 +32,14 @@ import { FullScreenSpinner } from "..";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-  showInvoice: { projectIdentifier: string; isLoggedIn: boolean };
+  showInvoice: {
+    projectIdentifier: string;
+    isLoggedIn: boolean;
+    apiKey: string;
+  };
   setShowInvoice: (data: {
     projectIdentifier: string;
+    apiKey: string;
     isLoggedIn: boolean;
   }) => void;
 }

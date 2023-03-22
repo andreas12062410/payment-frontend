@@ -37,6 +37,7 @@ const StatsLeftCol = ({ pdfData }: Props) => {
               pdfData?.invoiceData?.custom_fields.forEach((item: any) =>
                 item.name === "QR" ? (url = item?.value) : ""
               );
+              console.log(url);
               return url;
             })()}
             alt=""

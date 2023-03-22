@@ -1,9 +1,9 @@
 import { client } from "./api";
 
-export const fetchData = async (project: string) => {
+export const fetchData = async (project: string, apiKey: string) => {
   try {
     const res = await client.post("invoice", {
-      data: { project },
+      data: { project, apiKey },
     });
 
     if (res.statusText === "OK") return res.data;
