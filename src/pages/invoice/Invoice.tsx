@@ -46,6 +46,7 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
     await html2pdf().set(options).from(pdfRe).save();
     setIsClicked(false);
   };
+
   useEffect(() => {
     if (pdfData === null && showInvoice.projectIdentifier && showInvoice.apiKey)
       (async () => {
@@ -53,9 +54,10 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
           showInvoice.projectIdentifier,
           showInvoice.apiKey
         );
+        console.log(res);
         if (res) setPdfData(res);
         else {
-          showToaster("Unable to load data", "error");
+          showToaster("Unable to fetch invoice data", "error");
           navigator("/");
         }
       })();
