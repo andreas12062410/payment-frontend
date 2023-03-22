@@ -1,6 +1,6 @@
 import Axios, { AxiosResponse } from "axios";
 
-type Endpoint = "/get-project" | "/get-budget" | "/checkout" | "/coupon";
+type Endpoint = "/get-project" | "/get-budget" | "/checkout" | "/coupon" | "/invoice";
 
 export const client = Axios.create({
   baseURL: "https://api.koders.in",
