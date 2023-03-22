@@ -33,7 +33,7 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
     setIsClicked(true);
     const pdfRe = pdfRef.current;
     const options = {
-      filename: "myfile.pdf",
+      filename: "invoice.pdf",
       pagesplit: true,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
