@@ -11,6 +11,8 @@ import StatsLeftCol from "../../component/invoice-components/StatsLeftCol";
 import StatsRightCol from "../../component/invoice-components/StatsRightCol";
 
 import "../../App.scss";
+import { showToaster } from "../../helper/toast";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   showInvoice: {
@@ -28,6 +30,8 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
   const [pdfData, setPdfData] = useState<any>(null);
   const [isClicked, setIsClicked] = useState<any>(false);
   const pdfRef: any = useRef();
+
+  const navigator = useNavigate();
 
   const generatePDF = async () => {
     setIsClicked(true);
@@ -50,9 +54,13 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
           showInvoice.apiKey
         );
         if (res) setPdfData(res);
+        else {
+          showToaster("Unable to load data", "error");
+          navigator("/");
+        }
       })();
   }, [pdfData, showInvoice.projectIdentifier, showInvoice.apiKey]);
-
+  console.log(pdfData);
   if (pdfData === null)
     return (
       <div className="loader-container">
