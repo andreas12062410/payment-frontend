@@ -11,7 +11,7 @@ const Cards = ({ pdfData }: Props) => {
         <div>Uttrakhand, India</div>
         <div style={{ marginTop: "5px" }}>
           <span style={{ fontWeight: 700, color: "black" }}>Email: </span>
-          info@koders.in
+          support@koders.in
         </div>
         <div style={{ marginTop: "5px" }}>
           <span style={{ fontWeight: 700, color: "black" }}>Phone: </span>
