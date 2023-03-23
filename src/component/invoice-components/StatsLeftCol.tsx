@@ -50,10 +50,6 @@ const StatsLeftCol = ({ pdfData }: Props) => {
           <li className="list-items">
             The accepted official payment method is Stripe.
           </li>
-          <li className="list-items">
-            10% discount applied for new customers. Discount applies for the
-            first project only.
-          </li>
           {(() => {
             let tandc: any = pdfData?.invoiceData?.custom_fields.filter(
               (item: any) => item.name === "Terms & Condition"
