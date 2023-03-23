@@ -85,7 +85,7 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
             onClick={generatePDF}
             variant="contained"
           >
-            {isClicked ? "Loading..." : "Download Now"}
+            {isClicked ? "Loading..." : "Download PDF"}
           </Button>
         </div>
       </div>
