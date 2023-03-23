@@ -15,7 +15,7 @@ const Header = ({ pdfData }: Props) => {
         </h1>
         <div>
           <span className="color-gray">
-            {pdfData?.invoiceData?.status?.name === "Sent"
+            {((pdfData?.invoiceData?.status?.name !== "Estimate") || (pdfData?.invoiceData?.status?.name !== "Draft"))
               ? "Invoice"
               : "Quotation"}{" "}
             No #&nbsp;&nbsp;&nbsp;
@@ -24,7 +24,7 @@ const Header = ({ pdfData }: Props) => {
         </div>
         <div>
           <span className="color-gray">
-            {pdfData?.invoiceData?.status?.name === "Sent"
+            {((pdfData?.invoiceData?.status?.name !== "Estimate") || (pdfData?.invoiceData?.status?.name !== "Draft"))
               ? "Invoice"
               : "Quotation"}{" "}
             Date&nbsp;&nbsp;&nbsp;
@@ -33,7 +33,7 @@ const Header = ({ pdfData }: Props) => {
         </div>
       </div>
       <div className="text-header">
-        {pdfData?.invoiceData?.status?.name === "Sent"
+        {((pdfData?.invoiceData?.status?.name !== "Estimate") || (pdfData?.invoiceData?.status?.name !== "Draft"))
           ? "Invoice"
           : "Quotation"}
       </div>
