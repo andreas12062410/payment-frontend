@@ -40,7 +40,7 @@ const Invoice = ({ setShowInvoice, showInvoice }: Props) => {
       filename: "invoice.pdf",
       pagesplit: true,
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
+      html2canvas: { scale: 2, useCORS: true, allowTaint: true },
       jsPDF: { unit: "in", format: "a4", orientation: "p", margin: 10 },
     };
     await html2pdf().set(options).from(pdfRe).save();
