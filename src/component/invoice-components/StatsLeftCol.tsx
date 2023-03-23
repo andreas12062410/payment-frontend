@@ -1,6 +1,33 @@
 import React from "react";
 import { Props } from "../../helper";
 
+const loadAndDrawQR = (pdfData: any) => {
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.onload = function() {
+    try {
+      const ctx = document.createElement("canvas").getContext("2d");
+      if (ctx !== null) {
+        ctx.drawImage(img, 0, 0);
+        ctx.getImageData(0, 0, 1, 1);
+      }
+    } catch (_) {
+      console.log("Something went wrong while loading QR code");
+    }
+  };
+  img.onerror = function(_) {
+    console.log("Something went wrong while loading QR code");
+  };
+
+  let url: string = "";
+  pdfData?.invoiceData?.custom_fields.forEach((item: any) =>
+    item.name === "QR" ? (url = item?.value) : ""
+  );
+
+  img.src = url;
+  return img;
+}
+
 const StatsLeftCol = ({ pdfData }: Props) => {
   return (
     <div className="stats-sec-col1">
@@ -30,18 +57,12 @@ const StatsLeftCol = ({ pdfData }: Props) => {
         </div>
         <div className="qr-cont">
           <div>Scan to Pay</div>
-          <img
-            // src={qr}
-            src={(() => {
-              let url: string = "";
-              pdfData?.invoiceData?.custom_fields.forEach((item: any) =>
-                item.name === "QR" ? (url = item?.value) : ""
-              );
-              console.log(url);
-              return url;
-            })()}
-            alt=""
-          />
+          <img src={(() => {
+            const img = loadAndDrawQR(pdfData);
+            return img.src;
+          })()}
+            alt="QR">
+          </img>
         </div>
       </div>
       <div className="terms-conditions">
@@ -66,7 +87,7 @@ const StatsLeftCol = ({ pdfData }: Props) => {
           })()}
         </ul>
       </div>
-    </div>
+    </div >
   );
 };
 
