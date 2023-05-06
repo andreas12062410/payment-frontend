@@ -12,6 +12,17 @@ export const fetchData = async (project: string, apiKey: string) => {
   }
 };
 
+export const fetchProjectStatusData = async () => {
+  try {
+    const res = await client.get("status");
+    if (res.status === 200) return res.data;
+    else return null;
+  } catch (error) {
+    console.log("Something went wrong while fetching project status data");
+    return null;
+  }
+};
+
 export interface Props {
   pdfData: any;
 }
