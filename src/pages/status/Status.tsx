@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
-import ProgressBar  from "../../component/progress-bar/ProgressBar";
 import { fetchProjectStatusData } from "../../helper";
+import ProgressBar  from "../../component/progress-bar/ProgressBar";
+import Spacer  from "../../component/spacer/Spacer";
 
 function Status(){
     const [data, setData] = useState([]);
@@ -47,6 +48,7 @@ function Status(){
                         status={"open"}
                         index={0}
                     />
+                    <Spacer height={5} />
                 </div>
             ))}
             </div>
