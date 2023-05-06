@@ -3,7 +3,7 @@ import { Container } from "@mui/material";
 import { Footer } from "./component";
 import { ToastContainer } from "react-toastify";
 import { Routes, Route } from "react-router-dom";
-import { Error, HomePage, Invoice, SuccessPage } from "./pages";
+import { Error, HomePage, Invoice, SuccessPage, StatusPage} from "./pages";
 import { useState } from "react";
 
 function App() {
@@ -17,6 +17,7 @@ function App() {
       <Container className="payment-container">
         <Routes>
           <Route path="/success" element={<SuccessPage />} />
+          <Route path="/status" element={<StatusPage />} />
           <Route
             path="/"
             element={<HomePage {...{ showInvoice, setShowInvoice }} />}

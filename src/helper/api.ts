@@ -5,6 +5,7 @@ type Endpoint =
   | "/get-budget"
   | "/checkout"
   | "/coupon"
+  | "/status"
   | "/invoice";
 
 export const client = Axios.create({
