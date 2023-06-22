@@ -29,7 +29,7 @@ import { useDelayedQueryHook } from "../../hooks/delayed_query";
 import { useGetBudgetFromIssues } from "../../hooks/issues_budget";
 import { useApplyCouponHook } from "../../hooks/coupon";
 import { FullScreenSpinner } from "..";
-import { useNavigate } from "react-router-dom";
+import { fetchData } from "../../helper";
 
 interface Props {
   showInvoice: {
@@ -101,6 +101,7 @@ function Form({ setShowInvoice, showInvoice }: Props) {
       isDownloadFiles,
       isCouponApplied,
       isShowFormButton,
+      isDisableDownloadInvoice,
     },
     setToggle,
   ] = useState<toggleBtnProps>(initialToggleState);
@@ -386,7 +387,33 @@ function Form({ setShowInvoice, showInvoice }: Props) {
     setCurrencyType(type);
   };
 
-  const navigator = useNavigate();
+  const handleDownloadInvoice = async () => {
+    try {
+      setToggle((pre) => {
+        return { ...pre, isDisableDownloadInvoice: true };
+      });
+      const res = await fetchData(
+        showInvoice.projectIdentifier,
+        showInvoice.apiKey
+      );
+      if (res !== null) {
+        const link = document.createElement("a");
+        link.setAttribute("href", 'data:"application/pdf;base64,' + res?.data);
+        link.setAttribute("download", `${res?.name}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setToggle((pre) => {
+          return { ...pre, isDisableDownloadInvoice: false };
+        });
+      } else showToaster("Unable to download invoice, try later.", "error");
+    } catch (error: any) {
+      setToggle((pre) => {
+        return { ...pre, isDisableDownloadInvoice: false };
+      });
+      showToaster(error?.message, "error");
+    }
+  };
 
   return (
     <Grid justifyContent="center" container>
@@ -419,15 +446,19 @@ function Form({ setShowInvoice, showInvoice }: Props) {
           <>
             <Spacer isWidth={true} height={15} width="100%" />
             <div
-              style={{ cursor: `${isDisableBtn ? "not-allowed" : "default"}` }}
+              style={{
+                cursor: `${
+                  isDisableDownloadInvoice ? "not-allowed" : "default"
+                }`,
+              }}
             >
               <Button
                 fullWidth
-                // disabled={isDisableBtn}
-                onClick={() => navigator("invoice")}
+                disabled={isDisableDownloadInvoice}
+                onClick={handleDownloadInvoice}
                 variant="contained"
               >
-                Download & Preview Invoice
+                Download Invoice
               </Button>
             </div>
           </>

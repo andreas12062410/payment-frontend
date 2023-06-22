@@ -3,7 +3,7 @@ import { Container } from "@mui/material";
 import { Footer } from "./component";
 import { ToastContainer } from "react-toastify";
 import { Routes, Route } from "react-router-dom";
-import { Error, HomePage, Invoice, SuccessPage, StatusPage} from "./pages";
+import { Error, HomePage, SuccessPage, StatusPage } from "./pages";
 import { useState } from "react";
 
 function App() {
@@ -22,12 +22,6 @@ function App() {
             path="/"
             element={<HomePage {...{ showInvoice, setShowInvoice }} />}
           />
-          {showInvoice.isLoggedIn && showInvoice.projectIdentifier && (
-            <Route
-              path="/invoice"
-              element={<Invoice {...{ showInvoice, setShowInvoice }} />}
-            />
-          )}
           <Route path="*" element={<Error />} />
         </Routes>
         <ToastContainer limit={3} />
