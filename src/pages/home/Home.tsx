@@ -20,12 +20,12 @@ interface Props {
 }
 function Home({ showInvoice, setShowInvoice }: Props) {
   return (
-    <>
+    <div className="home">
       <Heading />
       <Description />
       <Spacer height={50} />
       <ProjectDetailForm {...{ showInvoice, setShowInvoice }} />
-    </>
+    </div>
   );
 }
 

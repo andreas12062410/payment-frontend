@@ -5,7 +5,7 @@ import {
   SelectChangeEvent,
   Typography,
 } from "@mui/material";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import Loader from "../loader/Loader";
 import Spacer from "../spacer/Spacer";
 import CouponField from "./CouponField";
@@ -14,7 +14,9 @@ import {
   formatCurrency,
   ICouponDetails,
   SelectedOption,
+  toggleBtnProps,
 } from "./utils";
+import Modal from "../modal/Modal";
 
 function FormButton({
   selectedOption,
@@ -34,7 +36,9 @@ function FormButton({
   currencyType,
   budgetInAllCurrencyType,
   couponBudgetInAllCurrencyType,
+  setToggle,
 }: Props) {
+  const [showModal, setShowModal] = useState(false);
   return isDownloadFiles ? (
     <div
       className="download-btn-wrapper"
@@ -73,11 +77,17 @@ function FormButton({
         onCodeChange={onCodeChange}
       />
       <Spacer height={10} />
+      {showModal && (
+        <Modal
+          handleClose={() => setShowModal(false)}
+          handleCheck={async () => await handlePayNow()}
+        />
+      )}
       <div className="currency-box">
         {isCouponApplied ? (
           <Button
             fullWidth
-            onClick={handlePayNow}
+            onClick={() => setShowModal(true)}
             disabled={isDisableBtn}
             variant="contained"
           >
@@ -103,19 +113,21 @@ function FormButton({
             </Typography>
           </Button>
         ) : (
-          <Button
-            fullWidth
-            onClick={handlePayNow}
-            disabled={isDisableBtn}
-            variant="contained"
-          >
-            {isCouponApplied}
-            Pay{" "}
-            {formatCurrency({
-              currency: currencyType,
-              amount: Number(budgetInAllCurrencyType[currencyType]),
-            })}
-          </Button>
+          <>
+            <Button
+              fullWidth
+              onClick={() => setShowModal(true)}
+              disabled={isDisableBtn}
+              variant="contained"
+            >
+              {isCouponApplied}
+              Pay{" "}
+              {formatCurrency({
+                currency: currencyType,
+                amount: Number(budgetInAllCurrencyType[currencyType]),
+              })}
+            </Button>
+          </>
         )}
         <Select
           disabled={isDisableBtn}
@@ -159,6 +171,7 @@ function FormButton({
 export default FormButton;
 
 interface Props {
+  setToggle: (data: toggleBtnProps) => void;
   isBudgetFetch: boolean;
   isDisableBtn?: boolean;
   isCouponApplied: boolean;

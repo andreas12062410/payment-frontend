@@ -376,11 +376,12 @@ function Form({ setShowInvoice, showInvoice }: Props) {
           }
         }
       }
-      setToggle((pre) => {
-        return { ...pre, isDisableBtn: false };
-      });
     } else showToaster("Enter valid coupon code", "error");
   };
+
+  // setToggle((pre) => {
+  //   return { ...pre, isDisableBtn: false };
+  // });
 
   const handleSelectCurrencyType = async (event: SelectChangeEvent) => {
     const type: any = event.target.value;
@@ -466,6 +467,7 @@ function Form({ setShowInvoice, showInvoice }: Props) {
         <Spacer isWidth={true} height={15} width="100%" />
         {isShowFormButton && (
           <FormButton
+            setToggle={setToggle}
             selectedOption={selectedOption}
             amount={amount}
             isCouponApplied={isCouponApplied}
