@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import HyperLink from "../hyper-link/HyperLink";
 import { Button, Checkbox, Typography, checkboxClasses } from "@mui/material";
 import Spacer from "../spacer/Spacer";
@@ -32,27 +32,18 @@ const Modal = ({ handleCheck, handleClose }: Props) => {
           <Typography flexWrap={"wrap"} marginRight="10px">
             <span>I agree to the</span>
             <HyperLink link="https://koders.in/terms-of-service" text="terms" />
-            <span>,</span>
-            <HyperLink link="https://koders.in/cancellation" text="refund" />
-            <span>&nbsp;and</span>
-            <HyperLink
-              link="https://koders.in/cancellation"
-              text="cancellation"
-            />
-            <span> policies.</span>
+            <span>,&nbsp;</span>
+            <HyperLink link="https://koders.in/cancellation" text="cancellation and refund policies" />
           </Typography>
         </div>
         <div className="modal-btns">
           <Button
-            // fullWidth
-            // disabled={!isDownloadFiles}
             onClick={handleClose}
             variant="contained"
           >
             Cancel
           </Button>
           <Button
-            // fullWidth
             disabled={isDisable}
             onClick={async () => {
               if (isDisable) return;
