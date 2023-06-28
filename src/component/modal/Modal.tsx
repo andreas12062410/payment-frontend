@@ -43,43 +43,25 @@ const Modal = ({ handleCheck, handleClose }: Props) => {
           </Typography>
         </div>
         <div className="modal-btns">
-          <Button
-            // fullWidth
-            // disabled={!isDownloadFiles}
-            onClick={handleClose}
-            variant="contained"
-          >
+          <Button onClick={handleClose} variant="contained">
             Cancel
           </Button>
-          <Button
-            // fullWidth
-            disabled={isDisable}
-            onClick={async () => {
-              if (isDisable) return;
-              setIsDisable(true);
-              await handleCheck(true);
-              handleClose();
-            }}
-            variant="contained"
-          >
-            Pay
-          </Button>
-          {/* <button onClick={handleClose}>Cancel</button>
-          <button
-            style={
-              isDisable
-                ? { cursor: "not-allowed", opacity: "0.8" }
-                : { cursor: "pointer" }
-            }
-            onClick={async () => {
-              if (isDisable) return;
-              setIsDisable(true);
-              await handleCheck(true);
-              handleClose();
-            }}
-          >
-            Pay
-          </button> */}
+          {isDisable ? (
+            <button className="gray-pay"> Pay</button>
+          ) : (
+            <Button
+              disabled={isDisable}
+              onClick={async () => {
+                if (isDisable) return;
+                setIsDisable(true);
+                await handleCheck(true);
+                handleClose();
+              }}
+              variant="contained"
+            >
+              Pay
+            </Button>
+          )}
         </div>
       </div>
     </div>
