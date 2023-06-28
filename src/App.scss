@@ -34,9 +34,10 @@
 
 .dialog-child{
   flex-direction: column !important;
-  background-color: black;
-  padding: 1rem;
+  background: linear-gradient(black, rgba(0, 0, 0, 0.73));
+  padding: 1rem 1rem 2rem 1rem ;
   border-radius: 12px;
+  max-width: 90%;
 }
 
 .modal-heading{

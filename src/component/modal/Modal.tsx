@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import HyperLink from "../hyper-link/HyperLink";
-import { Checkbox, checkboxClasses } from "@mui/material";
+import { Button, Checkbox, Typography, checkboxClasses } from "@mui/material";
 import Spacer from "../spacer/Spacer";
 
 interface Props {
@@ -15,7 +15,9 @@ const Modal = ({ handleCheck, handleClose }: Props) => {
         onClick={(e) => e.stopPropagation()}
         className="flex-disp text-white dialog-child"
       >
-        <div className="modal-heading">Terms and Conditions</div>
+        <Typography fontSize={18} marginRight="10px">
+          Terms and Conditions{" "}
+        </Typography>
         <Spacer height={30} />
         <div className="flex-disp justify-center">
           <Checkbox
@@ -27,21 +29,42 @@ const Modal = ({ handleCheck, handleClose }: Props) => {
             }}
             onChange={(e: any) => setIsDisable(!e.target.checked)}
           />
-          <div>
-            I agree to the
+          <Typography flexWrap={"wrap"} marginRight="10px">
+            <span>I agree to the</span>
             <HyperLink link="https://koders.in/terms-of-service" text="terms" />
-            ,
+            <span>,</span>
             <HyperLink link="https://koders.in/cancellation" text="refund" />
-            &nbsp;and
+            <span>&nbsp;and</span>
             <HyperLink
               link="https://koders.in/cancellation"
               text="cancellation"
             />
-            &nbsp;policies.
-          </div>
+            <span> policies.</span>
+          </Typography>
         </div>
         <div className="modal-btns">
-          <button onClick={handleClose}>Cancel</button>
+          <Button
+            // fullWidth
+            // disabled={!isDownloadFiles}
+            onClick={handleClose}
+            variant="contained"
+          >
+            Cancel
+          </Button>
+          <Button
+            // fullWidth
+            disabled={isDisable}
+            onClick={async () => {
+              if (isDisable) return;
+              setIsDisable(true);
+              await handleCheck(true);
+              handleClose();
+            }}
+            variant="contained"
+          >
+            Pay
+          </Button>
+          {/* <button onClick={handleClose}>Cancel</button>
           <button
             style={
               isDisable
@@ -56,7 +79,7 @@ const Modal = ({ handleCheck, handleClose }: Props) => {
             }}
           >
             Pay
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
