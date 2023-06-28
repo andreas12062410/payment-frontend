@@ -15,7 +15,7 @@ const Modal = ({ handleCheck, handleClose }: Props) => {
         onClick={(e) => e.stopPropagation()}
         className="flex-disp text-white dialog-child"
       >
-        <Typography fontSize={18} marginRight="10px">
+        <Typography fontSize={22} marginRight="10px" marginTop="2px">
           Terms and Conditions{" "}
         </Typography>
         <Spacer height={30} />
@@ -29,11 +29,11 @@ const Modal = ({ handleCheck, handleClose }: Props) => {
             }}
             onChange={(e: any) => setIsDisable(!e.target.checked)}
           />
-          <Typography flexWrap={"wrap"} marginRight="10px">
+          <Typography flexWrap={"wrap"} marginRight="8px">
             <span>I agree to the</span>
             <HyperLink link="https://koders.in/terms-of-service" text="terms" />
-            <span>,&nbsp;</span>
-            <HyperLink link="https://koders.in/cancellation" text="cancellation and refund policies" />
+            <span>,</span>
+            <HyperLink link="https://koders.in/cancellation" text="cancellation and refund policies." />
           </Typography>
         </div>
         <div className="modal-btns">
