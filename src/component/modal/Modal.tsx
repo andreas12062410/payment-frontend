@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import HyperLink from "../hyper-link/HyperLink";
 import { Button, Checkbox, Typography, checkboxClasses } from "@mui/material";
 import Spacer from "../spacer/Spacer";
@@ -15,31 +15,28 @@ const Modal = ({ handleCheck, handleClose }: Props) => {
         onClick={(e) => e.stopPropagation()}
         className="flex-disp text-white dialog-child"
       >
-        <Typography fontSize={18} marginRight="10px">
+        <Typography fontSize={22} marginRight="10px" marginTop="2px">
           Terms and Conditions{" "}
         </Typography>
-        <Spacer height={30} />
+        <Spacer height={20} />
         <div className="flex-disp justify-center">
           <Checkbox
             sx={{
               [`&, &.${checkboxClasses.checked}`]: {
                 color: "rgba(0, 169, 157, 0.8)",
               },
-              color: "pink",
+              color: "teal",
             }}
             onChange={(e: any) => setIsDisable(!e.target.checked)}
           />
-          <Typography flexWrap={"wrap"} marginRight="10px">
+          <Typography flexWrap={"wrap"} marginRight="8px">
             <span>I agree to the</span>
             <HyperLink link="https://koders.in/terms-of-service" text="terms" />
             <span>,</span>
-            <HyperLink link="https://koders.in/cancellation" text="refund" />
-            <span>&nbsp;and</span>
             <HyperLink
               link="https://koders.in/cancellation"
-              text="cancellation"
+              text="cancellation and refund policies."
             />
-            <span> policies.</span>
           </Typography>
         </div>
         <div className="modal-btns">
