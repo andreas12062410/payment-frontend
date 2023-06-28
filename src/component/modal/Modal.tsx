@@ -18,14 +18,14 @@ const Modal = ({ handleCheck, handleClose }: Props) => {
         <Typography fontSize={22} marginRight="10px" marginTop="2px">
           Terms and Conditions{" "}
         </Typography>
-        <Spacer height={30} />
+        <Spacer height={20} />
         <div className="flex-disp justify-center">
           <Checkbox
             sx={{
               [`&, &.${checkboxClasses.checked}`]: {
                 color: "rgba(0, 169, 157, 0.8)",
               },
-              color: "pink",
+              color: "teal",
             }}
             onChange={(e: any) => setIsDisable(!e.target.checked)}
           />
