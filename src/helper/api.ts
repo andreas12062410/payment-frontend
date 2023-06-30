@@ -9,8 +9,8 @@ type Endpoint =
   | "/invoice";
 
 export const client = Axios.create({
-  baseURL: "http://localhost:9442",
-  // baseURL: "https://api.koders.in",
+  // baseURL: "http://localhost:9442",
+  baseURL: "https://api.koders.in",
   headers: {
     "Content-Type": "application/json",
   },
