@@ -16,7 +16,8 @@ export const useDelayedQueryHook = () => {
         setProjectDetails: React.Dispatch<React.SetStateAction<ProjectData>>,
         setMileStone: React.Dispatch<React.SetStateAction<mileStoneDataType[]>>,
         setIsClickable: React.Dispatch<React.SetStateAction<boolean>>,
-        setShowInvoice: React.Dispatch<React.SetStateAction<any>>
+        setShowInvoice: React.Dispatch<React.SetStateAction<any>>,
+        setInvoiceType: React.Dispatch<React.SetStateAction<String>>
       ) => {
         if (apiKey.length <= 10)
           return showToaster("Enter valid API key", "error");
@@ -30,16 +31,17 @@ export const useDelayedQueryHook = () => {
         };
 
         handleFetchState(true);
-        const data = await formSubmit({
+        const res = await formSubmit({
           apiKey,
           projectIdentifier,
         });
-        if (data === null || data.length === 0) {
+        if (res === null || res?.data?.length === 0 || res?.data === null) {
           handleFetchState(false);
           showToaster("Network Error", "error");
           return;
         }
-
+        const { data, type } = res;
+        setInvoiceType(type);
         if (isValidResponse(data)) {
           setShowInvoice({
             projectIdentifier: projectIdentifier,

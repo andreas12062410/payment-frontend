@@ -52,6 +52,7 @@ function Form({ setShowInvoice, showInvoice }: Props) {
     "GBP",
     "SBD",
   ];
+  const [invoiceType, setInvoiceType] = useState<String>("");
   const [projectDetails, setProjectDetails] =
     useState<ProjectData>(initialProjectState);
   const applyCouponCode = useApplyCouponHook();
@@ -126,7 +127,7 @@ function Form({ setShowInvoice, showInvoice }: Props) {
         if (api && pid) {
           setFullScreenLoader(true);
           setForm((pre) => ({ ...pre, apiKey: api, projectIdentifier: pid }));
-          const data = await getProject({
+          const res = await getProject({
             apiKey: api,
             projectIdentifier: pid,
           });
@@ -137,12 +138,14 @@ function Form({ setShowInvoice, showInvoice }: Props) {
               isMilestoneFetch: value,
             }));
           };
-          if (data === null || data.length === 0) {
+          if (res === null || res?.data?.length === 0 || res?.data === null) {
             handleFetchState(false);
             showToaster("Network Error", "error");
             setFullScreenLoader(false);
             return;
           }
+          const { data, type } = res;
+          setInvoiceType(type);
           setShowInvoice({
             projectIdentifier: pid,
             isLoggedIn: true,
@@ -191,7 +194,8 @@ function Form({ setShowInvoice, showInvoice }: Props) {
         setProjectDetails,
         setMileStone,
         setIsClickable,
-        setShowInvoice
+        setShowInvoice,
+        setInvoiceType
       );
     } else {
       if (apiKey?.length) {
@@ -202,7 +206,8 @@ function Form({ setShowInvoice, showInvoice }: Props) {
           setProjectDetails,
           setMileStone,
           setIsClickable,
-          setShowInvoice
+          setShowInvoice,
+          setInvoiceType
         );
       }
     }
@@ -291,7 +296,8 @@ function Form({ setShowInvoice, showInvoice }: Props) {
       setProjectDetails,
       setMileStone,
       setIsClickable,
-      setShowInvoice
+      setShowInvoice,
+      setInvoiceType
     );
   };
 
@@ -459,7 +465,7 @@ function Form({ setShowInvoice, showInvoice }: Props) {
                 onClick={handleDownloadInvoice}
                 variant="contained"
               >
-                Download Invoice
+                Download {invoiceType}
               </Button>
             </div>
           </>

@@ -48,15 +48,18 @@ const makeMileStoneData = (obj: any) => {
 export const useFormSubmitHook = () => {
   const submitForm = async (
     payload: FormPayload
-  ): Promise<mileStoneDataType[] | null> => {
+  ): Promise<{
+    data: mileStoneDataType[] | null;
+    type: string;
+  } | null> => {
     try {
       const { data, status } = await sendPayload({
         endpoint: "/get-project",
         payload,
       });
       if (status === 200) {
-        const { data: response } = data;
-        return makeMileStoneData(response);
+        const { data: response, type } = data;
+        return { data: makeMileStoneData(response), type };
       }
       return null;
     } catch (e: any) {
